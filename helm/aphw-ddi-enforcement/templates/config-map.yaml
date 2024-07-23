@@ -3,22 +3,13 @@
 data:
   NODE_ENV: {{ quote .Values.environment }}
   PORT: {{ quote .Values.container.port }}
-  MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   {{- if .Values.pr }}
   REDIRECT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}/{{ .Values.azureAppRegistration.redirectUrl }}
   {{ else }}
   REDIRECT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}/{{ .Values.azureAppRegistration.redirectUrl }}
   {{- end }}
-  {{- if and (.Values.environmentCode) (not .Values.pr) }}
-  CERTIFICATE_REQUEST_QUEUE: {{ .Values.container.certificateRequestQueue }}-{{ .Values.environmentCode }}
-  {{ else }}
-  CERTIFICATE_REQUEST_QUEUE: {{ quote .Values.container.certificateRequestQueue }}
-  {{- end }}
   AUTHENTICATION_ENABLED: {{ quote .Values.azureAppRegistration.enabled }}
   DDI_API_BASE_URL: {{ quote .Values.container.ddiApiBaseUrl }}
   DDI_EVENTS_BASE_URL: {{ quote .Values.container.ddiEventsBaseUrl }}
-  OS_PLACES_API_BASE_URL: {{ quote .Values.container.osPlacesBaseUrl }}
-  POLICE_API_BASE_URL: {{ quote .Values.container.policeApiBaseUrl }}
-  AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
 {{- end -}}

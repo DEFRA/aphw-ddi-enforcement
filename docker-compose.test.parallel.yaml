@@ -13,12 +13,6 @@ services:
       - ./test-output:/home/node/test-output
       - ./jest.config.js:/home/node/jest.config.js
       - ./package.json:/home/node/package.json
-    depends_on: 
-      - aphw-ddi-enforcement-azurite
     environment:
-      AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://aphw-ddi-enforcement-azurite:10000/devstoreaccount1;TableEndpoint=http://aphw-ddi-enforcement-azurite:10002/devstoreaccount1;"
       DDI_API_BASE_URL: test
       DDI_EVENTS_BASE_URL: test-events
-
-  aphw-ddi-enforcement-azurite:
-    image: mcr.microsoft.com/azure-storage/azurite:3.23.0
