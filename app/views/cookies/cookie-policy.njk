@@ -1,0 +1,160 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% extends '_layout.njk' %}
+
+{% set pageHeading = "Cookie Information" %}
+
+{% block header %}
+  <header class="defra-internal-header" role="banner">
+    <div class="govuk-width-container">
+      <div class="defra-logo">
+          <a href="https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs" title="Go to the Defra homepage" class="defra-logo__link">
+            <span class="c-defra-logo__title govuk-visually-hidden">Department for Environment Food &amp; Rural Affairs</span>
+          </a>
+          <a href="https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs" title="Go to the Defra homepage"
+           class="defra-logo-name__link">Department <br>for Environment<br>Food &amp; Rural Affairs</a>
+      </div>
+
+      <div class="defra-internal-service-name">
+          <a href="/" title="Go to the homepage" class="defra-internal-service-name__link">
+            {{ serviceName }}
+          </a>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    {% if updated %}
+      <div class="js-cookie-page-banner">
+        <div class="govuk-notification-banner govuk-notification-banner--success defra-no-focus" role="alert"
+          aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+          <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+              Success
+            </h2>
+          </div>
+          <div class="govuk-notification-banner__content">
+            <p class="govuk-body">You've set your cookie preferences.</p>
+            {% if referer %}
+            <p><a href="{{ referer | safe }}">Go back to the page you were looking at</a></p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="defra-cookie-settings">
+      <h1 class="govuk-heading-xl">
+        Cookies
+      </h1>
+
+      <p>Cookies are small files saved on your phone, tablet or computer when you visit a website.</p>
+      <p>We use cookies to make Record biodiversity gains work and collect information about how you use our service.
+      </p>
+      <h2 class="govuk-heading-m" id="essential-cookies-label">Essential cookies</h2>
+      <p>Essential cookies keep your information secure while you use this service. We do not need to ask permission to
+        use them.</p>
+      <table class="govuk-table" aria-labelledby="essential-cookies-label">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header" style="width:20%">Name</th>
+            <th scope="col" class="govuk-table__header">Purpose</th>
+            <th scope="col" class="govuk-table__header" style="width:20%">Expires</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" style="word-break: break-all">session</td>
+            <td class="govuk-table__cell">Used to store page state</td>
+            <td class="govuk-table__cell">When you close your browser</td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" style="word-break: break-all">set_cookie_usage</td>
+            <td class="govuk-table__cell">Remembers your cookie consent settings</td>
+            <td class="govuk-table__cell">30 days</td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" style="word-break: break-all">seen_cookie_message</td>
+            <td class="govuk-table__cell">Stops your browser showing the cookie banner after you’ve set your preferences
+            </td>
+            <td class="govuk-table__cell">30 days</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 class="govuk-heading-m" id="analytics-cookies-label">Analytics cookies (optional)</h2>
+      <p>With your permission, we use Google Analytics to collect data about how you use the service. This information
+        helps us to improve our service.</p>
+      <p>Google is not allowed to use or share our analytics data with anyone.</p>
+      <p>Google Analytics stores anonymised information about:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>how you got to the service</li>
+        <li>the pages you visit on the service and how long you stay on them</li>
+        <li>what you click on while you're using the service</li>
+        <li>any errors you see while using the service</li>
+      </ul>
+      <p>Google Analytics sets the following cookies.</p>
+      <table class="govuk-table" aria-labelledby="analytics-cookies-label">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header" style="width:20%">Name</th>
+            <th scope="col" class="govuk-table__header">Purpose</th>
+            <th scope="col" class="govuk-table__header" style="width:20%">Expires</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" style="word-break: break-all">_ga</td>
+            <td class="govuk-table__cell">Checks if you've visited the service before. This helps us count how many
+              people visit our site.</td>
+            <td class="govuk-table__cell">2 years</td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" style="word-break: break-all">_gid</td>
+            <td class="govuk-table__cell">Checks if you've visited the service before. This helps us count how many
+              people visit our site.</td>
+            <td class="govuk-table__cell">24 hours</td>
+          </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" style="word-break: break-all">_gat_gtag</td>
+            <td class="govuk-table__cell">This randomly generated number is used to reduce the number of requests made.
+            </td>
+            <td class="govuk-table__cell">1 minute</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 class="govuk-heading-m">Change your cookie settings</h2>
+      <div class="defra-js-hide" id="no-js-text">
+        <p>We cannot change your cookie settings at the moment because JavaScript is not running in your browser. To fix
+          this, try:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>turning on JavaScript in your browser settings</li>
+          <li>reloading this page</li>
+        </ul>
+      </div>
+      <div id="cookie-page-buttons" class="defra-js-show" hidden>
+        <form action="/cookies" method="post" novalidate>
+        <div class="govuk-form-group">
+        {{ govukRadios(analytics) }}
+        </div>
+        <button class="govuk-button govuk-!-margin-top-4 govuk-!-margin-left-0" id="cookies-save"
+          data-module="govuk-button">Save cookie settings</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script lang="javascript">
+const buttons = document.getElementById('cookie-page-buttons')
+const noJsText = document.getElementById('no-js-text')
+if (buttons && noJsText) {
+  buttons.style.display = 'block'
+  noJsText.style.display = 'none'
+}
+</script>
+{% endblock %}

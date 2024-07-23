@@ -1,10 +1,29 @@
 services:
-  ffc-template-node:
+  aphw-ddi-enforcement:
     build:
       context: .
       target: production
-    image: ffc-template-node
-    container_name: ffc-template-node
+    image: aphw-ddi-enforcement
+    container_name: aphw-ddi-enforcement
     environment:
-      APPINSIGHTS_CLOUDROLE: ffc-template-node-local
-      APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
+      APPINSIGHTS_CLOUDROLE: aphw-ddi-enforcement-local
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${APPLICATIONINSIGHTS_CONNECTION_STRING}
+      DDI_API_BASE_URL: ${DDI_API_BASE_URL:-test}
+      DDI_EVENTS_BASE_URL: ${DDI_EVENTS_BASE_URL:-test}
+      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-test}
+      OS_PLACES_API_BASE_URL: ${OS_PLACES_API_BASE_URL:-test}
+      POLICE_API_BASE_URL: ${POLICE_API_BASE_URL:-test}
+      COOKIE_PASSWORD: who-likes-cookies-i-like-cookies-everybody-likes-cookies
+      AZUREID_CLIENT_SECRET: ${AZUREID_CLIENT_SECRET}
+      AZUREID_CLIENT_ID: ${AZUREID_CLIENT_ID}
+      AZUREID_TENANT_ID: ${AZUREID_TENANT_ID}
+      REDIRECT_URL: ${REDIRECT_URL}
+      AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME:-devstoreaccount1}
+      AZURE_STORAGE_USE_CONNECTION_STRING: "true"
+      AZURE_STORAGE_CREATE_CONTAINERS: "true"
+      AZURE_STORAGE_CONNECTION_STRING: "UseDevelopmentStorage=true"
+      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST:-test}
+      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD:-test}
+      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER:-test}
+      REGISTER_IMPORT_REQUEST_QUEUE: ${REGISTER_IMPORT_REQUEST_QUEUE:-aphw-ddi-register-import-request}${MESSAGE_QUEUE_SUFFIX}
+      CERTIFICATE_REQUEST_QUEUE: ${CERTIFICATE_REQUEST_QUEUE:-aphw-ddi-certificate-request}${MESSAGE_QUEUE_SUFFIX}

@@ -4,9 +4,11 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; p
 
 cd "${projectRoot}"
 
-docker-compose down
+. "${projectRoot}/.env"
 
-docker-compose \
+docker compose down
+
+docker compose \
   -f docker-compose.yaml \
   -f docker-compose.override.yaml \
-  up $@
+  up --no-recreate $@

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
@@ -10,11 +12,14 @@ module.exports = {
     'lcov'
   ],
   coveragePathIgnorePatterns: [
+    '<rootDir>/app/dist/',
+    '<rootDir>/app/frontend/',
     '<rootDir>/node_modules/',
     '<rootDir>/test-output/',
     '<rootDir>/test/',
-    '<rootDir>/rename.js',
-    '<rootDir>/jest.config.js'
+    '<rootDir>/jest.config.js',
+    '<rootDir>/jest.setup.js',
+    '<rootDir>/webpack.config.js'
   ],
   modulePathIgnorePatterns: [
     'node_modules'
@@ -32,5 +37,6 @@ module.exports = {
   ],
   testEnvironment: 'node',
   testPathIgnorePatterns: [],
+  setupFilesAfterEnv: ['./jest.setup.js'],
   verbose: true
 }

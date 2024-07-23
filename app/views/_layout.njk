@@ -1,0 +1,72 @@
+{% extends "govuk/template.njk" %}
+
+{% block head %}
+  <!--[if !IE 8]><!-->
+  
+  <link href="/static/css/core.117e5d4877848bd73bba.css" rel="stylesheet">
+  
+  <link href="/static/css/accessibleAutocomplete.117e5d4877848bd73bba.css" rel="stylesheet">
+  
+  <!--<![endif]-->
+
+  
+    <script type="module" src="/static/js/core.117e5d4877848bd73bba.js"></script>
+  
+    <script  src="/static/js/accessibleAutocomplete.117e5d4877848bd73bba.js"></script>
+  
+
+  {# For Internet Explorer 8, you need to compile specific stylesheet #}
+  {# see https://github.com/alphagov/govuk-frontend/blob/master/docs/installation/supporting-internet-explorer-8.md #}
+  <!--[if IE 8]>
+    <link href="{{ govukAssetPath }}/govuk-frontend/govuk/all-ie8.css" rel="stylesheet" />
+  <![endif]-->
+
+  {# For older browsers to allow them to recognise HTML5 elements such as `<header>` #}
+  <!--[if lt IE 9]>
+    <script src="/html5-shiv/html5shiv.js"></script>
+  <![endif]-->
+{% endblock %}
+
+{% block header %}
+<header class="defra-internal-header" role="banner">
+    <div class="govuk-width-container">
+      <div class="defra-logo">
+          <a href="https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs" title="Go to the Defra homepage" class="defra-logo__link">
+            <span class="c-defra-logo__title govuk-visually-hidden">Department for Environment Food &amp; Rural Affairs</span>
+          </a>
+          <a href="https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs" title="Go to the Defra homepage"
+           class="defra-logo-name__link">Department <br>for Environment<br>Food &amp; Rural Affairs</a>
+      </div>
+
+      <div class="defra-internal-service-name">
+          <a href="/" title="Go to the homepage" class="defra-internal-service-name__link">
+            {{ serviceName }}
+          </a>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+{% block bodyStart %}
+  {% if cookiesPolicy and not cookiesPolicy.confirmed %}
+    {% include "./cookies/_cookie-banner.njk" %}
+  {% endif %}
+{% endblock %}
+
+{% block pageTitle %}
+  {{ pageTitle }}
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+      meta: {
+        items: [
+        {
+            href: "/cookies",
+            text: "Cookies"
+        }
+        ]
+      }
+    })
+  }}
+{% endblock %}
