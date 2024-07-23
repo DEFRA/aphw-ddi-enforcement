@@ -1,4 +1,3 @@
-const { routes: ownerRoutes } = require('../../../constants/cdo/owner')
 const { formatToGds } = require('../../../lib/date-helpers')
 const { extractEmail, extractLatestPrimaryTelephoneNumber, extractLatestSecondaryTelephoneNumber, formatAddressAsArray } = require('../../../lib/model-helpers')
 
@@ -18,11 +17,7 @@ function ViewModel (personAndDogs, backNav) {
       email: extractEmail(personAndDogs?.contacts),
       telephoneNumber1: extractLatestPrimaryTelephoneNumber(personAndDogs?.contacts),
       telephoneNumber2: extractLatestSecondaryTelephoneNumber(personAndDogs?.contacts),
-      organisationName: personAndDogs?.organisationName,
-      navlink: {
-        url: ownerRoutes.editDetails.get,
-        text: 'Edit details'
-      }
+      organisationName: personAndDogs?.organisationName
     },
     dogs: personAndDogs.dogs
   }
