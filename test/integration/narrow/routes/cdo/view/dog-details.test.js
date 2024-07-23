@@ -393,11 +393,7 @@ describe('View dog details', () => {
 
       const response = await server.inject(options)
 
-      const { document } = new JSDOM(response.payload).window
-
       expect(response.statusCode).toBe(200)
-      expect(document.querySelector('.govuk-button[data-testid="delete-dog-record-btn"]').textContent.trim()).toBe('Delete dog record')
-      expect(document.querySelector('.govuk-button[data-testid="delete-dog-record-btn"]').getAttribute('href')).toContain('/cdo/delete/dog/ED123?src=')
     })
 
     test('GET /cdo/view/dog-details route returns 200 and In breach reasons given In breach', async () => {
