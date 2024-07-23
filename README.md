@@ -1,35 +1,6 @@
-# FFC Template Node
-
-Template to support rapid delivery of microservices for FFC Platform. It contains the configuration needed to deploy a simple Hapi Node server to the Azure Kubernetes Platform.
-
-## Usage
-
-Create a new repository from this template and run `./rename.js` specifying the new name of the project and the description to use e.g.
-```
-./rename.js ffc-demo-web "Web frontend for demo workstream"
-```
-
-The script will update the following:
-
-* `package.json`: update `name`, `description`, `homepage`
-* `docker-compose.yaml`: update the service name, `image` and `container_name`
-* `docker-compose.test.yaml`: update the service name, `image` and `container_name`
-* `docker-compose.override.yaml`: update the service name, `image` and `container_name`
-* Rename `helm/ffc-template-node`
-* `helm/ffc-template-node/Chart.yaml`: update `description` and `name`
-* `helm/ffc-template-node/values.yaml`: update  `name`, `namespace`, `workstream`, `image`, `containerConfigMap.name`
-* `helm/ffc-template-node/templates/_container.yaml`: update the template name
-* `helm/ffc-template-node/templates/cluster-ip-service.yaml`: update the template name and list parameter of include
-* `helm/ffc-template-node/templates/config-map.yaml`: update the template name and list parameter of include
-* `helm/ffc-template-node/templates/deployment.yaml`: update the template name, list parameter of deployment and container includes
-
-### Notes on automated rename
-
-* The Helm chart deployment values in `helm/ffc-template-node/values.yaml` may need updating depending on the resource needs of your microservice
-* The rename is a one-way operation i.e. currently it doesn't allow the name being changed from to be specified
-* There is some validation on the input to try and ensure the rename is successful, however, it is unlikely to stand up to malicious entry
-* Once the rename has been performed the script can be removed from the repo
-* Should the rename go awry the changes can be reverted via `git clean -df && git checkout -- .`
+# aphw-ddi-enforcement
+ 
+Web frontend to support the dangerous dog index.
 
 ## Prerequisites
 
@@ -64,7 +35,7 @@ through the Docker Compose
 docker-compose build
 ```
 
-### Start
+### Start 
 
 Use Docker Compose to run service locally.
 
@@ -95,6 +66,40 @@ scripts/test
 scripts/test -w
 ```
 
+# Running a subset of tests outside of Docker
+In order to run a single test or group of tests, you can use
+```
+npm run test <path>/<filename> 
+```
+e.g.
+```
+npm run test owner.test.js
+```
+
+However, you will need to copy these lines into your jest.setup.js temporarily, and do not check in any changes to jest.setup.js 
+
+```
+process.env.COOKIE_PASSWORD = 'cookiepasswordcookiepasswordcookiepassword'
+process.env.AZURE_STORAGE_ACCOUNT_NAME = 'devstoreaccount1'
+process.env.AZURE_STORAGE_CONNECTION_STRING = 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;'
+process.env.DDI_API_BASE_URL = 'http://localhost/api'
+process.env.DDI_EVENTS_BASE_URL = 'http://localhost/events'
+process.env.OS_PLACES_API_BASE_URL = 'http://localhost/os-places'
+process.env.OS_PLACES_API_KEY = 'some-api-key'
+process.env.POLICE_API_BASE_URL = 'http://localhost/police'
+```
+
+alternatively, you could add `--setupFilesAfterEnv=<rootDir>/jest.setup.single.js` to your jest arguments:
+
+```
+npm run test <path>/<filename> -- --setupFilesAfterEnv=<rootDir>/jest.setup.single.js
+```
+
+## Pact Broker
+
+To test pact locally you will need to download the pact-broker cli: https://github.com/pact-foundation/pact-ruby-standalone/releases
+There are two scripts, one to start up the Pact Broker, the other to publish the pact contracts.
+
 ## CI pipeline
 
 This service uses the [FFC CI pipeline](https://github.com/DEFRA/ffc-jenkins-pipeline-library)
@@ -114,3 +119,5 @@ The following attribution statement MUST be cited in your products and applicati
 The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable information providers in the public sector to license the use and re-use of their information under a common open licence.
 
 It is designed to encourage use and re-use of information freely and flexibly, with only a few conditions.
+
+[//]: # (dummy commit)

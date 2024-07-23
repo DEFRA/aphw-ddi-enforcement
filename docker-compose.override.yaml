@@ -2,14 +2,14 @@
 # to provide dependencies and expose ports for local testing
 
 services:
-  ffc-template-node:
+  aphw-ddi-enforcement:
     build:
       target: development
-    image: ffc-template-node-development
-    container_name: ffc-template-node-development
+    image: aphw-ddi-enforcement-development
+    container_name: aphw-ddi-enforcement-development
     ports:
-      - "3000:3000"
-      - "9229:9229"
+      - "3003:3000"
+      - "9232:9229"
     volumes:
       - ./app:/home/node/app
       - ./package.json:/home/node/package.json

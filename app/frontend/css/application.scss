@@ -1,0 +1,366 @@
+$govuk-assets-path: "~govuk-frontend/dist/govuk/assets/";
+$govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sass-api-reference/#global-styles
+@import "~govuk-frontend/dist/govuk/all";
+@import "./app-task-list";
+@import "defra-settings";
+
+.nojs-hidden {
+    display: none;
+}
+
+.js-enabled .nojs-hidden {
+    display: block;
+}
+
+.govuk-prose-scope {
+    // @extend inheritance
+
+    // Contextual heading and paragraph combinations are inherited
+    // through the use of @extend
+
+    h1 {
+        @extend %govuk-heading-xl;
+    }
+
+    h2 {
+        @extend %govuk-heading-l;
+    }
+
+    h3 {
+        @extend %govuk-heading-m;
+    }
+
+    h4 {
+        @extend %govuk-heading-s;
+    }
+
+    p {
+        @extend %govuk-body-m;
+    }
+
+    strong,
+    b {
+        @include govuk-typography-weight-bold;
+    }
+
+    ul,
+    ol {
+        @extend %govuk-list;
+    }
+
+    ol {
+        @extend %govuk-list--number;
+    }
+
+    ul {
+        @extend %govuk-list--bullet;
+    }
+
+    a {
+        @extend %govuk-link;
+    }
+
+    hr {
+        @extend %govuk-section-break;
+        @extend %govuk-section-break--visible;
+        @extend %govuk-section-break--xl;
+    }
+}
+
+.search-form {
+    position: relative;
+  }
+  
+  .search-button {
+    position: absolute;
+    border-color: black;
+    border-style: solid;
+    cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-image: url(../images/search-icon.png);
+    background-position: 2px 50%;
+    background-color: #1d70b8;
+    margin-left: -2.5rem;
+  
+    &:hover {
+      background-color: #143c7c;
+    }
+  }
+
+//defra header
+.defra {
+
+  &-internal-header {
+    padding: 20px 0;
+    border-bottom: 8px solid $defra-brand-colour;
+
+    @media (min-width: 48.0625em) {
+      display: table;
+      width: 100%;
+      min-height: 35px;
+    }
+
+    .defra-logo {
+      min-width: 275px;
+      margin-bottom: 15px;
+
+      @media (min-width: 48.0625em) {
+        display: table-cell;
+        width: 33.33%;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &-internal-service-name {
+
+    @media (min-width: 48.0625em) {
+      display: table-cell;
+      vertical-align: middle;
+      padding-left: 2em;
+    }
+
+    &__link {
+      text-decoration: none;
+      font-size: 21px;
+      font-weight: 400;
+
+      &:link,
+      &:visited {
+        color: $govuk-text-colour
+      }
+
+      @media (min-width: 48.0625em) {
+        font-size: 24px;
+      }
+    }
+  }
+
+  &-logo {
+    border-left: 2px solid $defra-brand-colour;
+    padding-left: 8px;
+
+    &__link {
+      display: table;
+
+      &::before {
+        content: '';
+        display: table-cell;
+        background: url("../images/defra-crest.png") no-repeat;
+        background-size: 100% 100%;
+        width: 33px;
+        height: 28px;
+      }
+
+      &:link,
+      &:visited {
+        text-decoration: none;
+        font-size: 20px;
+        color: $govuk-text-colour;
+      }
+    }
+
+    &__img {
+      visibility: hidden;
+      height: 0;
+      width: 0;
+    }
+
+    &-name__link {
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 400;
+
+      &:link,
+      &:visited {
+        color: $govuk-text-colour
+      }
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: max(3px);
+        -webkit-text-decoration-skip-ink: none;
+        text-decoration-skip-ink: none;
+        -webkit-text-decoration-skip: none;
+        text-decoration-skip: none
+      }
+    }
+  }
+
+  &-summary-header {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &-tag--grey {
+    color: #ffffff;
+    background: #505a5f;
+  }
+
+  &-align {
+
+    &-right {
+      position: absolute;
+      float: right;
+
+      &-simple {
+        float: right;
+      }
+    }
+
+    &-table {
+      vertical-align: middle !important;
+    }
+  }
+
+  &-text-align-left {
+    text-align: left !important;
+  }
+
+  &-text {
+    color: #0b0c0c !important;
+  }
+
+  &-secondary-text {
+    color: #505a5f !important;
+  }
+
+  &-results {
+    vertical-align: top;
+  }
+
+  &-header__right {
+    float: right !important;
+    margin-top: -18px;
+    margin-bottom: 0;
+  }
+
+  &-navigation__right {
+    color: #0b0c0c !important;
+    font-size: 1rem;
+    float: right;
+
+    &:visited {
+      color: #0b0c0c;
+    }
+  }
+
+  &-radio-text-block {
+    font-size: 1rem !important;
+    margin-bottom: 0px !important;
+    line-height: 1.25 !important;
+  }
+
+  &-checkbox {
+    position: relative !important;
+    margin: 3px 10px 0 0;
+    float: right;
+    top: -10px;
+  }
+
+  &-sortable-table {
+
+    th[aria-sort="none"] a,
+    th[aria-sort="ascending"] a,
+    th[aria-sort="descending"] a {
+      position: relative;
+      display: inline-block;
+
+      &.govuk-link {
+        margin-right: 11px;
+      }
+    }
+
+    th[aria-sort="none"] a {
+
+      &::before {
+        content: " ▼";
+        position: absolute;
+        right: -13px;
+        top: 9px;
+        font-size: .5em;
+      }
+
+      &::after {
+        content: " ▲";
+        position: absolute;
+        right: -13px;
+        top: 1px;
+        font-size: .5em;
+      }
+    }
+
+    th[aria-sort="ascending"] a {
+
+      &::after {
+        content: " ▲";
+        font-size: .8em;
+        position: absolute;
+        right: -17px;
+        top: 2px;
+      }
+
+    }
+
+    th[aria-sort="descending"] a {
+
+      &::after {
+        content: " ▼";
+        font-size: .8em;
+        position: absolute;
+        right: -17px;
+        top: 2px;
+      }
+    }
+  }
+
+  &-table {
+
+    &-cell {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
+
+  &-input {
+
+    &--width {
+
+      &-4 {
+        max-width: 4.5em !important;
+      }
+
+      &-6 {
+        max-width: 8em !important;
+      }
+
+      &-8 {
+        max-width: 8.5em !important;
+      }
+    }
+  }
+
+  &-no-wrap {
+    white-space: nowrap;
+  }
+
+  &-no-focus {
+    outline: 0px !important;
+  }
+}
+
+
+
+  
+
+
+  
+
+  
+
+  
+
+
+
+  

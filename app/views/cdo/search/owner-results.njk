@@ -1,0 +1,56 @@
+{% from "components/statusTag/macro.njk" import statusTag %}
+
+    <div class="govuk-summary-card">
+      <div class="govuk-summary-card__title-wrapper govuk-!-padding-top-2 govuk-!-padding-bottom-1">
+        <h2 class="govuk-summary-card__title defra-summary-header"><a class="govuk-link govuk-link--no-underline govuk-link--no-visited-state" href="">
+            <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/owner-details/{{ result.personReference }}{{ model.srcHashParam }}">
+                    {{ result.firstName }} {{ result.lastName }}
+            </a>
+        </h2>
+        <ul class="govuk-summary-card__actions govuk-body govuk-!-font-weight-regular">
+          <li class="defra-summary-header govuk-!-font-size-16">
+                {% if result.address %} {{ result.address }} {% endif %}
+          </li>
+        </ul>
+      </div>
+      <div class="govuk-summary-card__content govuk-!-padding-top-1 govuk-!-padding-bottom-0">
+        <table class="govuk-table govuk-!-margin-bottom-3">
+          <caption class="govuk-table__caption govuk-!-font-weight-regular govuk-!-font-size-16">
+          </caption>
+          <thead class="govuk-table__head govuk-!-font-size-16">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+                    Dog record
+              </th>
+              <th scope="col" class="govuk-table__header">
+                    Dog name
+              </th>
+              <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+                    Status
+              </th>
+            </tr>
+          </thead>
+ 
+          <tbody class="govuk-table__body">
+          {% for dog in result.dogs %}
+            <tr class="govuk-table__row govuk-!-font-size-16 govuk-!-margin-bottom-0">
+              <td class="{% if not loop.last %}govuk-table__cell {% endif %}govuk-!-padding-top-2 govuk-!-padding-bottom-10">
+                <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/dog-details/{{ dog.dogIndex }}{{ model.srcHashParam }}">
+                        {{ dog.dogIndex }}
+                </a>
+              </td>
+              <td class="{% if not loop.last %}govuk-table__cell {% endif %}govuk-!-padding-top-2 govuk-!-padding-bottom-10">
+                      {{ dog.dogName }}
+                  {% if dog.dogNameNotEntered %}
+                  <span class="defra-secondary-text">Not entered</span>
+                  {% endif %}
+              </td>
+              <td class="{% if not loop.last %}govuk-table__cell {% endif %}govuk-!-padding-top-2 govuk-!-padding-bottom-10">
+                {{ statusTag(dog.dogStatus, 'govuk-!-font-size-16')}}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
