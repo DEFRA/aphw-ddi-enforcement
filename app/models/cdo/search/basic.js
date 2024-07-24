@@ -7,7 +7,7 @@ function ViewModel (searchCriteria, resultList, backNav, errors) {
     srcHashParam: backNav.srcHashParam,
     searchTerms: {
       hint: {
-        text: 'Enter one or more search terms separated by spaces'
+        text: 'Enter one or more search terms'
       },
       id: 'searchTerms',
       name: 'searchTerms',
