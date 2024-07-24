@@ -28,15 +28,18 @@
     <form method="get">
 
       <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-visually-hidden">Dog records - Search</legend>
+        <legend class="govuk-fieldset__legend govuk-visually-hidden">Search</legend>
 
-          <h2 class="govuk-heading-m">Search</h2>
+          <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--l" for="search">
+            Search
+          </label>
+          </h1>
 
           {{ govukInput(model.searchTerms) }}
-
-          {{ govukRadios(model.searchType) }}
-
       </fieldset>
+
+      <input type="hidden" name="searchType" id="searchType" value="dog" />
 
       {{ govukButton({
         text: "Search",
