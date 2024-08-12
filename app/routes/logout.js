@@ -14,9 +14,6 @@ module.exports = {
     h.unstate('nonce')
     h.unstate('state')
 
-    // request.nonce.clear()
-    // request.state.clear()
-
     return h.redirect(logoutRes)
   }
 }
