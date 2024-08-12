@@ -25,6 +25,7 @@ module.exports = {
 
       server.ext('onPreAuth', async (request, h) => {
         if (request.auth.credentials) {
+          // TODO - this does not work
           await auth.refresh(request.auth.credentials.account, request.cookieAuth)
         }
         return h.continue

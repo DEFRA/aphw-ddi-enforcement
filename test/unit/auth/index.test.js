@@ -57,7 +57,7 @@ describe('azure authentication', () => {
     jest.mock('../../../app/auth/azure-auth', () => ({
       getAuthenticationUrl: jest.fn()
     }))
-    const { getAuthenticationUrl } = require('../../../app/auth/azure-auth')
+    const { getAuthenticationUrl } = require('../../../app/auth/oidc-auth')
 
     jest.mock('../../../app/auth/map-auth')
     jest.mock('../../../app/auth/get-user')

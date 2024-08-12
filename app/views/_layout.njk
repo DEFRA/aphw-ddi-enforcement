@@ -3,16 +3,16 @@
 {% block head %}
   <!--[if !IE 8]><!-->
   
-  <link href="/static/css/core.a60408a20b965a1c87b6.css" rel="stylesheet">
+  <link href="/static/css/core.e1b9107551d74593b05d.css" rel="stylesheet">
   
-  <link href="/static/css/accessibleAutocomplete.a60408a20b965a1c87b6.css" rel="stylesheet">
+  <link href="/static/css/accessibleAutocomplete.e1b9107551d74593b05d.css" rel="stylesheet">
   
   <!--<![endif]-->
 
   
-    <script type="module" src="/static/js/core.a60408a20b965a1c87b6.js"></script>
+    <script type="module" src="/static/js/core.e1b9107551d74593b05d.js"></script>
   
-    <script  src="/static/js/accessibleAutocomplete.a60408a20b965a1c87b6.js"></script>
+    <script  src="/static/js/accessibleAutocomplete.e1b9107551d74593b05d.js"></script>
   
 
   {# For Internet Explorer 8, you need to compile specific stylesheet #}
@@ -43,6 +43,14 @@
             {{ serviceName }}
           </a>
       </div>
+      {% if auth.isAuthenticated %}
+      <div class="defra-header__right">
+        <p class="govuk-body">
+          <a class="govuk-link defra-navigation__right" href="/logout">Sign out</a>
+        </p>
+      </div>
+      {% endif %}
+
     </div>
   </header>
 {% endblock %}

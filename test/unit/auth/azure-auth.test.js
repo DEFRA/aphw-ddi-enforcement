@@ -38,7 +38,7 @@ jest.mock('@azure/msal-node', () => {
     }
   }
 })
-const azureAuth = require('../../../app/auth/azure-auth')
+const azureAuth = require('../../../app/auth/oidc-auth')
 const { authConfig } = require('../../../app/config')
 let mockCookieAuth
 
