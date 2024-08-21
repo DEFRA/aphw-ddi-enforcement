@@ -47,15 +47,6 @@ const formatAddressSingleLine = (address, simple = false) => {
   return formatAddress(updatedAddress, options).join(', ')
 }
 
-/**
- *
- * @param {Address} address
- * @returns {string|null}
- */
-const getCountryFromAddress = (address) => {
-  return address?.country || null
-}
-
 const countryCodeMap = {
   E: 'England',
   S: 'Scotland',
@@ -129,7 +120,6 @@ const titleCase = str => {
 module.exports = {
   formatAddress,
   mapOsCountryCodeToCountry,
-  getCountryFromAddress,
   formatAddressSingleLine,
   formatDogRadioAsHtml,
   containsPossibleInjectedCode,

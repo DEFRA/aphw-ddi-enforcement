@@ -57,10 +57,6 @@ const propertyComparatorDesc = (propertyName, childPropertyName) => {
   }
 }
 
-const deepClone = obj => {
-  return JSON.parse(JSON.stringify(obj))
-}
-
 const cleanUserDisplayName = (displayName) => {
   if (displayName.includes(',')) {
     const [lastName, firstName] = displayName.split(',')
@@ -134,7 +130,6 @@ module.exports = {
   extractLatestInsurance,
   extractLatestPrimaryTelephoneNumber,
   extractLatestSecondaryTelephoneNumber,
-  deepClone,
   cleanUserDisplayName,
   dedupeAddresses,
   constructDateField
