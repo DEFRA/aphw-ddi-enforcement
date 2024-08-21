@@ -24,11 +24,6 @@ module.exports = {
             watch: false
           })
 
-          options.compileOptions.environment.addFilter('setRadioItems', (dictionary, key, value) => {
-            dictionary[key].items = value
-            return dictionary
-          })
-
           return next()
         }
       }

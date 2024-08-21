@@ -1,23 +1,5 @@
-const { UTCDate } = require('@date-fns/utc')
-const { parse, isValid, format } = require('date-fns')
+const { format } = require('date-fns')
 const { formatInTimeZone } = require('date-fns-tz')
-
-const validDateFormats = [
-  'yyyy-MM-dd',
-  'yyyy-M-d'
-]
-
-const parseDate = (value) => {
-  for (const fmt of validDateFormats) {
-    const date = parse(value, fmt, new UTCDate())
-
-    if (isValid(date)) {
-      return date
-    }
-  }
-
-  return null
-}
 
 /**
  * @param {Date} value
@@ -121,7 +103,6 @@ const removeIndividualDateComponents = (payload) => {
 }
 
 module.exports = {
-  parseDate,
   dateComponentsToString,
   formatToGds,
   stripTimeFromUTC,

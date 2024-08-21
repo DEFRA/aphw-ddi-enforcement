@@ -174,7 +174,6 @@ describe('date-helpers', () => {
       expect(getStatsTimestamp(null)).toBe(null)
     })
   })
-
   describe('removeIndividualDateComponents', () => {
     test('should remove components if exist', () => {
       const payload = { 'field1-day': '01', 'field1-month': '01', 'field1-year': '2099', anotherField: 123 }
