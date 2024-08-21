@@ -7,7 +7,12 @@ function ViewModel (searchCriteria, resultList, backNav, errors) {
     srcHashParam: backNav.srcHashParam,
     searchTerms: {
       hint: {
-        text: 'Enter one or more search terms'
+        text: 'Enter one or more search terms separated by spaces'
+      },
+      label: {
+        text: 'Search',
+        classes: 'govuk-label--m',
+        isPageHeading: true
       },
       id: 'searchTerms',
       name: 'searchTerms',
