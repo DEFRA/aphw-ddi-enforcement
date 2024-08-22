@@ -2,10 +2,6 @@ const { get } = require('./base')
 
 const personEndpoint = 'person'
 
-const options = {
-  json: true
-}
-
 /**
  * @typedef Address
  * @property {string} addressLine1
@@ -41,8 +37,8 @@ const options = {
  * @property {Contacts} contacts
  */
 
-const getPersonAndDogs = async (personReference) => {
-  const payload = await get(`${personEndpoint}/${personReference}?includeDogs=true`, options)
+const getPersonAndDogs = async (personReference, user) => {
+  const payload = await get(`${personEndpoint}/${personReference}?includeDogs=true`, user)
   return payload
 }
 
