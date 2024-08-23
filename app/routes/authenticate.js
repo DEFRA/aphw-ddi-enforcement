@@ -57,7 +57,7 @@ module.exports = {
       })
 
       const returnUrl = getFromSession(request, 'returnUrl')
-      return h.redirect(returnUrl && returnUrl !== '' ? returnUrl : '/')
+      return h.redirect(returnUrl && returnUrl !== '' && !returnUrl.endsWith('/post-logout') ? returnUrl : '/')
     } catch (err) {
       console.error('Error authenticating:', err)
     }
