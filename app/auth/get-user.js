@@ -3,7 +3,8 @@ const getUser = (request) => {
     userId: request.auth.credentials?.account?.userId,
     displayname: request.auth.credentials?.account?.displayname,
     username: request.auth.credentials?.account?.username,
-    token: request.auth.credentials?.account?.token
+    idToken: request.auth.credentials?.account?.idToken,
+    accessToken: request.auth.credentials?.account?.accessToken
   }
 }
 

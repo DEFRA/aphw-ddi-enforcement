@@ -14,7 +14,7 @@ const schema = Joi.object({
   }),
   cookie: Joi.object({
     password: Joi.string().required(),
-    ttl: Joi.number().default(60 * 60 * 1000)
+    ttl: Joi.number().default(61 * 60 * 1000)
   }),
   redirectUrl: Joi.string().default('http://localhost:3003/authenticate')
 })

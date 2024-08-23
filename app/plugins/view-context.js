@@ -18,7 +18,7 @@ module.exports = {
           ctx.serviceUrl = serviceUrl
           ctx.auth = mapAuth(request)
           ctx.user = getUser(request)
-          console.log('view-context user', ctx.user)
+          console.log('view-context username', ctx.user.username)
 
           response.source.context = ctx
         }

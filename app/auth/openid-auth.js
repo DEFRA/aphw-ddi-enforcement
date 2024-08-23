@@ -90,9 +90,6 @@ const buildAuthorizationUrl = (req, h, client, vtr, claims = undefined, addition
 
   h.state(STATE_COOKIE_NAME, state, { isSecure: false, isSameSite: 'Lax' })
 
-  console.log('openid-auth here4.1 nonce', nonce)
-  console.log('/openid-auth here4.2 state', state)
-
   const authorizationParameters = {
     redirect_uri: redirectUri,
     response_type: 'code',

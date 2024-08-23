@@ -1,5 +1,6 @@
 const { getAuth, getRedirectUri, NONCE_COOKIE_NAME, STATE_COOKIE_NAME, getResult } = require('../auth/openid-auth')
 const { hash } = require('../auth/openid-helper')
+const { getFromSession } = require('../session/session-wrapper')
 
 module.exports = {
   method: 'GET',
@@ -39,20 +40,24 @@ module.exports = {
 
       // Call the userinfo endpoint the retreive the results of the flow.
       const authResult = await getResult(auth.ivPublicKey, auth.client, tokenSet)
-      console.log('authResult', authResult.idToken)
+      console.log('authResult', authResult)
 
       const userinfo = JSON.parse(authResult.userinfo)
+      const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
+
       request.cookieAuth.set({
         scope: ['Dog.Index.Standard'],
         account: {
           userId: userinfo['sub'], // eslint-disable-line dot-notation
           displayname: userinfo.email,
           username: userinfo.email,
-          token: authResult.idToken
+          accessToken,
+          idToken: authResult.idToken
         }
       })
 
-      return h.redirect('/')
+      const returnUrl = getFromSession(request, 'returnUrl')
+      return h.redirect(returnUrl && returnUrl !== '' ? returnUrl : '/')
     } catch (err) {
       console.error('Error authenticating:', err)
     }

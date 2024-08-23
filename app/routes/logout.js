@@ -4,7 +4,7 @@ module.exports = {
   method: 'GET',
   path: '/logout',
   handler: async (request, h) => {
-    const idToken = request.state['session-auth']?.account.token
+    const idToken = request.state['session-auth']?.account.idToken
     const auth = await getAuth()
     const logoutRes = await auth.client.endSessionUrl({
       id_token_hint: idToken,

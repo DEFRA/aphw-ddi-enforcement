@@ -1,4 +1,5 @@
 const { getAuth, buildAuthorizationUrl } = require('../auth/openid-auth')
+const { setInSession } = require('../session/session-wrapper')
 
 module.exports = {
   method: 'GET',
@@ -12,6 +13,8 @@ module.exports = {
       const vtr = '[\'Cl.Cm\']'
 
       const auth = await getAuth()
+
+      setInSession(request, 'returnUrl', request.headers?.referer)
 
       // Calculate the redirect URL the should be returned to after completing the OAuth flow
       const authorizationUrl = buildAuthorizationUrl(request, h, auth.client, vtr, undefined, request.query)
