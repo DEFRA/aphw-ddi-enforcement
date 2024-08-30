@@ -17,6 +17,15 @@ const userWithDisplayname = {
   displayname: 'Example Tester'
 }
 
+const userFullAuth = {
+  userId: '508d176b-9063-4d48-8a02-6aa93c287a16',
+  displayname: 'test@example.com',
+  username: 'test@example.com',
+  idToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t',
+  accessToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t'
+
+}
+
 const auth = { strategy: 'session-auth', credentials: { scope: [admin], account: userForAuth } }
 
 const standardAuth = { strategy: 'session-auth', credentials: { scope: [standard], account: userForAuth } }
