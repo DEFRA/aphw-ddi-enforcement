@@ -1,6 +1,7 @@
 const { getAuth, getRedirectUri, NONCE_COOKIE_NAME, STATE_COOKIE_NAME, getResult } = require('../auth/openid-auth')
 const { hash } = require('../auth/openid-helper')
 const { getFromSession } = require('../session/session-wrapper')
+const { validateUser } = require('../api/ddi-index-api/user')
 
 module.exports = {
   method: 'GET',
@@ -44,6 +45,16 @@ module.exports = {
 
       const userinfo = JSON.parse(authResult.userinfo)
       const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
+
+      try {
+        await validateUser({
+          username: userinfo.email,
+          displayname: userinfo.email,
+          accessToken
+        })
+      } catch (_e) {
+        return h.view('unauthorized').code(401)
+      }
 
       request.cookieAuth.set({
         scope: ['Dog.Index.Standard'],

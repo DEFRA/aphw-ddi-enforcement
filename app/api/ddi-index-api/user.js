@@ -1,8 +1,20 @@
-const { callDelete } = require('./base')
-const endpoint = 'user/cache/my'
+const { get, callDelete } = require('./base')
+const endpoint = 'user/me'
 
 const userLogout = async (user) => {
-  await callDelete(endpoint, user)
+  await callDelete(endpoint + '/cache', user)
 }
 
-module.exports = { userLogout }
+/**
+ * @param {{
+ *    username: string;
+ *    accessToken: string;
+ *    displayname: string;
+ * }} user
+ * @return {Promise<void>}
+ */
+const validateUser = async (user) => {
+  await get(endpoint + '/validate', user)
+}
+
+module.exports = { userLogout, validateUser }

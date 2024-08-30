@@ -1,6 +1,6 @@
-const { getAuth } = require('../auth/openid-auth')
 const getUser = require('../auth/get-user')
 const { userLogout } = require('../api/ddi-index-api/user')
+const { logoutUser } = require('../auth/logout')
 
 module.exports = {
   method: 'GET',
@@ -11,15 +11,13 @@ module.exports = {
     try {
       await userLogout(user)
     } catch (e) {
-      console.error('Attempt to invalid cache failed', e)
+      console.error('Attempt to invalidate cache failed', e)
     }
 
     const idToken = request.state['session-auth']?.account.idToken
-    const auth = await getAuth()
-    const logoutRes = await auth.client.endSessionUrl({
-      id_token_hint: idToken,
-      post_logout_redirect_uri: auth.configuration.postLogoutUri
-    })
+
+    const logoutRes = await logoutUser(idToken)
+
     request.cookieAuth.clear()
     h.unstate('nonce')
     h.unstate('state')

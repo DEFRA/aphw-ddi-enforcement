@@ -26,7 +26,14 @@ describe('Base API', () => {
 
     test('get should call GET with username in header', async () => {
       await get('endpoint1', userWithDisplayname)
-      expect(wreck.get).toHaveBeenCalledWith('test/endpoint1', { json: true, headers: { 'ddi-username': 'test@example.com' } })
+      expect(wreck.get).toHaveBeenCalledWith('test/endpoint1', {
+        json: true,
+        headers: {
+          'ddi-username': 'test@example.com',
+          Authorization: 'Basic dGVzdEBleGFtcGxlLmNvbTp1bmRlZmluZWQ=',
+          'ddi-displayname': 'Example Tester'
+        }
+      })
     })
   })
 

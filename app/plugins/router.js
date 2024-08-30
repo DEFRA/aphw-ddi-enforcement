@@ -12,6 +12,7 @@ const routes = [].concat(
   require('../routes/login'),
   require('../routes/logout'),
   require('../routes/post-logout'),
+  require('../routes/test'),
   require('../routes/dev-auth')
 )
 

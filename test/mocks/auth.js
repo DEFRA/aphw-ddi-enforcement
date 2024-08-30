@@ -37,5 +37,6 @@ module.exports = {
   adminAuth,
   standardAuth,
   userWithDisplayname,
-  user
+  user,
+  userFullAuth
 }
