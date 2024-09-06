@@ -14,14 +14,14 @@ const options = {
  * @return {Promise<InsuranceCompany[]>}
  */
 
-const getCompanies = async () => {
-  const payload = await get(insuranceCompaniesEndpoint, options)
+const getCompanies = async (user) => {
+  const payload = await get(insuranceCompaniesEndpoint, user)
 
   return payload.companies
 }
 
-const getCompaniesNewest = async () => {
-  const payload = await get(`${insuranceCompaniesEndpoint}?sortKey=updatedAt&sortOrder=DESC`, options)
+const getCompaniesNewest = async (user) => {
+  const payload = await get(`${insuranceCompaniesEndpoint}?sortKey=updatedAt&sortOrder=DESC`, user)
 
   return payload.companies
 }

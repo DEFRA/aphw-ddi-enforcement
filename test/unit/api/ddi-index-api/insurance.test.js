@@ -1,3 +1,4 @@
+const { user } = require('../../../mocks/auth')
 describe('DDI API insuranceCompanys', () => {
   jest.mock('../../../../app/api/ddi-index-api/base')
   const { get } = require('../../../../app/api/ddi-index-api/base')
@@ -15,9 +16,9 @@ describe('DDI API insuranceCompanys', () => {
         companies: expectedCompanies
       })
 
-      const insuranceCompanies = await getCompanies()
+      const insuranceCompanies = await getCompanies(user)
 
-      expect(get).toHaveBeenCalledWith('insurance/companies', { json: true })
+      expect(get).toHaveBeenCalledWith('insurance/companies', user)
       expect(insuranceCompanies).toEqual(expectedCompanies)
     })
   })
@@ -29,9 +30,9 @@ describe('DDI API insuranceCompanys', () => {
         companies: expectedCompanies
       })
 
-      const insuranceCompanies = await getCompaniesNewest()
+      const insuranceCompanies = await getCompaniesNewest(user)
 
-      expect(get).toHaveBeenCalledWith('insurance/companies?sortKey=updatedAt&sortOrder=DESC', { json: true })
+      expect(get).toHaveBeenCalledWith('insurance/companies?sortKey=updatedAt&sortOrder=DESC', user)
       expect(insuranceCompanies).toEqual(expectedCompanies)
     })
   })
