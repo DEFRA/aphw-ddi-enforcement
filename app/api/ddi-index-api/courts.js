@@ -2,10 +2,6 @@ const { get } = require('./base')
 
 const courtsEndpoint = 'courts'
 
-const options = {
-  json: true
-}
-
 /**
  * @typedef Court
  * @return {{
@@ -17,8 +13,8 @@ const options = {
 /**
  * @return {Promise<Court[]>}
  */
-const getCourts = async () => {
-  const payload = await get(courtsEndpoint, options)
+const getCourts = async (user) => {
+  const payload = await get(courtsEndpoint, user)
 
   return payload.courts
 }
