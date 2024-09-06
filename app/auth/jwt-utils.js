@@ -3,7 +3,7 @@ const config = require('../config')
 const permissions = require('./permissions')
 
 const generateToken = (payload, { audience, issuer }) => {
-  const privateKey = atob(config.authConfig.privateKey)
+  const privateKey = Buffer.from(config.authConfig.privateKey, 'base64').toString()
 
   const options = {
     expiresIn: '1h',
@@ -31,7 +31,6 @@ const createJwtToken = (audience) => (username, displayname, scopes, token) => {
 }
 
 const createBearerHeader = (audience) => (user) => {
-  console.log('~~~~~~ Chris Debug ~~~~~~ ', 'User', user)
   const username = user?.username
   const displayname = user?.displayname
   const token = user?.accessToken
