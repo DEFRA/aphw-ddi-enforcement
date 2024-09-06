@@ -44,12 +44,11 @@ const getPersonAndDogs = async (personReference, user) => {
 
 /**
  * @param reference
+ * @param user
  * @return {Promise<Person>}
  */
-const getPersonByReference = async (reference) => {
-  const res = await get(`${personEndpoint}/${reference}`)
-
-  return res
+const getPersonByReference = async (reference, user) => {
+  return get(`${personEndpoint}/${reference}`, user)
 }
 
 module.exports = {

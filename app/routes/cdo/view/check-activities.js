@@ -14,7 +14,7 @@ const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
     return await getCdo(pk, user)
   } else if (source === activitySources.owner) {
-    return await getPersonByReference(pk)
+    return await getPersonByReference(pk, user)
   }
 
   return null
