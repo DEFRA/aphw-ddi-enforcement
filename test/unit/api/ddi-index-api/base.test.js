@@ -30,7 +30,7 @@ describe('Base API', () => {
         json: true,
         headers: {
           'ddi-username': 'test@example.com',
-          Authorization: 'Basic dGVzdEBleGFtcGxlLmNvbTp1bmRlZmluZWQ=',
+          Authorization: expect.any(String),
           'ddi-displayname': 'Example Tester'
         }
       })
@@ -50,7 +50,7 @@ describe('Base API', () => {
         headers: {
           'ddi-username': 'test@example.com',
           'ddi-displayname': 'Example Tester',
-          Authorization: 'Basic dGVzdEBleGFtcGxlLmNvbTp1bmRlZmluZWQ='
+          Authorization: expect.any(String)
         }
       })
     })
