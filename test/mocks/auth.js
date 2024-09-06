@@ -1,21 +1,27 @@
-const { admin, standard } = require('../../app/auth/permissions')
+const { enforcement } = require('../../app/auth/permissions')
 const { generateKeyPairSync } = require('crypto')
 
 const user = {
   userId: '1',
-  username: 'test@example.com'
+  username: 'test@example.com',
+  accessToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t',
+  scopes: [enforcement]
 }
 
 const userForAuth = {
   username: 'test@example.com',
   name: 'Example Tester',
-  homeAccountId: '1'
+  homeAccountId: '1',
+  accessToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t',
+  scopes: [enforcement]
 }
 
 const userWithDisplayname = {
   userId: '1',
   username: 'test@example.com',
-  displayname: 'Example Tester'
+  displayname: 'Example Tester',
+  accessToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t',
+  scopes: [enforcement]
 }
 
 const userFullAuth = {
@@ -23,13 +29,14 @@ const userFullAuth = {
   displayname: 'test@example.com',
   username: 'test@example.com',
   idToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t',
-  accessToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t'
+  accessToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t',
+  scopes: [enforcement]
 
 }
 
-const auth = { strategy: 'session-auth', credentials: { scope: [admin], account: userForAuth } }
+const auth = { strategy: 'session-auth', credentials: { scope: [enforcement], account: userForAuth } }
 
-const standardAuth = { strategy: 'session-auth', credentials: { scope: [standard], account: userForAuth } }
+const standardAuth = { strategy: 'session-auth', credentials: { scope: [enforcement], account: userForAuth } }
 
 const adminAuth = auth
 
