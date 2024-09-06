@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const { getEnvironmentVariable } = require('../lib/environment-helpers')
 
 // Define config schema
 const schema = Joi.object({
@@ -16,6 +17,7 @@ const schema = Joi.object({
     password: Joi.string().required(),
     ttl: Joi.number().default(61 * 60 * 1000)
   }),
+  privateKey: Joi.string().allow(''),
   redirectUrl: Joi.string().default('http://localhost:3003/authenticate')
 })
 
@@ -34,6 +36,7 @@ const config = {
     password: process.env.COOKIE_PASSWORD,
     ttl: process.env.COOKIE_TTL
   },
+  privateKey: getEnvironmentVariable('JWT_PRIVATE_KEY'),
   redirectUrl: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : 'http://localhost:3003/authenticate'
 }
 
