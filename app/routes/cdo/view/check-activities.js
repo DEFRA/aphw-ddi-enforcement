@@ -20,9 +20,9 @@ const getSourceEntity = async (pk, source, user) => {
   return null
 }
 
-const getEventPkList = async (pk, source, _user) => {
+const getEventPkList = async (pk, source, user) => {
   if (source === activitySources.dog) {
-    const { personReference } = await getDogOwner(pk)
+    const { personReference } = await getDogOwner(pk, user)
     return [pk, personReference]
   }
   return [pk]
