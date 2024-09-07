@@ -10,7 +10,6 @@ module.exports = {
   options: {
     auth: { scope: anyLoggedInUser },
     handler: async (request, h) => {
-      // await doRoundTrip(getUser(request))
       await validateUser(getUser(request))
       return h.view('index')
     }
