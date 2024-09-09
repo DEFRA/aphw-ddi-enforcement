@@ -11,7 +11,7 @@ const user = {
 const userForAuth = {
   username: 'test@example.com',
   name: 'Example Tester',
-  homeAccountId: '1',
+  userId: '1',
   accessToken: 'dGVzdEBleGFtcGxlLmNvbTp0ZXN0QGV4YW1wbGUuY29t',
   scopes: [enforcement]
 }
@@ -33,12 +33,9 @@ const userFullAuth = {
   scopes: [enforcement]
 
 }
-
 const auth = { strategy: 'session-auth', credentials: { scope: [enforcement], account: userForAuth } }
 
 const standardAuth = { strategy: 'session-auth', credentials: { scope: [enforcement], account: userForAuth } }
-
-const adminAuth = auth
 
 const generateKeyStubs = () => {
   const { privateKey: privateKeyObj, publicKey: publicKeyObj } = generateKeyPairSync('rsa', {
@@ -63,7 +60,6 @@ const keyStubs = generateKeyStubs()
 
 module.exports = {
   auth,
-  adminAuth,
   standardAuth,
   userWithDisplayname,
   user,

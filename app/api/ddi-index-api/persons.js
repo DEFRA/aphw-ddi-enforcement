@@ -3,10 +3,6 @@ const { personsFilter } = require('../../schema/ddi-index-api/persons/get')
 
 const personsEndpoint = 'persons'
 
-const options = {
-  json: true
-}
-
 /**
  * @typedef GetPersonsFilterOptions
  * @property {string} [firstName]

@@ -3,9 +3,6 @@ const { get } = require('./base')
 const insuranceEndpoint = 'insurance'
 const insuranceCompaniesEndpoint = `${insuranceEndpoint}/companies`
 
-const options = {
-  json: true
-}
 /**
  * @typedef {{ id: number; name: string }} InsuranceCompany
  */

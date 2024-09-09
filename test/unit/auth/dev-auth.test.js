@@ -31,29 +31,9 @@ describe('dev authentication', () => {
     expect(mockCookieAuth.set.mock.calls[0][0].account).toBe(devAccount)
   })
 
-  test('refresh should call cookieAuth.set once', async () => {
-    await devAuth.refresh(devAccount, mockCookieAuth)
-    expect(mockCookieAuth.set).toHaveBeenCalledTimes(1)
-  })
-
-  test('refresh should set scopes in cookieAuth', async () => {
-    await devAuth.refresh(devAccount, mockCookieAuth)
-    expect(mockCookieAuth.set.mock.calls[0][0].scope).toStrictEqual([admin])
-  })
-
-  test('refresh should set account in cookieAuth', async () => {
-    await devAuth.refresh(devAccount, mockCookieAuth)
-    expect(mockCookieAuth.set.mock.calls[0][0].account).toBe(devAccount)
-  })
-
-  test('refresh should return roles', async () => {
-    const result = await devAuth.refresh(devAccount, mockCookieAuth)
-    expect(result).toStrictEqual([admin])
-  })
-
-  test('logout should update homeAccountId', async () => {
-    const originalHomeAccountId = devAccount.homeAccountId
+  test('logout should update userId', async () => {
+    const originalUserId = devAccount.userId
     await devAuth.logout(devAccount)
-    expect(devAccount.homeAccountId).not.toBe(originalHomeAccountId)
+    expect(devAccount.userId).not.toBe(originalUserId)
   })
 })

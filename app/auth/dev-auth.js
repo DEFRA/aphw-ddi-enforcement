@@ -2,6 +2,8 @@ const { admin } = require('./permissions')
 const { v4: uuidv4 } = require('uuid')
 const devAccount = require('./dev-account')
 
+const authType = 'dev'
+
 const getAuthenticationUrl = () => {
   return '/dev-auth'
 }
@@ -15,22 +17,15 @@ const authenticate = async (redirectCode, cookieAuth) => {
   })
 }
 
-const refresh = async (account, cookieAuth, forceRefresh = true) => {
-  cookieAuth.set({
-    scope: [currentRole],
-    account: devAccount
-  })
-
-  return [currentRole]
-}
-
 const logout = async (account) => {
-  devAccount.homeAccountId = uuidv4()
+  devAccount.userId = uuidv4()
+  devAccount.username = null
+  devAccount.displayname = null
 }
 
 module.exports = {
+  authType,
   getAuthenticationUrl,
   authenticate,
-  refresh,
   logout
 }

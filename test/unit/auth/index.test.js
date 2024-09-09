@@ -14,10 +14,10 @@ describe('azure authentication', () => {
   test('getAuthenticationUrl should call getAuthCodeUrl once', () => {
     process.env.AUTHENTICATION_ENABLED = 'true'
 
-    jest.mock('../../../app/auth/azure-auth', () => ({
+    jest.mock('../../../app/auth/openid-auth', () => ({
       getAuthenticationUrl: jest.fn()
     }))
-    const { getAuthenticationUrl } = require('../../../app/auth/oidc-auth')
+    const { getAuthenticationUrl } = require('../../../app/auth/openid-auth')
 
     jest.mock('../../../app/auth/map-auth')
     jest.mock('../../../app/auth/get-user')

@@ -11,6 +11,9 @@ const ISSUER = 'https://identity.integration.account.gov.uk/'
 const STATE_COOKIE_NAME = 'state'
 const NONCE_COOKIE_NAME = 'nonce'
 
+// Vector of trust for authentication
+const VECTOR_OF_TRUST = '[\'Cl.Cm\']'
+
 let ivPublicKey
 let client
 const configuration = config.authConfig.oidc
@@ -76,7 +79,7 @@ const getResult = async (ivPublicKey, client, tokenSet) => {
   }
 }
 
-const buildAuthorizationUrl = (req, h, client, vtr, claims = undefined, additionalParameters = undefined) => {
+const getAuthorizationUrl = (req, h, client, vtr, claims = undefined, additionalParameters = undefined) => {
   const redirectUri = configuration.authorizeRedirectUri ||
     configuration.redirectUri ||
     getRedirectUri(req)
@@ -114,7 +117,6 @@ const buildAuthorizationUrl = (req, h, client, vtr, claims = undefined, addition
 }
 
 const authInit = async (configuration) => {
-  console.log('authInit')
   // Load private key is required for signing token exchange
   const jwks = [readPrivateKey(configuration.privateKey).export({
     format: 'jwk'
@@ -146,15 +148,16 @@ const getAuth = async () => {
   return {
     ivPublicKey,
     client,
-    configuration
+    configuration,
+    getAuthorizationUrl
   }
 }
 
 module.exports = {
   getAuth,
-  buildAuthorizationUrl,
   getRedirectUri,
   STATE_COOKIE_NAME,
   NONCE_COOKIE_NAME,
+  VECTOR_OF_TRUST,
   getResult
 }

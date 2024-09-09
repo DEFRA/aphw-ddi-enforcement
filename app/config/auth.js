@@ -25,9 +25,9 @@ const schema = Joi.object({
 const config = {
   enabled: process.env.AUTHENTICATION_ENABLED,
   oidc: {
-    privateKey: process.env.PRIVATE_KEY,
-    identityVerificationPublicKey: process.env.PUBLIC_KEY,
-    clientId: process.env.CLIENT_ID,
+    privateKey: process.env.OPENID_PRIVATE_KEY,
+    identityVerificationPublicKey: process.env.OPENID_PUBLIC_KEY,
+    clientId: process.env.OPENID_CLIENT_ID,
     // redirectUri: 'http://localhost:3003/authenticate',
     discoveryEndpoint: 'https://oidc.integration.account.gov.uk/.well-known/openid-configuration',
     postLogoutUri: 'http://localhost:3003/post-logout'

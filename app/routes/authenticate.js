@@ -4,6 +4,15 @@ const { getFromSession } = require('../session/session-wrapper')
 const { validateUser } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 
+const determineRedirectUrl = returnUrl => {
+  return returnUrl &&
+    returnUrl !== '' &&
+    !returnUrl.endsWith('/post-logout') &&
+    !returnUrl.endsWith('/unauthorised')
+    ? returnUrl
+    : '/'
+}
+
 module.exports = {
   method: 'GET',
   path: '/authenticate',
@@ -42,7 +51,6 @@ module.exports = {
 
       // Call the userinfo endpoint the retreive the results of the flow.
       const authResult = await getResult(auth.ivPublicKey, auth.client, tokenSet)
-      console.log('authResult', authResult)
 
       const userinfo = JSON.parse(authResult.userinfo)
       const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
@@ -78,7 +86,7 @@ module.exports = {
       })
 
       const returnUrl = getFromSession(request, 'returnUrl')
-      return h.redirect(returnUrl && returnUrl !== '' && !returnUrl.endsWith('/post-logout') ? returnUrl : '/')
+      return h.redirect(determineRedirectUrl(returnUrl))
     } catch (err) {
       console.error('Error authenticating:', err)
     }
