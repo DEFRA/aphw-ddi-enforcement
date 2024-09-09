@@ -1,5 +1,5 @@
 const config = require('../../../app/config')
-const { readPublicKey, readPrivateKey, hash, createIssuer } = require('../../../app/auth/openid-helper')
+const { readPublicKey, readPrivateKey, hash } = require('../../../app/auth/openid-helper')
 
 describe('Openid helper', () => {
   test('readPublicKey should read key', () => {
