@@ -32,6 +32,7 @@ container:
   openidClientId: client-id
   openidPrivateKey: private-key
   openidPublicKey: public-key
+  jwtPrivateKey: jwt-private-key
 
 livenessProbe:
   path: /healthz
