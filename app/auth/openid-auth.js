@@ -104,7 +104,6 @@ const getAuthorizationUrl = (req, h, client, vtr, claims = undefined, additional
   }
 
   if (typeof claims === 'object') {
-    console.log('claims', claims)
     authorizationParameters.claims = JSON.stringify(claims)
   }
 

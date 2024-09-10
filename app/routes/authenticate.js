@@ -23,7 +23,6 @@ module.exports = {
   },
   handler: async (request, h) => {
     try {
-      console.log('auth type', auth.authType)
       if (auth.authType === 'dev') {
         await auth.authenticate(request.query.code, request.cookieAuth)
         return h.redirect('/')
@@ -64,14 +63,12 @@ module.exports = {
       const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
 
       try {
-        console.log('validating user 123')
         await validateUser({
           username: userinfo.email,
           displayname: userinfo.email,
           accessToken
         })
       } catch (_e) {
-        console.log('thrown 123')
         const protocol = request.headers['x-forwarded-proto'] || request.server.info.protocol
         const host = request.headers.host
         const returnUrl = `${protocol}://${host}/unauthorised`
