@@ -39,16 +39,14 @@ const createIssuer = async (configuration) => {
 
 const createClient = (configuration, issuer, jwks) => {
   // Override client metadata if defined in configuration
-  const clientMetadata = Object.assign(
-    {
-      // Default configuration for using GOV.UK Sign In
-      client_id: configuration.clientId,
-      token_endpoint_auth_method: 'private_key_jwt',
-      token_endpoint_auth_signing_alg: 'PS256',
-      id_token_signed_response_alg: 'ES256'
-    },
-    configuration.clientMetadata
-  )
+  const clientMetadata = {
+    // Default configuration for using GOV.UK Sign In
+    client_id: configuration.clientId,
+    token_endpoint_auth_method: 'private_key_jwt',
+    token_endpoint_auth_signing_alg: 'PS256',
+    id_token_signed_response_alg: 'ES256',
+    ...configuration.clientMetadata
+  }
 
   const client = new issuer.Client(clientMetadata, {
     keys: jwks

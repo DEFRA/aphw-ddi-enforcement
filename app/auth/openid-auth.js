@@ -52,7 +52,7 @@ const getResult = async (ivPublicKeyLocal, clientLocal, tokenSet) => {
   // was not able to prove your user’s identity or the claim
   // wasn't requested.
   let coreIdentity
-  if (Object.prototype.hasOwnProperty.call(userinfo, Claims.CoreIdentity)) {
+  if (Object.hasOwn(userinfo, Claims.CoreIdentity)) {
     // Read the resulting core identity claim
     // See: https://auth-tech-docs.london.cloudapps.digital/integrate-with-integration-environment/process-identity-information/#process-your-user-s-identity-information
     const coreIdentityJWT = userinfo[Claims.CoreIdentity]

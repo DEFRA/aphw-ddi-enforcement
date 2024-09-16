@@ -12,9 +12,9 @@ const { getUser } = require('../../../auth')
 
 const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
-    return await getCdo(pk, user)
+    return getCdo(pk, user)
   } else if (source === activitySources.owner) {
-    return await getPersonByReference(pk, user)
+    return getPersonByReference(pk, user)
   }
 
   return null
