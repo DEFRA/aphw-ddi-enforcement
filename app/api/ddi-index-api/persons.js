@@ -35,22 +35,6 @@ const getPersons = async (filter, user) => {
   return payload.persons
 }
 
-/**
- * @param user
- * @param filter
- * @return {Promise<import('./person.js').Person[]>}
- */
-const getOrphanedOwners = async (user, filter = {}) => {
-  return getPersons({
-    limit: -1,
-    sortKey: 'owner',
-    sortOrder: 'ASC',
-    ...filter,
-    orphaned: true
-  }, user)
-}
-
 module.exports = {
-  getPersons,
-  getOrphanedOwners
+  getPersons
 }

@@ -1,7 +1,7 @@
 const { user } = require('../../../mocks/auth')
 
 describe('Persons test', () => {
-  const { getPersons, getOrphanedOwners } = require('../../../../app/api/ddi-index-api/persons')
+  const { getPersons } = require('../../../../app/api/ddi-index-api/persons')
   jest.mock('../../../../app/api/ddi-index-api/base')
   const { get } = require('../../../../app/api/ddi-index-api/base')
 
@@ -70,37 +70,6 @@ describe('Persons test', () => {
         queryParam: '1234'
       }, user))
       expect(get).toBeCalledWith('persons?firstName=Homer&lastName=Simpson', user)
-    })
-  })
-
-  describe('getOrphanedOwners', () => {
-    test('should get people filtered by orphaned = true', async () => {
-      get.mockResolvedValue({
-        payload: {
-          persons: [
-            {
-              firstName: 'Abby',
-              lastName: 'Breitenberg',
-              birthDate: '1998-05-10',
-              personReference: 'P-418F-024E',
-              address: {
-                addressLine1: '218 White Knoll',
-                addressLine2: 'Anywhere Estate',
-                town: 'Lake Keatonmouth',
-                postcode: 'S1 1AA',
-                country: 'England'
-              },
-              contacts: {
-                emails: [],
-                primaryTelephones: [],
-                secondaryTelephones: []
-              }
-            }
-          ]
-        }
-      })
-      await getOrphanedOwners(user)
-      expect(get).toBeCalledWith('persons?limit=-1&sortKey=owner&sortOrder=ASC&orphaned=true', user)
     })
   })
 })
