@@ -31,6 +31,7 @@ const createIssuer = async (configuration) => {
       issuer.metadata,
       configuration.issuerMetadata
     )
+
     return new Issuer(metadata)
   }
   return new Issuer(configuration.issuerMetadata)

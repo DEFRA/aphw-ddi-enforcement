@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken')
 const config = require('../config')
 const permissions = require('./permissions')
 
-const generateToken = (payload, { audience, issuer }) => {
-  const privateKey = Buffer.from(config.authConfig.privateKey, 'base64').toString()
+const createToken = (privateKeyBase64) => (payload, { audience, issuer }) => {
+  const privateKey = Buffer.from(privateKeyBase64, 'base64').toString()
 
   const options = {
     expiresIn: '1h',
@@ -15,6 +15,8 @@ const generateToken = (payload, { audience, issuer }) => {
 
   return jwt.sign(payload, privateKey, options)
 }
+
+const generateToken = createToken(config.authConfig.privateKey)
 
 const createJwtToken = (audience) => (username, displayname, scopes, token) => {
   const options = {
@@ -44,6 +46,7 @@ const createBearerHeader = (audience) => (user) => {
 }
 
 module.exports = {
+  createToken,
   generateToken,
   createJwtToken,
   createBearerHeader

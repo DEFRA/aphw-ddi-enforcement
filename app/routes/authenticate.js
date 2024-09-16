@@ -56,6 +56,10 @@ module.exports = {
         nonce: hash(nonce)
       })
 
+      console.log('~~~~~~ Chris Debug ~~~~~~ ', 'AuthProvider.ivPublicKey', authProvider.ivPublicKey)
+      console.log('~~~~~~ Chris Debug ~~~~~~ ', 'AuthProvider.client', authProvider.client)
+      console.log('~~~~~~ Chris Debug ~~~~~~ ', 'TokenSet', tokenSet)
+
       // Call the userinfo endpoint the retreive the results of the flow.
       const authResult = await getResult(authProvider.ivPublicKey, authProvider.client, tokenSet)
 

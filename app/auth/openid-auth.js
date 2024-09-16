@@ -32,6 +32,7 @@ const getResult = async (ivPublicKey, client, tokenSet) => {
   const accessToken = JSON.stringify(tokenSet.access_token, null, 2)
 
   const idToken = tokenSet.id_token
+
   const idTokenDecoded = tokenSet.id_token
     ? JSON.stringify(decodeJwt(tokenSet.id_token), null, 2)
     : undefined
@@ -117,9 +118,11 @@ const getAuthorizationUrl = (req, h, client, vtr, claims = undefined, additional
 
 const authInit = async (configuration) => {
   // Load private key is required for signing token exchange
-  const jwks = [readPrivateKey(configuration.privateKey).export({
-    format: 'jwk'
-  })]
+  const jwks = [{
+    ...readPrivateKey(configuration.privateKey).export({
+      format: 'jwk'
+    })
+  }]
 
   // Load the public key required to verify the core identity claim
   const ivPublicKey = readPublicKey(
@@ -139,7 +142,7 @@ const authInit = async (configuration) => {
 }
 
 const getAuth = async () => {
-  if (!ivPublicKey || !client) {
+  if (!ivPublicKey) {
     const res = await authInit(configuration)
     ivPublicKey = res.ivPublicKey
     client = res.client
