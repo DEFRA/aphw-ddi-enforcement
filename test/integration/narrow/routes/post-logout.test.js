@@ -7,7 +7,7 @@ describe('Logout test', () => {
     await server.initialize()
   })
 
-  test('GET /post-logout route returns 302', async () => {
+  test('GET /post-logout route returns 200', async () => {
     const options = {
       method: 'GET',
       url: '/post-logout'
