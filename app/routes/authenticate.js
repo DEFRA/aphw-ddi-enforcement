@@ -56,10 +56,6 @@ module.exports = {
         nonce: hash(nonce)
       })
 
-      console.log('~~~~~~ Chris Debug ~~~~~~ ', 'AuthProvider.ivPublicKey', authProvider.ivPublicKey)
-      console.log('~~~~~~ Chris Debug ~~~~~~ ', 'AuthProvider.client', authProvider.client)
-      console.log('~~~~~~ Chris Debug ~~~~~~ ', 'TokenSet', tokenSet)
-
       // Call the userinfo endpoint the retreive the results of the flow.
       const authResult = await getResult(authProvider.ivPublicKey, authProvider.client, tokenSet)
 
@@ -75,9 +71,9 @@ module.exports = {
       } catch (_e) {
         const protocol = request.headers['x-forwarded-proto'] || request.server.info.protocol
         const host = request.headers.host
-        const returnUrl = `${protocol}://${host}/unauthorised`
+        const unauthorisedReturnUrl = `${protocol}://${host}/unauthorised`
 
-        const result = await logoutUser(authResult.idToken, returnUrl)
+        const result = await logoutUser(authResult.idToken, unauthorisedReturnUrl)
 
         h.unstate('nonce')
         h.unstate('state')

@@ -1,6 +1,10 @@
 const Joi = require('joi')
 const { getEnvironmentVariable } = require('../lib/environment-helpers')
 
+const SECOND = 1000
+const MINUTE = 60 * SECOND
+const HOUR = 60 * MINUTE
+
 // Define config schema
 const schema = Joi.object({
   enabled: Joi.boolean().default(false),
@@ -11,11 +15,10 @@ const schema = Joi.object({
     redirectUri: Joi.string().allow(''),
     postLogoutUri: Joi.string().allow(''),
     discoveryEndpoint: Joi.string().allow('')
-
   }),
   cookie: Joi.object({
     password: Joi.string().required(),
-    ttl: Joi.number().default(61 * 60 * 1000)
+    ttl: Joi.number().default(HOUR + MINUTE)
   }),
   privateKey: Joi.string().allow(''),
   redirectUrl: Joi.string().default('http://localhost:3003/authenticate')

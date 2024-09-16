@@ -24,7 +24,7 @@ const getRedirectUri = req => {
   return `${protocol}://${host}/authenticate`
 }
 
-const getResult = async (ivPublicKey, client, tokenSet) => {
+const getResult = async (ivPublicKeyLocal, client, tokenSet) => {
   if (!tokenSet.access_token) {
     throw new Error('No access token received')
   }
@@ -58,7 +58,7 @@ const getResult = async (ivPublicKey, client, tokenSet) => {
     const coreIdentityJWT = userinfo[Claims.CoreIdentity]
 
     // Check the validity of the claim using the public key
-    const { payload } = await jwtVerify(coreIdentityJWT, ivPublicKey, {
+    const { payload } = await jwtVerify(coreIdentityJWT, ivPublicKeyLocal, {
       issuer: ISSUER
     })
 
@@ -80,7 +80,7 @@ const getResult = async (ivPublicKey, client, tokenSet) => {
   }
 }
 
-const getAuthorizationUrl = (req, h, client, vtr, claims = undefined, additionalParameters = undefined) => {
+const getAuthorizationUrl = (req, h, clientLocal, vtr, claims = undefined, additionalParameters = undefined) => {
   const redirectUri = configuration.authorizeRedirectUri ||
     configuration.redirectUri ||
     getRedirectUri(req)
@@ -113,31 +113,31 @@ const getAuthorizationUrl = (req, h, client, vtr, claims = undefined, additional
   }
 
   // Construct the url and redirect on to the authorization endpoint
-  return client.authorizationUrl(authorizationParameters)
+  return clientLocal.authorizationUrl(authorizationParameters)
 }
 
-const authInit = async (configuration) => {
+const authInit = async (configurationObj) => {
   // Load private key is required for signing token exchange
   const jwks = [{
-    ...readPrivateKey(configuration.privateKey).export({
+    ...readPrivateKey(configurationObj.privateKey).export({
       format: 'jwk'
     })
   }]
 
   // Load the public key required to verify the core identity claim
-  const ivPublicKey = readPublicKey(
-    configuration.identityVerificationPublicKey
+  const ivPublicKeyLocal = readPublicKey(
+    configurationObj.identityVerificationPublicKey
   )
 
   // Configuration for the authority that authenticates users and issues the tokens.
-  const issuer = await createIssuer(configuration)
+  const issuer = await createIssuer(configurationObj)
 
-  // The client that requests the tokens.
-  const client = createClient(configuration, issuer, jwks)
+  // The clientLocal that requests the tokens.
+  const clientLocal = createClient(configurationObj, issuer, jwks)
 
   return {
-    ivPublicKey,
-    client
+    ivPublicKey: ivPublicKeyLocal,
+    client: clientLocal
   }
 }
 
