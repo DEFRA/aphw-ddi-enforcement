@@ -24,7 +24,7 @@ const getRedirectUri = req => {
   return `${protocol}://${host}/authenticate`
 }
 
-const getResult = async (ivPublicKeyLocal, client, tokenSet) => {
+const getResult = async (ivPublicKeyLocal, clientLocal, tokenSet) => {
   if (!tokenSet.access_token) {
     throw new Error('No access token received')
   }
@@ -44,7 +44,7 @@ const getResult = async (ivPublicKeyLocal, client, tokenSet) => {
   // Use the access token to authenticate the call to userinfo
   // Note: This is an HTTP GET to https://oidc.integration.account.gov.uk/userinfo
   // with the 'Authorization: Bearer ${accessToken}` header
-  const userinfo = await client.userinfo(
+  const userinfo = await clientLocal.userinfo(
     tokenSet.access_token
   )
 
