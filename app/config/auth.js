@@ -18,7 +18,7 @@ const schema = Joi.object({
   }),
   cookie: Joi.object({
     password: Joi.string().required(),
-    ttl: Joi.number().default(HOUR + MINUTE)
+    ttl: Joi.number().default(HOUR * MINUTE)
   }),
   privateKey: Joi.string().allow(''),
   redirectUrl: Joi.string().default('http://localhost:3003/authenticate')

@@ -49,9 +49,14 @@ openssl rsa -pubout -in private_key.pem -out public_key.pem
 You will then need to base64 encode the private and public keys to use in env variables:
 
 ```shell
-# copy each of the keys then in OSX:
-pbpaste | base64 | pbcopy
-# add to 
+# in OSX:
+# encode the private key
+cat private_key.pem | base64 | pbcopy
+# pbcopy puts the result in the copy/paste buffer, so now paste into the appropriate env variable
+
+# encode the public key
+cat public_key.pem | base64 | pbcopy
+# pbcopy puts the result in the copy/paste buffer, so now paste into the appropriate env variable
 ```
 
 ### Start 
