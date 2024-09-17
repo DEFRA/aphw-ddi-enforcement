@@ -4,6 +4,7 @@ const { getEnvironmentVariable, getEnvironmentVariableOrString } = require('../l
 const SECOND = 1000
 const MINUTE = 60 * SECOND
 const HOUR = 60 * MINUTE
+const DEV_AUTHENTICATE_URL = 'http://localhost:3003/authenticate'
 
 // Define config schema
 const schema = Joi.object({
@@ -21,7 +22,7 @@ const schema = Joi.object({
     ttl: Joi.number().default(HOUR + MINUTE)
   }),
   privateKey: Joi.string().allow(''),
-  redirectUrl: Joi.string().default('http://localhost:3003/authenticate')
+  redirectUrl: Joi.string().default(DEV_AUTHENTICATE_URL)
 })
 
 // Build config
@@ -31,7 +32,7 @@ const config = {
     privateKey: process.env.OPENID_PRIVATE_KEY,
     identityVerificationPublicKey: process.env.OPENID_PUBLIC_KEY,
     clientId: process.env.OPENID_CLIENT_ID,
-    redirectUri: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : 'http://localhost:3003/authenticate',
+    redirectUri: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : DEV_AUTHENTICATE_URL,
     discoveryEndpoint: 'https://oidc.integration.account.gov.uk/.well-known/openid-configuration',
     postLogoutUri: getEnvironmentVariableOrString('POST_LOGOUT_URL').length > 0 ? getEnvironmentVariableOrString('POST_LOGOUT_URL') : 'http://localhost:3003/post-logout'
   },
@@ -40,7 +41,7 @@ const config = {
     ttl: process.env.COOKIE_TTL
   },
   privateKey: getEnvironmentVariable('JWT_PRIVATE_KEY'),
-  redirectUrl: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : 'http://localhost:3003/authenticate'
+  redirectUrl: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : DEV_AUTHENTICATE_URL
 }
 
 // Validate config
