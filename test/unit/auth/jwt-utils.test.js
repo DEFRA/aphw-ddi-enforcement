@@ -3,7 +3,7 @@ const { keyStubs } = require('../../mocks/auth')
 
 describe('jwt-utils', () => {
   jest.mock('../../../app/lib/environment-helpers')
-  const { getEnvironmentVariable } = require('../../../app/lib/environment-helpers')
+  const { getEnvironmentVariable, getEnvironmentVariableOrString } = require('../../../app/lib/environment-helpers')
   getEnvironmentVariable.mockImplementation((envVar) => {
     if (envVar === 'JWT_PRIVATE_KEY') {
       return keyStubs.privateKeyHash
@@ -15,6 +15,7 @@ describe('jwt-utils', () => {
 
     return process.env[envVar]
   })
+  getEnvironmentVariableOrString.mockReturnValue('')
 
   const { generateToken, createJwtToken, createBearerHeader } = require('../../../app/auth/jwt-utils')
 

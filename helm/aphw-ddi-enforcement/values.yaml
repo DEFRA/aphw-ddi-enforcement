@@ -33,6 +33,7 @@ container:
   openidPrivateKey: private-key
   openidPublicKey: public-key
   jwtPrivateKey: jwt-private-key
+  postLogoutRoute: post-logout
 
 livenessProbe:
   path: /healthz

@@ -13,6 +13,7 @@ describe('auth config', () => {
   test('should fail validation if invalid', () => {
     process.env.REDIRECT_URL = 'https://redirect.com'
     process.env.AUTHENTICATION_ENABLED = 'invalid'
+    process.env.POST_LOGOUT_URL = 'https://example.com/post-logout'
     expect(() => require('../../../app/config/index')).toThrow('The auth config is invalid. "enabled" must be a boolean')
   })
 })

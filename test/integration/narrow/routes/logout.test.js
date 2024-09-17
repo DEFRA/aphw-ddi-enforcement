@@ -1,4 +1,5 @@
 const { auth, userWithDisplayname } = require('../../../mocks/auth')
+const environmentStubs = require('../../../../app/lib/environment-helpers')
 
 describe('Logout test', () => {
   const createServer = require('../../../../app/server')
@@ -32,7 +33,31 @@ describe('Logout test', () => {
     await server.initialize()
   })
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   test('GET /logout route returns 302', async () => {
+    mockAuth.logout.mockResolvedValue(true)
+
+    const options = {
+      method: 'GET',
+      url: '/logout',
+      auth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(userLogout).toHaveBeenCalled()
+  })
+
+  test('GET /logout route returns 302 given POST_LOGOUT_URL set', async () => {
+    jest.spyOn(environmentStubs, 'getEnvironmentVariableOrString').mockImplementation(envVar => {
+      if (envVar === 'POST_LOGOUT_URL') {
+        return 'https://example.com/post-logout'
+      }
+      return process.env[envVar] ?? ''
+    })
     mockAuth.logout.mockResolvedValue(true)
 
     const options = {
