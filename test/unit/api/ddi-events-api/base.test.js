@@ -20,6 +20,6 @@ describe('Base API', () => {
 
   test('get should call GET with user', async () => {
     await get('endpoint1', user)
-    expect(wreck.get).toHaveBeenCalledWith('test-events/endpoint1', { json: true, headers: { 'ddi-username': 'test@example.com' } })
+    expect(wreck.get).toHaveBeenCalledWith('test-events/endpoint1', { json: true, headers: { 'ddi-username': 'test@example.com', Authorization: expect.any(String) } })
   })
 })

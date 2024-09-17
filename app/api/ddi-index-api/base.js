@@ -13,6 +13,15 @@ const get = async (endpoint, user) => {
   return payload
 }
 
+const callDelete = async (endpoint, user) => {
+  const options = user?.username ? { json: true, headers: addHeaders(user) } : { json: true }
+
+  const { payload } = await wreck.delete(`${baseUrl}/${endpoint}`, options)
+
+  return payload
+}
+
 module.exports = {
-  get
+  get,
+  callDelete
 }

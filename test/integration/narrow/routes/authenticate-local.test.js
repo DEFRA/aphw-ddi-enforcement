@@ -1,5 +1,5 @@
-const auth = require('../../../../app/auth')
 jest.mock('../../../../app/auth')
+const auth = require('../../../../app/auth')
 
 describe('Authenticate test', () => {
   const createServer = require('../../../../app/server')
@@ -15,7 +15,12 @@ describe('Authenticate test', () => {
 
     const options = {
       method: 'GET',
-      url: '/authenticate'
+      url: '/authenticate',
+      headers: {
+        'x-forwarded-proto': 'http',
+        host: 'localhost:3003',
+        Cookie: 'nonce=abcdede;state=fghijkl;'
+      }
     }
 
     const response = await server.inject(options)

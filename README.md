@@ -35,6 +35,30 @@ through the Docker Compose
 docker-compose build
 ```
 
+### Authentication
+
+You will need to create a private and public key and add to your environment variables.
+
+First create the private and public keys:
+
+```shell
+openssl genrsa -out private_key.pem 2048
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+```
+
+You will then need to base64 encode the private and public keys to use in env variables:
+
+```shell
+# in OSX:
+# encode the private key
+cat private_key.pem | base64 | pbcopy
+# pbcopy puts the result in the copy/paste buffer, so now paste into the appropriate env variable
+
+# encode the public key
+cat public_key.pem | base64 | pbcopy
+# pbcopy puts the result in the copy/paste buffer, so now paste into the appropriate env variable
+```
+
 ### Start 
 
 Use Docker Compose to run service locally.

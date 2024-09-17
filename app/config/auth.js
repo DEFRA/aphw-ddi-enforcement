@@ -1,33 +1,46 @@
 const Joi = require('joi')
+const { getEnvironmentVariable } = require('../lib/environment-helpers')
+
+const SECOND = 1000
+const MINUTE = 60 * SECOND
+const HOUR = 60 * MINUTE
 
 // Define config schema
 const schema = Joi.object({
   enabled: Joi.boolean().default(false),
-  azure: Joi.object({
-    clientSecret: Joi.string().allow(''),
+  oidc: Joi.object({
+    privateKey: Joi.string().allow(''),
+    identityVerificationPublicKey: Joi.string().allow(''),
     clientId: Joi.string().allow(''),
-    authority: Joi.string().allow('')
+    redirectUri: Joi.string().allow(''),
+    postLogoutUri: Joi.string().allow(''),
+    discoveryEndpoint: Joi.string().allow('')
   }),
   cookie: Joi.object({
     password: Joi.string().required(),
-    ttl: Joi.number().default(60 * 60 * 1000)
+    ttl: Joi.number().default(HOUR + MINUTE)
   }),
-  redirectUrl: Joi.string().default('http://localhost:3002/authenticate')
+  privateKey: Joi.string().allow(''),
+  redirectUrl: Joi.string().default('http://localhost:3003/authenticate')
 })
 
 // Build config
 const config = {
   enabled: process.env.AUTHENTICATION_ENABLED,
-  azure: {
-    clientSecret: process.env.AZUREID_CLIENT_SECRET,
-    clientId: process.env.AZUREID_CLIENT_ID,
-    authority: `https://login.microsoftonline.com/${process.env.AZUREID_TENANT_ID}`
+  oidc: {
+    privateKey: process.env.OPENID_PRIVATE_KEY,
+    identityVerificationPublicKey: process.env.OPENID_PUBLIC_KEY,
+    clientId: process.env.OPENID_CLIENT_ID,
+    // redirectUri: 'http://localhost:3003/authenticate',
+    discoveryEndpoint: 'https://oidc.integration.account.gov.uk/.well-known/openid-configuration',
+    postLogoutUri: 'http://localhost:3003/post-logout'
   },
   cookie: {
     password: process.env.COOKIE_PASSWORD,
     ttl: process.env.COOKIE_TTL
   },
-  redirectUrl: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : 'http://localhost:3002/authenticate'
+  privateKey: getEnvironmentVariable('JWT_PRIVATE_KEY'),
+  redirectUrl: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : 'http://localhost:3003/authenticate'
 }
 
 // Validate config

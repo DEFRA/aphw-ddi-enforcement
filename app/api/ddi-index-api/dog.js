@@ -2,17 +2,23 @@ const { get } = require('./base')
 
 const dogEndpoint = 'dog'
 
-const options = {
-  json: true
-}
-
-const getDogDetails = async (indexNumber) => {
-  const payload = await get(`${dogEndpoint}/${indexNumber}`, options)
+/**
+ * @param indexNumber
+ * @param user
+ * @return {Promise<string|CreatedDogEvent|*>}
+ */
+const getDogDetails = async (indexNumber, user) => {
+  const payload = await get(`${dogEndpoint}/${indexNumber}`, user)
   return payload.dog
 }
 
-const getDogOwner = async (indexNumber) => {
-  const payload = await get(`dog-owner/${indexNumber}`, options)
+/**
+ * @param indexNumber
+ * @param user
+ * @return {Promise<string|OwnerCreatedEvent|*>}
+ */
+const getDogOwner = async (indexNumber, user) => {
+  const payload = await get(`dog-owner/${indexNumber}`, user)
   return payload.owner
 }
 
@@ -56,10 +62,11 @@ const getDogOwner = async (indexNumber) => {
 
 /**
  * @param indexNumber
+ * @param user
  * @return {Promise<PersonAndDogsDto>}
  */
-const getDogOwnerWithDogs = async (indexNumber) => {
-  const payload = await get(`dog-owner/${indexNumber}?includeDogs=true`, options)
+const getDogOwnerWithDogs = async (indexNumber, user) => {
+  const payload = await get(`dog-owner/${indexNumber}?includeDogs=true`, user)
   return payload.owner
 }
 

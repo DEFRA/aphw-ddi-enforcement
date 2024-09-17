@@ -2,17 +2,13 @@ const { get } = require('./base')
 
 const policeForcesEndpoint = 'police-forces'
 
-const options = {
-  json: true
-}
-
 /**
  * @typedef PoliceForceRequest
  * @property {string} name
  */
 
-const getPoliceForces = async () => {
-  const payload = await get(policeForcesEndpoint, options)
+const getPoliceForces = async (user) => {
+  const payload = await get(policeForcesEndpoint, user)
 
   return payload.policeForces
 }

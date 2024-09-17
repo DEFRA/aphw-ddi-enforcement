@@ -2,6 +2,7 @@ jest.mock('../../../../app/api/ddi-index-api/base')
 const { get } = require('../../../../app/api/ddi-index-api/base')
 
 const { getBreachCategories } = require('../../../../app/api/ddi-index-api/dog-breaches')
+const { user } = require('../../../mocks/auth')
 
 describe('DDI API Dog Breeches', () => {
   beforeEach(() => {
@@ -49,10 +50,11 @@ describe('DDI API Dog Breeches', () => {
         breachCategories: mockBreachCategories
       })
 
-      const breachCategories = await getBreachCategories()
+      const breachCategories = await getBreachCategories(user)
       expect(breachCategories).toBeInstanceOf(Array)
       expect(breachCategories).toHaveLength(3)
       expect(breachCategories).toEqual(expectdBreachCategories)
+      expect(get).toHaveBeenCalledWith('breaches/categories', user)
     })
   })
 })

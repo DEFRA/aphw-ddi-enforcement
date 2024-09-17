@@ -13,3 +13,6 @@ services:
     volumes:
       - ./app:/home/node/app
       - ./package.json:/home/node/package.json
+    environment:
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+

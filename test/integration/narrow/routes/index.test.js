@@ -1,15 +1,19 @@
-const { adminAuth, standardAuth, user } = require('../../../mocks/auth')
+const { standardAuth, user } = require('../../../mocks/auth')
 const { JSDOM } = require('jsdom')
 
 describe('Index test', () => {
   jest.mock('../../../../app/auth')
   const mockAuth = require('../../../../app/auth')
 
+  jest.mock('../../../../app/api/ddi-index-api/user')
+  const { validateUser } = require('../../../../app/api/ddi-index-api/user')
+
   const createServer = require('../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
+    validateUser.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })
@@ -22,19 +26,6 @@ describe('Index test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-  })
-
-  test('GET / route returns 200', async () => {
-    const options = {
-      method: 'GET',
-      url: '/',
-      auth: adminAuth
-    }
-
-    const response = await server.inject(options)
-    expect(response.statusCode).toBe(200)
-    const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('.govuk-card--dashboard')[0].textContent.trim()).toContain('Search dog index')
   })
 
   test('GET / route returns 200 for standard users', async () => {

@@ -3,10 +3,6 @@ const { personsFilter } = require('../../schema/ddi-index-api/persons/get')
 
 const personsEndpoint = 'persons'
 
-const options = {
-  json: true
-}
-
 /**
  * @typedef GetPersonsFilterOptions
  * @property {string} [firstName]
@@ -22,9 +18,10 @@ const options = {
  */
 /**
  * @param {GetPersonsFilterOptions} filter
+ * @param user
  * @returns {Promise<import('./person.js').Person[]>}
  */
-const getPersons = async (filter) => {
+const getPersons = async (filter, user) => {
   const { value, error } = personsFilter.validate(filter, { abortEarly: false, dateFormat: 'utc', stripUnknown: true })
 
   if (error) {
@@ -33,22 +30,11 @@ const getPersons = async (filter) => {
 
   const searchParams = new URLSearchParams(Object.entries(value))
 
-  const payload = await get(`${personsEndpoint}?${searchParams.toString()}`, options)
+  const payload = await get(`${personsEndpoint}?${searchParams.toString()}`, user)
 
   return payload.persons
 }
 
-const getOrphanedOwners = async (filter = {}) => {
-  return getPersons({
-    limit: -1,
-    sortKey: 'owner',
-    sortOrder: 'ASC',
-    ...filter,
-    orphaned: true
-  })
-}
-
 module.exports = {
-  getPersons,
-  getOrphanedOwners
+  getPersons
 }

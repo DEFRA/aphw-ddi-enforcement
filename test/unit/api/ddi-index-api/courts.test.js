@@ -2,6 +2,7 @@ jest.mock('../../../../app/api/ddi-index-api/base')
 const { get } = require('../../../../app/api/ddi-index-api/base')
 
 const { getCourts } = require('../../../../app/api/ddi-index-api/courts')
+const { user } = require('../../../mocks/auth')
 
 describe('DDI API courts', () => {
   beforeEach(() => {
@@ -15,9 +16,9 @@ describe('DDI API courts', () => {
         courts
       })
 
-      const gotCourts = await getCourts()
+      const gotCourts = await getCourts(user)
       expect(gotCourts).toEqual(courts)
-      expect(get).toHaveBeenCalledWith('courts', { json: true })
+      expect(get).toHaveBeenCalledWith('courts', user)
     })
   })
 })

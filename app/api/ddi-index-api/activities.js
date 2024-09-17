@@ -4,23 +4,23 @@ const { keys, sources } = require('../../constants/cdo/activity')
 const activitiesEndpoint = 'activities'
 const activityEndpoint = 'activity'
 
-const getActivities = async (activityType, activitySource) => {
-  const payload = await get(`${activitiesEndpoint}/${activityType}/${activitySource}`)
+const getActivities = async (activityType, activitySource, user) => {
+  const payload = await get(`${activitiesEndpoint}/${activityType}/${activitySource}`, user)
 
   return payload.activities
 }
 
-const getAllActivities = async () => {
+const getAllActivities = async (user) => {
   return {
-    dogSent: await getActivities(keys.sent, sources.dog),
-    dogReceived: await getActivities(keys.received, sources.dog),
-    ownerSent: await getActivities(keys.sent, sources.owner),
-    ownerReceived: await getActivities(keys.received, sources.owner)
+    dogSent: await getActivities(keys.sent, sources.dog, user),
+    dogReceived: await getActivities(keys.received, sources.dog, user),
+    ownerSent: await getActivities(keys.sent, sources.owner, user),
+    ownerReceived: await getActivities(keys.received, sources.owner, user)
   }
 }
 
-const getActivityById = async (activityId) => {
-  const payload = await get(`${activityEndpoint}/${activityId}`)
+const getActivityById = async (activityId, user) => {
+  const payload = await get(`${activityEndpoint}/${activityId}`, user)
 
   return payload.activity
 }

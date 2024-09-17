@@ -1,6 +1,6 @@
 const getUser = require('../../../app/auth/get-user')
-const MOCK_HOME_ACCOUNT_ID = 'mock-home-account-id'
-const MOCK_NAME = 'mock-name'
+const MOCK_USER_ID = 'mock-user-id'
+const MOCK_DISPLAY_NAME = 'mock-display-name'
 const MOCK_USERNAME = 'mock-username'
 let request
 
@@ -10,8 +10,8 @@ describe('is in role', () => {
       auth: {
         credentials: {
           account: {
-            homeAccountId: MOCK_HOME_ACCOUNT_ID,
-            name: MOCK_NAME,
+            userId: MOCK_USER_ID,
+            displayname: MOCK_DISPLAY_NAME,
             username: MOCK_USERNAME
           }
         }
@@ -19,14 +19,14 @@ describe('is in role', () => {
     }
   })
 
-  test('should return homeAccountId as userId', () => {
+  test('should return userId', () => {
     const result = getUser(request)
-    expect(result.userId).toBe(MOCK_HOME_ACCOUNT_ID)
+    expect(result.userId).toBe(MOCK_USER_ID)
   })
 
-  test('should return account name as displayname', () => {
+  test('should return display name', () => {
     const result = getUser(request)
-    expect(result.displayname).toBe(MOCK_NAME)
+    expect(result.displayname).toBe(MOCK_DISPLAY_NAME)
   })
 
   test('should return account username as username', () => {

@@ -29,6 +29,10 @@ container:
   cookiePassword: who-likes-cookies-i-like-cookies-everybody-likes-cookies
   ddiApiBaseUrl: ddi-index-api-base-url
   ddiEventsBaseUrl: ddi-events-api-base-url
+  openidClientId: client-id
+  openidPrivateKey: private-key
+  openidPublicKey: public-key
+  jwtPrivateKey: jwt-private-key
 
 livenessProbe:
   path: /healthz
