@@ -5,13 +5,13 @@ data:
   PORT: {{ quote .Values.container.port }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   {{- if .Values.pr }}
-  REDIRECT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}/{{ .Values.azureAppRegistration.redirectUrl }}
-  POST_LOGOUT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}/{{ quote .Values.container.postLogoutRoute }}
+  REDIRECT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}/{{ .Values.container.redirectUrl }}
+  POST_LOGOUT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}/{{ .Values.container.postLogoutRoute }}
   {{ else }}
-  REDIRECT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}/{{ .Values.azureAppRegistration.redirectUrl }}
-  POST_LOGOUT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}/{{ quote .Values.container.postLogoutRoute }}
+  REDIRECT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}/{{ .Values.container.redirectUrl }}
+  POST_LOGOUT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}/{{ .Values.container.postLogoutRoute }}
   {{- end }}
-  AUTHENTICATION_ENABLED: {{ quote .Values.azureAppRegistration.enabled }}
+  AUTHENTICATION_ENABLED: "true"
   DDI_API_BASE_URL: {{ quote .Values.container.ddiApiBaseUrl }}
   DDI_EVENTS_BASE_URL: {{ quote .Values.container.ddiEventsBaseUrl }}
 {{- end -}}
