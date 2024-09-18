@@ -34,6 +34,7 @@ container:
   openidPublicKey: public-key
   jwtPrivateKey: jwt-private-key
   postLogoutRoute: post-logout
+  redirectUrl: authenticate
 
 livenessProbe:
   path: /healthz
@@ -66,9 +67,3 @@ service:
   port: 80
   type: ClusterIP
 
-azureAppRegistration:
-  enabled: true
-  clientId:
-  clientSecret:
-  tenantId:
-  redirectUrl: authenticate
