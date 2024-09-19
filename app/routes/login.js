@@ -21,6 +21,7 @@ module.exports = {
       // Calculate the redirect URL the should be returned to after completing the OAuth flow
       const authorizationUrl = authProvider.getAuthorizationUrl(request, h, authProvider.client, VECTOR_OF_TRUST, undefined, request.query)
 
+      console.log('authorizationUrl', authorizationUrl)
       // Redirect to the authorization server
       return h.redirect(authorizationUrl)
     } catch (err) {

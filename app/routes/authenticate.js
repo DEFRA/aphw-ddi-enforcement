@@ -23,6 +23,7 @@ module.exports = {
   },
   handler: async (request, h) => {
     try {
+      console.log('hitting /authenticate')
       if (auth.authType === 'dev') {
         await auth.authenticate(request.query.code, request.cookieAuth)
         return h.redirect('/')
@@ -61,6 +62,8 @@ module.exports = {
 
       const userinfo = JSON.parse(authResult.userinfo)
       const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
+
+      console.log('/authenticate userinfo', userinfo?.email)
 
       try {
         await validateUser({

@@ -124,16 +124,24 @@ const authInit = async (configurationObj) => {
     })
   }]
 
+  console.log('read private key')
+
   // Load the public key required to verify the core identity claim
   const ivPublicKeyLocal = readPublicKey(
     configurationObj.identityVerificationPublicKey
   )
 
+  console.log('read public key')
+
   // Configuration for the authority that authenticates users and issues the tokens.
   const issuer = await createIssuer(configurationObj)
 
+  console.log('rcreated issuer')
+
   // The clientLocal that requests the tokens.
   const clientLocal = createClient(configurationObj, issuer, jwks)
+
+  console.log('created client')
 
   return {
     ivPublicKey: ivPublicKeyLocal,
