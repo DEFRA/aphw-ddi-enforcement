@@ -32,6 +32,7 @@ container:
   openidClientId: client-id
   openidPrivateKey: private-key
   openidPublicKey: public-key
+  openidDiscoveryEndpoint: discovery-endpoint
   jwtPrivateKey: jwt-private-key
   postLogoutRoute: post-logout
   redirectUrl: authenticate
