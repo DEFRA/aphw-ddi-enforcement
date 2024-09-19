@@ -33,6 +33,7 @@ module.exports = {
         throw new Error(`${request.query.error} - ${request.query.error_description}`)
       }
 
+      console.log('getting auth settings')
       const authProvider = await getAuth()
 
       // Get all the parameters to pass to the token exchange endpoint
@@ -72,6 +73,7 @@ module.exports = {
           accessToken
         })
       } catch (_e) {
+        console.error('Validation failed')
         const protocol = request.headers['x-forwarded-proto'] || request.server.info.protocol
         const host = request.headers.host
         const unauthorisedReturnUrl = `${protocol}://${host}/unauthorised`
