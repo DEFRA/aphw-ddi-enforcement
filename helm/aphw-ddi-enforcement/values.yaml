@@ -34,7 +34,7 @@ container:
   openidPublicKey: public-key
   openidDiscoveryEndpoint: discovery-endpoint
   jwtPrivateKey: jwt-private-key
-  postLogoutRoute: post-logout
+  postLogoutUrl: post-logout
   redirectUrl: authenticate
 
 livenessProbe:
