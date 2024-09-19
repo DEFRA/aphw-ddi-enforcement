@@ -54,11 +54,12 @@ if (result.error) {
   throw new Error(`The auth config is invalid. ${result.error.message}`)
 }
 
+const chunkSize = 80
 console.log('config postLogoutUri', result.value.oidc.postLogoutUri)
 console.log('config redirectUri', result.value.oidc.redirectUri)
 console.log('config discoveryEndpoint', result.value.oidc.discoveryEndpoint)
 console.log('config clientId', result.value.oidc.clientId)
-console.log('config privateKey-part', `${result.value.oidc.privateKey.substr(0, 80)} ... ${result.value.oidc.privateKey.substr(result.value.oidc.privateKey.length - 80, 80)}`)
-console.log('config publicKey-part', `${result.value.oidc.identityVerificationPublicKey.substr(0, 80)} ... ${result.value.oidc.identityVerificationPublicKey.substr(result.value.oidc.identityVerificationPublicKey.length - 80, 80)}`)
+console.log('config privateKey-part', `${result.value.oidc.privateKey.substr(0, chunkSize)} ... ${result.value.oidc.privateKey.substr(result.value.oidc.privateKey.length - chunkSize, chunkSize)}`)
+console.log('config publicKey-part', `${result.value.oidc.identityVerificationPublicKey.substr(0, chunkSize)} ... ${result.value.oidc.identityVerificationPublicKey.substr(result.value.oidc.identityVerificationPublicKey.length - chunkSize, chunkSize)}`)
 
 module.exports = result.value
