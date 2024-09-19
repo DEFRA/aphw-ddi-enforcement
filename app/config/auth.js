@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const { getEnvironmentVariable, getEnvironmentVariableOrString } = require('../lib/environment-helpers')
+const { getEnvironmentVariable } = require('../lib/environment-helpers')
 
 const SECOND = 1000
 const MINUTE = 60 * SECOND
@@ -33,8 +33,8 @@ const config = {
     identityVerificationPublicKey: process.env.OPENID_PUBLIC_KEY,
     clientId: process.env.OPENID_CLIENT_ID,
     redirectUri: process.env.REDIRECT_URL?.length > 0 ? process.env.REDIRECT_URL : DEV_AUTHENTICATE_URL,
-    discoveryEndpoint: 'https://oidc.integration.account.gov.uk/.well-known/openid-configuration',
-    postLogoutUri: getEnvironmentVariableOrString('POST_LOGOUT_URL').length > 0 ? getEnvironmentVariableOrString('POST_LOGOUT_URL') : 'http://localhost:3003/post-logout'
+    discoveryEndpoint: process.env.OPENID_DISCOVERY_ENDPOINT?.length > 0 ? process.env.OPENID_DISCOVERY_ENDPOINT : 'https://oidc.integration.account.gov.uk/.well-known/openid-configuration',
+    postLogoutUri: process.env.POST_LOGOUT_URL?.length > 0 ? process.env.POST_LOGOUT_URL : 'http://localhost:3003/post-logout'
   },
   cookie: {
     password: process.env.COOKIE_PASSWORD,
@@ -53,5 +53,9 @@ const result = schema.validate(config, {
 if (result.error) {
   throw new Error(`The auth config is invalid. ${result.error.message}`)
 }
+
+console.log('config postLogoutUri', result.value.oidc.postLogoutUri)
+console.log('config redirectUri', result.value.oidc.redirectUri)
+console.log('config discoveryEndpoint', result.value.oidc.discoveryEndpoint)
 
 module.exports = result.value
