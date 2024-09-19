@@ -57,5 +57,8 @@ if (result.error) {
 console.log('config postLogoutUri', result.value.oidc.postLogoutUri)
 console.log('config redirectUri', result.value.oidc.redirectUri)
 console.log('config discoveryEndpoint', result.value.oidc.discoveryEndpoint)
+console.log('config clientId', result.value.oidc.clientId)
+console.log('config privateKey-part', `${result.value.oidc.privateKey.substr(0, 80)} ... ${result.value.oidc.privateKey.substr(result.value.oidc.privateKey.length - 80, 80)}`)
+console.log('config publicKey-part', `${result.value.oidc.identityVerificationPublicKey.substr(0, 80)} ... ${result.value.oidc.identityVerificationPublicKey.substr(result.value.oidc.identityVerificationPublicKey.length - 80, 80)}`)
 
 module.exports = result.value
