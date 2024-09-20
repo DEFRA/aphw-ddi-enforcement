@@ -23,7 +23,6 @@ module.exports = {
   },
   handler: async (request, h) => {
     try {
-      console.log('hitting /authenticate')
       if (auth.authType === 'dev') {
         await auth.authenticate(request.query.code, request.cookieAuth)
         return h.redirect('/')
@@ -33,7 +32,6 @@ module.exports = {
         throw new Error(`${request.query.error} - ${request.query.error_description}`)
       }
 
-      console.log('getting auth settings')
       const authProvider = await getAuth()
 
       // Get all the parameters to pass to the token exchange endpoint
@@ -64,16 +62,14 @@ module.exports = {
       const userinfo = JSON.parse(authResult.userinfo)
       const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
 
-      console.log('/authenticate userinfo', userinfo?.email)
-
       try {
         await validateUser({
           username: userinfo.email,
           displayname: userinfo.email,
           accessToken
         })
-      } catch (_e) {
-        console.error('Validation failed')
+      } catch (e) {
+        console.error('Validation failed', e)
         const protocol = request.headers['x-forwarded-proto'] || request.server.info.protocol
         const host = request.headers.host
         const unauthorisedReturnUrl = `${protocol}://${host}/unauthorised`
