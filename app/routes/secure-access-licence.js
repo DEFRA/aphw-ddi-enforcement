@@ -1,4 +1,4 @@
-const { routes, views } = require('../constants/forms')
+const { routes, views, errorCodes } = require('../constants/forms')
 const { routes: searchRoutes } = require('../constants/search')
 const { enforcement } = require('../auth/permissions')
 const ViewModel = require('../models/licence')
@@ -12,7 +12,7 @@ module.exports = [
     path: routes.secureAccessLicence.get,
     options: {
       auth: { scope: enforcement },
-      handler: async (request, h) => {
+      handler: async (_request, h) => {
         return h.view(views.secureAccessLicence, new ViewModel())
       }
     }
@@ -25,7 +25,7 @@ module.exports = [
       validate: {
         payload: validatePayload,
         failAction: async (request, h, error) => {
-          return h.view(views.secureAccessLicence, new ViewModel(request.payload, error)).code(400).takeover()
+          return h.view(views.secureAccessLicence, new ViewModel(error)).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {

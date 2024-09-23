@@ -1,4 +1,7 @@
 const constants = {
+  errorCodes: {
+    validationError: 400
+  },
   forms: {
     preventAutocomplete: 'one-time-code'
   },
