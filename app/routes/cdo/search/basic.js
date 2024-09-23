@@ -1,10 +1,11 @@
 const { routes, views } = require('../../../constants/search')
+const { validateUser } = require('../../../api/ddi-index-api/user')
+const { getUser } = require('../../../auth')
 const ViewModel = require('../../../models/cdo/search/basic')
 const searchSchema = require('../../../schema/portal/search/basic')
 const { doSearch } = require('../../../api/ddi-index-api/search')
 const { enforcement } = require('../../../auth/permissions')
 const { addBackNavigation } = require('../../../lib/back-helpers')
-const getUser = require('../../../auth/get-user')
 
 module.exports = [{
   method: 'GET',
@@ -12,6 +13,8 @@ module.exports = [{
   options: {
     auth: { scope: enforcement },
     handler: async (request, h) => {
+      await validateUser(getUser(request))
+
       const searchCriteria = request.query
 
       if (searchCriteria.searchType === undefined) {

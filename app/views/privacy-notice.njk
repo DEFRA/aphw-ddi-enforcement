@@ -1,0 +1,32 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% extends '_layout.njk' %}
+
+{% set pageHeading = "Privacy notice" %}
+
+{% block pageTitle %}{{ serviceName }}{% endblock %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      {{ govukBackLink({
+        text: "Back",
+        href: '/',
+        attributes: {
+          id: "back"
+        }
+        }) 
+      }}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p>Content TBC</p>
+  </div>
+</div>
+
+{% endblock %}
