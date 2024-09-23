@@ -24,7 +24,7 @@ module.exports = [
       auth: { scope: enforcement },
       validate: {
         payload: validatePayload,
-        failAction: async (request, h, error) => {
+        failAction: async (_request, h, error) => {
           return h.view(views.secureAccessLicence, new ViewModel(error)).code(errorCodes.validationError).takeover()
         }
       },
