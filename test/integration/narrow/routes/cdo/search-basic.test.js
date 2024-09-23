@@ -4,8 +4,9 @@ const { setInSession } = require('../../../../../app/session/session-wrapper')
 jest.mock('../../../../../app/session/session-wrapper')
 const { doSearch } = require('../../../../../app/api/ddi-index-api/search')
 const { JSDOM } = require('jsdom')
-jest.mock('../../../../../app/api/ddi-index-api/search'
-)
+jest.mock('../../../../../app/api/ddi-index-api/search')
+jest.mock('../../../../../app/api/ddi-index-api/user')
+
 describe('SearchBasic test', () => {
   jest.mock('../../../../../app/auth')
   const mockAuth = require('../../../../../app/auth')

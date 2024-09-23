@@ -1,46 +1,42 @@
 const { standardAuth, user } = require('../../../mocks/auth')
 const { JSDOM } = require('jsdom')
 
-describe('Index test', () => {
+describe('Terms and conditions test', () => {
   jest.mock('../../../../app/auth')
   const mockAuth = require('../../../../app/auth')
-
-  jest.mock('../../../../app/api/ddi-index-api/user')
-  const { validateUser } = require('../../../../app/api/ddi-index-api/user')
 
   const createServer = require('../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
-    validateUser.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })
 
-  test('GET / route returns 200 with no auth', async () => {
+  test('GET /terms-and-conditions route returns 200 with no auth', async () => {
     const options = {
       method: 'GET',
-      url: '/'
+      url: '/terms-and-conditions'
     }
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('form p')[0].textContent.trim()).toContain('This service is only for dog liaison officers working for a UK police force.')
+    expect(document.querySelectorAll('p')[6].textContent.trim()).toContain('Content TBC')
   })
 
-  test('GET / route returns 200 for standard users', async () => {
+  test('GET /terms-and-conditions route returns 200 for standard users', async () => {
     const options = {
       method: 'GET',
-      url: '/',
+      url: '/terms-and-conditions',
       auth: standardAuth
     }
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('form p')[0].textContent.trim()).toContain('This service is only for dog liaison officers working for a UK police force.')
+    expect(document.querySelectorAll('p')[6].textContent.trim()).toContain('Content TBC')
   })
 
   afterEach(async () => {

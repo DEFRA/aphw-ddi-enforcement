@@ -10,7 +10,7 @@ module.exports = {
   },
   handler: async (request, h) => {
     try {
-      setInSession(request, 'returnUrl', request.headers?.referer)
+      setInSession(request, 'returnUrl', request.query?.next)
 
       if (auth.authType === 'dev') {
         return h.redirect(auth.getAuthenticationUrl())

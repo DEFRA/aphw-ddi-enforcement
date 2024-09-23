@@ -17,7 +17,8 @@ module.exports = {
           isSameSite: 'Lax' // Needed for the post authentication redirect
         },
         keepAlive: true, // Resets the cookie ttl after each route
-        redirectTo: '/login'
+        redirectTo: '/login',
+        appendNext: true
       })
 
       server.auth.default('session-auth')
