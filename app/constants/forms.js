@@ -8,11 +8,16 @@ const constants = {
     },
     termsAndConditions: {
       get: '/terms-and-conditions'
+    },
+    secureAccessLicence: {
+      get: '/secure-access-licence',
+      post: '/secure-access-licence'
     }
   },
   views: {
     privacyNotice: 'privacy-notice',
-    termsAndConditions: 'terms-and-conditions'
+    termsAndConditions: 'terms-and-conditions',
+    secureAccessLicence: 'secure-access-licence'
   }
 }
 

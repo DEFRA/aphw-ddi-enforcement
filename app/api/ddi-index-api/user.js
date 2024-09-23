@@ -1,4 +1,4 @@
-const { get, callDelete } = require('./base')
+const { get, callDelete, put } = require('./base')
 const endpoint = 'user/me'
 
 const userLogout = async (user) => {
@@ -17,4 +17,32 @@ const validateUser = async (user) => {
   await get(endpoint + '/validate', user)
 }
 
-module.exports = { userLogout, validateUser }
+/**
+ * @param {{
+*    username: string;
+*    accessToken: string;
+*    displayname: string;
+* }} user
+* @return {Promise<boolean>}
+*/
+const validateLicence = async (user) => {
+  return await get(endpoint + '/licence', user)
+}
+
+/**
+ * @param {{
+*    username: string;
+*    accessToken: string;
+*    displayname: string;
+* }} user
+*/
+const setLicenceAccepted = async (user) => {
+  return await put(endpoint + '/licence', {}, user)
+}
+
+module.exports = {
+  userLogout,
+  validateUser,
+  validateLicence,
+  setLicenceAccepted
+}

@@ -3,8 +3,7 @@ const wreck = require('@hapi/wreck')
 jest.mock('@hapi/wreck')
 
 describe('Base API', () => {
-  const { get } = require('../../../../app/api/ddi-index-api/base')
-  const { callDelete } = require('../../../../app/api/ddi-index-api/base')
+  const { get, put, callDelete } = require('../../../../app/api/ddi-index-api/base')
   const wreckReadToString = jest.fn()
 
   beforeEach(() => {
@@ -34,6 +33,27 @@ describe('Base API', () => {
           'ddi-displayname': 'Example Tester'
         }
       })
+    })
+  })
+
+  describe('PUT', () => {
+    test('put should call PUT', async () => {
+      await put('endpoint1', {})
+      expect(wreck.put).toHaveBeenCalledWith('test/endpoint1', { payload: {} })
+    })
+
+    test('put should call PUT with username in header', async () => {
+      await put('endpoint1', { dataval: '123' }, userWithDisplayname)
+      expect(wreck.put).toHaveBeenCalledWith(
+        'test/endpoint1',
+        {
+          payload: { dataval: '123' },
+          headers: {
+            'ddi-username': 'test@example.com',
+            Authorization: expect.any(String),
+            'ddi-displayname': 'Example Tester'
+          }
+        })
     })
   })
 

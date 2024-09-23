@@ -1,8 +1,9 @@
 const auth = require('../auth')
+const { routes } = require('../constants/forms')
 const { getAuth, getRedirectUri, NONCE_COOKIE_NAME, STATE_COOKIE_NAME, getResult } = require('../auth/openid-auth')
 const { hash } = require('../auth/openid-helper')
 const { getFromSession } = require('../session/session-wrapper')
-const { validateUser } = require('../api/ddi-index-api/user')
+const { validateUser, validateLicence } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
 
@@ -61,13 +62,14 @@ module.exports = {
 
       const userinfo = JSON.parse(authResult.userinfo)
       const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
+      const user = {
+        username: userinfo.email,
+        displayname: userinfo.email,
+        accessToken
+      }
 
       try {
-        await validateUser({
-          username: userinfo.email,
-          displayname: userinfo.email,
-          accessToken
-        })
+        await validateUser(user)
       } catch (e) {
         console.error('Validation failed', e)
         const protocol = request.headers['x-forwarded-proto'] || request.server.info.protocol
@@ -93,8 +95,9 @@ module.exports = {
         }
       })
 
-      const returnUrl = getFromSession(request, 'returnUrl')
-      return h.redirect(determineRedirectUrl(returnUrl))
+      return await validateLicence(user)
+        ? h.redirect(determineRedirectUrl(getFromSession(request, 'returnUrl')))
+        : h.redirect(routes.secureAccessLicence.get)
     } catch (err) {
       console.error('Error authenticating:', err)
     }
