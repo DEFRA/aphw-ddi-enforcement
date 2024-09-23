@@ -26,7 +26,7 @@ const validateUser = async (user) => {
 * @return {Promise<boolean>}
 */
 const validateLicence = async (user) => {
-  return await get(endpoint + '/licence', user)
+  return get(endpoint + '/licence', user)
 }
 
 /**
@@ -37,7 +37,7 @@ const validateLicence = async (user) => {
 * }} user
 */
 const setLicenceAccepted = async (user) => {
-  return await put(endpoint + '/licence', {}, user)
+  return put(endpoint + '/licence', {}, user)
 }
 
 module.exports = {
