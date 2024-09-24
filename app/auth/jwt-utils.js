@@ -18,14 +18,14 @@ const createToken = (privateKeyBase64) => (payload, { audience, issuer }) => {
 
 const generateToken = createToken(config.authConfig.privateKey)
 
-const createJwtToken = (audience) => (username, displayname, scopes, token) => {
+const createJwtToken = (audience) => (username, displayname, scope, token) => {
   const options = {
     audience,
     issuer: 'aphw-ddi-enforcement'
   }
 
   return generateToken({
-    scopes,
+    scope,
     username,
     displayname,
     token
