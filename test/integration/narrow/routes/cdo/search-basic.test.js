@@ -1,6 +1,6 @@
 const { auth, user } = require('../../../../mocks/auth')
 const FormData = require('form-data')
-const { setInSession } = require('../../../../../app/session/session-wrapper')
+const { setInSession, getFromSession } = require('../../../../../app/session/session-wrapper')
 jest.mock('../../../../../app/session/session-wrapper')
 const { doSearch } = require('../../../../../app/api/ddi-index-api/search')
 const { JSDOM } = require('jsdom')
@@ -23,6 +23,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic route returns 200', async () => {
+    getFromSession.mockReturnValue('Y')
     const options = {
       method: 'GET',
       url: '/cdo/search/basic',
@@ -48,6 +49,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic with valid data returns 200', async () => {
+    getFromSession.mockReturnValue('Y')
     doSearch.mockResolvedValue([])
 
     const options = {
@@ -61,6 +63,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic dog record search with valid data and empty Dog name and Microchip number returns 200', async () => {
+    getFromSession.mockReturnValue('Y')
     doSearch.mockResolvedValue([
       {
         address: {
@@ -99,6 +102,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic owner record search with valid data and empty Dog name returns 200', async () => {
+    getFromSession.mockReturnValue('Y')
     doSearch.mockResolvedValue([
       {
         personId: 183,
@@ -133,7 +137,8 @@ describe('SearchBasic test', () => {
     expect(dogNameResult.textContent.trim()).toBe('Not entered')
   })
 
-  test('GET /cdo/create/select-address with invalid data returns error', async () => {
+  test('GET /cdo/search/basic with invalid data returns error', async () => {
+    getFromSession.mockReturnValue('Y')
     const options = {
       method: 'GET',
       url: '/cdo/search/basic?searchTerms=',
@@ -144,7 +149,8 @@ describe('SearchBasic test', () => {
     expect(response.statusCode).toBe(400)
   })
 
-  test('GET /cdo/create/select-address with invalid data returns error - invalid chars', async () => {
+  test('GET cdo/search/basic with invalid data returns error - invalid chars', async () => {
+    getFromSession.mockReturnValue('Y')
     const options = {
       method: 'GET',
       url: '/cdo/search/basic?searchTerms=**abc&&',
@@ -153,6 +159,19 @@ describe('SearchBasic test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(400)
+  })
+
+  test('GET cdo/search/basic forwards to licence - if not yet accepted', async () => {
+    getFromSession.mockReturnValue()
+    const options = {
+      method: 'GET',
+      url: '/cdo/search/basic?searchTerms=**abc&&',
+      auth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/secure-access-licence')
   })
 
   afterEach(async () => {

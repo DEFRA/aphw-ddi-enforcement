@@ -21,12 +21,15 @@ describe('Check activities', () => {
   jest.mock('../../../../../../app/lib/model-helpers')
   const { cleanUserDisplayName } = require('../../../../../../app/lib/model-helpers')
 
+  jest.mock('../../../../../../app/lib/route-helpers')
+  const { licenceNotYetAccepted } = require('../../../../../../app/lib/route-helpers')
+
   const createServer = require('../../../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
-
+    licenceNotYetAccepted.mockResolvedValue(false)
     server = await createServer()
     await server.initialize()
   })
@@ -373,6 +376,7 @@ describe('Check activities', () => {
     expect(activityBlock.querySelectorAll('.govuk-list li')[1].textContent.trim()).toBe('changes of email address and telephone numbers')
     expect(activityBlock.querySelectorAll('.govuk-list li')[2].textContent.trim()).toBe('changes of owner')
   })
+
   test('GET /cdo/view/activity/xxx/owner route returns 404 if no owner data found', async () => {
     getPersonByReference.mockResolvedValue(undefined)
 
@@ -385,5 +389,21 @@ describe('Check activities', () => {
     const response = await server.inject(options)
 
     expect(response.statusCode).toBe(404)
+  })
+
+  test('GET /cdo/view/activity/xxx/owner route forwards to licence if not yet accepted', async () => {
+    licenceNotYetAccepted.mockResolvedValue(true)
+    getPersonByReference.mockResolvedValue()
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/view/activity/P-123/owner',
+      auth
+    }
+
+    const response = await server.inject(options)
+
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/secure-access-licence')
   })
 })

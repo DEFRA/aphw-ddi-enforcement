@@ -1,9 +1,8 @@
 const auth = require('../auth')
-const { routes } = require('../constants/forms')
 const { getAuth, getRedirectUri, NONCE_COOKIE_NAME, STATE_COOKIE_NAME, getResult } = require('../auth/openid-auth')
 const { hash } = require('../auth/openid-helper')
 const { getFromSession } = require('../session/session-wrapper')
-const { validateUser, validateLicence } = require('../api/ddi-index-api/user')
+const { validateUser } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
 
@@ -95,9 +94,7 @@ module.exports = {
         }
       })
 
-      return await validateLicence(user)
-        ? h.redirect(determineRedirectUrl(getFromSession(request, 'returnUrl')))
-        : h.redirect(routes.secureAccessLicence.get)
+      return h.redirect(determineRedirectUrl(getFromSession(request, 'returnUrl')))
     } catch (err) {
       console.error('Error authenticating:', err)
     }

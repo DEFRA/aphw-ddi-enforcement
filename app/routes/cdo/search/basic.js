@@ -1,4 +1,5 @@
 const { routes, views } = require('../../../constants/search')
+const { routes: formRoutes } = require('../../../constants/forms')
 const { validateUser } = require('../../../api/ddi-index-api/user')
 const { getUser } = require('../../../auth')
 const ViewModel = require('../../../models/cdo/search/basic')
@@ -6,6 +7,7 @@ const searchSchema = require('../../../schema/portal/search/basic')
 const { doSearch } = require('../../../api/ddi-index-api/search')
 const { enforcement } = require('../../../auth/permissions')
 const { addBackNavigation } = require('../../../lib/back-helpers')
+const { licenceNotYetAccepted } = require('../../../lib/route-helpers')
 
 module.exports = [{
   method: 'GET',
@@ -13,7 +15,13 @@ module.exports = [{
   options: {
     auth: { scope: enforcement },
     handler: async (request, h) => {
-      await validateUser(getUser(request))
+      const user = getUser(request)
+
+      await validateUser(user)
+
+      if (await licenceNotYetAccepted(request, user)) {
+        return h.redirect(formRoutes.secureAccessLicence.get)
+      }
 
       const searchCriteria = request.query
 
