@@ -8,11 +8,15 @@ describe('View owner details', () => {
   jest.mock('../../../../../../app/api/ddi-index-api/person')
   const { getPersonAndDogs } = require('../../../../../../app/api/ddi-index-api/person')
 
+  jest.mock('../../../../../../app/lib/route-helpers')
+  const { licenceNotYetAccepted } = require('../../../../../../app/lib/route-helpers')
+
   const createServer = require('../../../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
+    licenceNotYetAccepted.mockResolvedValue(false)
 
     server = await createServer()
     await server.initialize()
@@ -152,6 +156,22 @@ describe('View owner details', () => {
     const response = await server.inject(options)
 
     expect(response.statusCode).toBe(404)
+  })
+
+  test('GET /cdo/view/owner-details route forwards to licence if not accepted yet', async () => {
+    getPersonAndDogs.mockResolvedValue(undefined)
+    licenceNotYetAccepted.mockResolvedValue(true)
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/view/owner-details/P-123',
+      auth
+    }
+
+    const response = await server.inject(options)
+
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/secure-access-licence')
   })
 
   afterEach(async () => {

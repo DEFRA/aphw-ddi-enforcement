@@ -61,13 +61,14 @@ module.exports = {
 
       const userinfo = JSON.parse(authResult.userinfo)
       const accessToken = authResult.accessToken.replace(/(^")|("$)/g, '')
+      const user = {
+        username: userinfo.email,
+        displayname: userinfo.email,
+        accessToken
+      }
 
       try {
-        await validateUser({
-          username: userinfo.email,
-          displayname: userinfo.email,
-          accessToken
-        })
+        await validateUser(user)
       } catch (e) {
         console.error('Validation failed', e)
         const protocol = request.headers['x-forwarded-proto'] || request.server.info.protocol
@@ -93,8 +94,7 @@ module.exports = {
         }
       })
 
-      const returnUrl = getFromSession(request, 'returnUrl')
-      return h.redirect(determineRedirectUrl(returnUrl))
+      return h.redirect(determineRedirectUrl(getFromSession(request, 'returnUrl')))
     } catch (err) {
       console.error('Error authenticating:', err)
     }

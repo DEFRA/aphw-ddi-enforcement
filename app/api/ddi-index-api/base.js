@@ -13,6 +13,16 @@ const get = async (endpoint, user) => {
   return payload
 }
 
+const put = async (endpoint, data, user) => {
+  const options = user?.username
+    ? { payload: data, headers: addHeaders(user) }
+    : { payload: data }
+
+  const { payload } = await wreck.put(`${baseUrl}/${endpoint}`, options)
+
+  return JSON.parse(payload)
+}
+
 const callDelete = async (endpoint, user) => {
   const options = user?.username ? { json: true, headers: addHeaders(user) } : { json: true }
 
@@ -23,5 +33,6 @@ const callDelete = async (endpoint, user) => {
 
 module.exports = {
   get,
+  put,
   callDelete
 }

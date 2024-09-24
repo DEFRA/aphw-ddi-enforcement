@@ -1,4 +1,5 @@
 const { routes, views } = require('../../../constants/cdo/dog')
+const { routes: formRoutes } = require('../../../constants/forms')
 const { sources: activitySources } = require('../../../constants/cdo/activity')
 const { enforcement } = require('../../../auth/permissions')
 const ViewModel = require('../../../models/cdo/view/check-activities')
@@ -9,6 +10,7 @@ const { getEvents } = require('../../../api/ddi-events-api/event')
 const { getMainReturnPoint } = require('../../../lib/back-helpers')
 const { sortEventsDesc, filterEvents } = require('../../../models/sorting/event')
 const { getUser } = require('../../../auth')
+const { licenceNotYetAccepted } = require('../../../lib/route-helpers')
 
 const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
@@ -38,6 +40,10 @@ module.exports = [
         const user = getUser(request)
         const pk = request.params.pk
         const source = request.params.source
+
+        if (await licenceNotYetAccepted(request, user)) {
+          return h.redirect(formRoutes.secureAccessLicence.get)
+        }
 
         const entity = await getSourceEntity(pk, source, user)
         if (entity === null || entity === undefined) {

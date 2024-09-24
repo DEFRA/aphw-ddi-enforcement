@@ -21,18 +21,23 @@ describe('Authenticate test', () => {
   const { getAuth, getResult } = require('../../../../app/auth/openid-auth')
 
   jest.mock('../../../../app/api/ddi-index-api/user')
-  const { validateUser } = require('../../../../app/api/ddi-index-api/user')
+  const { validateUser, validateLicence } = require('../../../../app/api/ddi-index-api/user')
 
   jest.mock('../../../../app/auth/logout')
   const { logoutUser } = require('../../../../app/auth/logout')
 
+  jest.mock('../../../../app/session/session-wrapper')
+  const { getFromSession } = require('../../../../app/session/session-wrapper')
+
   beforeEach(async () => {
     getAuth.mockResolvedValue(mockOpenIdAuth)
+    getFromSession.mockReturnValue('/cdo/search/basic')
     server = await createServer()
     await server.initialize()
   })
 
-  test('GET /authenticate route returns 302', async () => {
+  test('GET /authenticate route returns 302 to forward onto search page', async () => {
+    validateLicence.mockResolvedValue(false)
     getResult.mockResolvedValue({
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',
@@ -54,8 +59,8 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/cdo/search/basic')
   })
-
   test('GET /authenticate route for unregistered user returns 302 and logs user out', async () => {
     validateUser.mockRejectedValue({})
 
