@@ -37,9 +37,7 @@ module.exports = [
     options: {
       auth: { scope: enforcement },
       handler: async (request, h) => {
-        console.log('check1')
         const user = getUser(request)
-        console.log('check2', user)
         const pk = request.params.pk
         const source = request.params.source
 
