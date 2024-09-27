@@ -4,7 +4,7 @@ jest.mock('../../../app/session/session-wrapper')
 const { getFromSession, setInSession } = require('../../../app/session/session-wrapper')
 
 jest.mock('../../../app/api/ddi-index-api/user')
-const { validateLicence } = require('../../../app/api/ddi-index-api/user')
+const { isLicenceAccepted } = require('../../../app/api/ddi-index-api/user')
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -44,13 +44,13 @@ describe('licenceNotYetAccepted', () => {
 
   test('should return false if not accepted in session but accepted in DB', async () => {
     getFromSession.mockReturnValue()
-    validateLicence.mockResolvedValue(true)
+    isLicenceAccepted.mockResolvedValue(true)
     expect(await licenceNotYetAccepted({}, {})).toBeFalsy()
   })
 
   test('should return true if not accepted in session and not accepted in DB', async () => {
     getFromSession.mockReturnValue()
-    validateLicence.mockResolvedValue(false)
+    isLicenceAccepted.mockResolvedValue(false)
     expect(await licenceNotYetAccepted({}, {})).toBeTruthy()
   })
 })

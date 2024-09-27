@@ -1,4 +1,4 @@
-const { get, callDelete, put } = require('./base')
+const { get, callDelete, put, post } = require('./base')
 const endpoint = 'user/me'
 
 const userLogout = async (user) => {
@@ -25,8 +25,9 @@ const validateUser = async (user) => {
 * }} user
 * @return {Promise<boolean>}
 */
-const validateLicence = async (user) => {
-  return get(endpoint + '/licence', user)
+const isLicenceAccepted = async (user) => {
+  const { result } = await get(endpoint + '/licence', user)
+  return result
 }
 
 /**
@@ -37,12 +38,53 @@ const validateLicence = async (user) => {
 * }} user
 */
 const setLicenceAccepted = async (user) => {
-  return put(endpoint + '/licence', {}, user)
+  const { result } = await put(endpoint + '/licence', {}, user)
+  return result
+}
+
+/**
+ * @param {{
+*    username: string;
+*    accessToken: string;
+*    displayname: string;
+* }} user
+* @return {Promise<boolean>}
+*/
+const isEmailVerified = async (user) => {
+  const { result } = await get(endpoint + '/email', user)
+  return result
+}
+
+/**
+ * @param {{
+*    username: string;
+*    accessToken: string;
+*    displayname: string;
+* }} user
+*/
+const sendVerifyEmail = async (user) => {
+  return put(endpoint + '/email', {}, user)
+}
+
+/**
+ * @param {{
+*    username: string;
+*    accessToken: string;
+*    displayname: string;
+* }} user
+* @return {Promise<string>}
+*/
+const isCodeCorrect = async (user, code) => {
+  const { result } = await post(endpoint + '/email', { code }, user)
+  return result
 }
 
 module.exports = {
   userLogout,
   validateUser,
-  validateLicence,
-  setLicenceAccepted
+  isLicenceAccepted,
+  setLicenceAccepted,
+  isEmailVerified,
+  sendVerifyEmail,
+  isCodeCorrect
 }

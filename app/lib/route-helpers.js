@@ -1,5 +1,6 @@
+const constants = require('../constants/forms')
 const { getFromSession, setInSession } = require('../session/session-wrapper')
-const { validateLicence } = require('../api/ddi-index-api/user')
+const { isLicenceAccepted } = require('../api/ddi-index-api/user')
 
 const throwIfPreConditionError = (request) => {
   for (const [key, value] of Object.entries(request.pre ?? {})) {
@@ -11,15 +12,15 @@ const throwIfPreConditionError = (request) => {
 }
 
 const licenceNotYetAccepted = async (request, user) => {
-  const accepted = getFromSession(request, 'acceptedLicence')
+  const accepted = getFromSession(request, constants.keys.acceptedLicence)
 
   if (accepted === 'Y') {
     return false
   }
 
-  const acceptedDb = await validateLicence(user)
+  const acceptedDb = await isLicenceAccepted(user)
   if (acceptedDb) {
-    setInSession(request, 'acceptedLicence', 'Y')
+    setInSession(request, constants.keys.acceptedLicence, 'Y')
     return false
   }
 

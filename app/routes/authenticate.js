@@ -1,8 +1,9 @@
 const auth = require('../auth')
+const { routes, keys } = require('../constants/forms')
 const { getAuth, getRedirectUri, NONCE_COOKIE_NAME, STATE_COOKIE_NAME, getResult } = require('../auth/openid-auth')
 const { hash } = require('../auth/openid-helper')
-const { getFromSession } = require('../session/session-wrapper')
-const { validateUser } = require('../api/ddi-index-api/user')
+const { getFromSession, setInSession } = require('../session/session-wrapper')
+const { validateUser, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
 
@@ -79,6 +80,7 @@ module.exports = {
 
         h.unstate('nonce')
         h.unstate('state')
+        setInSession(request, keys.acceptedLicence, null)
 
         return h.redirect(result)
       }
@@ -93,6 +95,14 @@ module.exports = {
           idToken: authResult.idToken
         }
       })
+
+      const verified = await isEmailVerified(user)
+      if (!verified) {
+        await sendVerifyEmail(user)
+        return h.redirect(routes.verifyCode.get)
+      }
+
+      setInSession(request, keys.acceptedLicence, null)
 
       return h.redirect(determineRedirectUrl(getFromSession(request, 'returnUrl')))
     } catch (err) {
