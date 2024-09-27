@@ -7,7 +7,6 @@ const schema = Joi.object({
 }).required()
 
 const validatePayload = (payload) => {
-  console.log('JB payload', payload)
   const { value, error } = schema.validate(payload, { abortEarly: false })
 
   if (error) {
