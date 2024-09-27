@@ -6,7 +6,12 @@ module.exports = {
   options: {
     auth: false
   },
-  handler: (_request, h) => {
+  handler: (request, h) => {
+    request.cookieAuth.clear()
+    h.unstate('nonce')
+    h.unstate('state')
+    request.yar.reset()
+
     return h.view('unauthorized').code(UNAUTHORISED)
   }
 }

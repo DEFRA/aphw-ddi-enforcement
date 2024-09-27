@@ -21,7 +21,7 @@ describe('Authenticate test', () => {
   const { getAuth, getResult } = require('../../../../app/auth/openid-auth')
 
   jest.mock('../../../../app/api/ddi-index-api/user')
-  const { validateUser, validateLicence } = require('../../../../app/api/ddi-index-api/user')
+  const { validateUser, isLicenceAccepted, isEmailVerified } = require('../../../../app/api/ddi-index-api/user')
 
   jest.mock('../../../../app/auth/logout')
   const { logoutUser } = require('../../../../app/auth/logout')
@@ -37,7 +37,8 @@ describe('Authenticate test', () => {
   })
 
   test('GET /authenticate route returns 302 to forward onto search page', async () => {
-    validateLicence.mockResolvedValue(false)
+    isLicenceAccepted.mockResolvedValue(false)
+    isEmailVerified.mockResolvedValue(true)
     getResult.mockResolvedValue({
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',

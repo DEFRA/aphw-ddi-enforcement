@@ -31,8 +31,25 @@ const callDelete = async (endpoint, user) => {
   return payload
 }
 
+const buildPostRequest = (baseUrl) => async (endpoint, data, user) => {
+  const options = user?.username
+    ? { payload: data, headers: addHeaders(user) }
+    : { payload: data }
+
+  const { payload } = await wreck.post(`${baseUrl}/${endpoint}`, options)
+
+  if (!payload.toString().length > 0) {
+    return
+  }
+
+  return JSON.parse(payload)
+}
+
+const post = buildPostRequest(baseUrl)
+
 module.exports = {
   get,
   put,
+  post,
   callDelete
 }

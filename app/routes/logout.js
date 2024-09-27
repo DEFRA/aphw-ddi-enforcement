@@ -21,6 +21,7 @@ module.exports = {
     request.cookieAuth.clear()
     h.unstate('nonce')
     h.unstate('state')
+    request.yar.reset()
 
     return h.redirect(logoutRes)
   }

@@ -67,7 +67,7 @@ describe('Secure access licence test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(400)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Check the box to continue')
+    expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Tick the box to continue')
   })
 
   test('POST /secure-access-licence route forwards to search screen when auth and ticked checkbox', async () => {

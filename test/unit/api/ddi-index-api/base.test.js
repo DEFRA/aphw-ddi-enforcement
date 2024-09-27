@@ -1,9 +1,9 @@
-const { userWithDisplayname } = require('../../../mocks/auth')
+const { user, userWithDisplayname } = require('../../../mocks/auth')
 const wreck = require('@hapi/wreck')
 jest.mock('@hapi/wreck')
 
 describe('Base API', () => {
-  const { get, put, callDelete } = require('../../../../app/api/ddi-index-api/base')
+  const { get, put, post, callDelete } = require('../../../../app/api/ddi-index-api/base')
   const wreckReadToString = jest.fn()
 
   beforeEach(() => {
@@ -33,6 +33,24 @@ describe('Base API', () => {
           'ddi-displayname': 'Example Tester'
         }
       })
+    })
+  })
+
+  describe('POST', () => {
+    test('post should call POST', async () => {
+      await post('endpoint2', { val: 123 })
+      expect(wreck.post).toHaveBeenCalledWith('test/endpoint2', { payload: { val: 123 } })
+    })
+
+    test('post should call POST with username in header', async () => {
+      await post('endpoint2', { val: 123 }, user)
+      expect(wreck.post).toHaveBeenCalledWith('test/endpoint2', { payload: { val: 123 }, headers: { 'ddi-username': 'test@example.com', Authorization: expect.any(String) } })
+    })
+
+    test('post should not fail given an empty payload', async () => {
+      wreck.post.mockResolvedValue({ payload: { toString () { return '' } } })
+      await post('endpoint2', { val: 123 }, user)
+      expect(wreck.post).toHaveBeenCalledWith('test/endpoint2', { payload: { val: 123 }, headers: { 'ddi-username': 'test@example.com', Authorization: expect.any(String) } })
     })
   })
 
