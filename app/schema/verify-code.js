@@ -1,7 +1,8 @@
 const Joi = require('joi')
+const strLen = 6
 
 const schema = Joi.object({
-  code: Joi.string().required().min(6).max(6).messages(
+  code: Joi.string().required().min(strLen).max(strLen).messages(
     { '*': 'Please enter a 6 digit code' }
   )
 }).required()

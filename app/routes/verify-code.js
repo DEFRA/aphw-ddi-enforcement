@@ -40,7 +40,10 @@ module.exports = [
       validate: {
         payload: validatePayload,
         failAction: async (request, h, error) => {
-          return h.view(views.verifyCode, new ViewModel(constructModel(request), error)).code(errorCodes.validationError).takeover()
+          return h.view(
+            views.verifyCode,
+            new ViewModel(constructModel(request), error)
+          ).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {
