@@ -6,7 +6,7 @@ describe('Secure access licence test', () => {
   const mockAuth = require('../../../../app/auth')
 
   jest.mock('../../../../app/api/ddi-index-api/user')
-  const { setLicenceAccepted } = require('../../../../app/api/ddi-index-api/user')
+  const { setLicenceAccepted, isEmailVerified, sendVerifyEmail } = require('../../../../app/api/ddi-index-api/user')
 
   const createServer = require('../../../../app/server')
   let server
@@ -72,6 +72,7 @@ describe('Secure access licence test', () => {
 
   test('POST /secure-access-licence route forwards to search screen when auth and ticked checkbox', async () => {
     setLicenceAccepted.mockResolvedValue(true)
+    isEmailVerified.mockResolvedValue(true)
     const payload = {
       accept: 'Y'
     }
@@ -89,6 +90,7 @@ describe('Secure access licence test', () => {
 
   test('POST /secure-access-licence route stays on search screen when set licence fails', async () => {
     setLicenceAccepted.mockResolvedValue(false)
+    isEmailVerified.mockResolvedValue(true)
     const payload = {
       accept: 'Y'
     }
@@ -102,6 +104,25 @@ describe('Secure access licence test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
     expect(response.headers.location).toBe('/secure-access-licence')
+  })
+
+  test('POST /secure-access-licence route sends email and forwards to verify code screen when ticked checkbox but email not verified', async () => {
+    setLicenceAccepted.mockResolvedValue(true)
+    isEmailVerified.mockResolvedValue(false)
+    const payload = {
+      accept: 'Y'
+    }
+    const options = {
+      method: 'POST',
+      url: '/secure-access-licence',
+      auth: standardAuth,
+      payload
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/verify-code')
+    expect(sendVerifyEmail).toHaveBeenCalledWith(user)
   })
 
   afterEach(async () => {
