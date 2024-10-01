@@ -4,7 +4,7 @@ const { enforcement } = require('../auth/permissions')
 const ViewModel = require('../models/licence')
 const { validatePayload } = require('../schema/licence')
 const { getUser } = require('../auth')
-const { setLicenceAccepted } = require('../api/ddi-index-api/user')
+const { setLicenceAccepted, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
 
 module.exports = [
   {
@@ -29,7 +29,14 @@ module.exports = [
         }
       },
       handler: async (request, h) => {
-        if (await setLicenceAccepted(getUser(request))) {
+        const user = getUser(request)
+        const accepted = await setLicenceAccepted(user)
+        if (accepted) {
+          const verified = await isEmailVerified(user)
+          if (!verified) {
+            await sendVerifyEmail(user)
+            return h.redirect(routes.verifyCode.get)
+          }
           return h.redirect(searchRoutes.searchBasic.get)
         } else {
           return h.redirect(routes.secureAccessLicence.get)
