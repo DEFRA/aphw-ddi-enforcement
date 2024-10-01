@@ -1,6 +1,7 @@
 {% extends "govuk/template.njk" %}
 
 {% block head %}
+  <meta name="robots" content="noindex, nofollow">
   <!--[if !IE 8]><!-->
   <% htmlWebpackPlugin.files.css.forEach(file => { %>
   <link href="<%= file.replace('../dist/', '/static/') %>" rel="stylesheet">

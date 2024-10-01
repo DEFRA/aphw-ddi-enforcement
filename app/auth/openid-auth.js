@@ -90,9 +90,9 @@ const getAuthorizationUrl = (req, h, clientLocal, vtr, claims = undefined, addit
   const state = generators.state()
 
   // Store the nonce and state in a session cookie so it can be checked in callback
-  h.state(NONCE_COOKIE_NAME, nonce, { isSecure: false, isSameSite: 'Lax' })
+  h.state(NONCE_COOKIE_NAME, nonce, { isSecure: config.cookie.isSecure, isSameSite: 'Lax' })
 
-  h.state(STATE_COOKIE_NAME, state, { isSecure: false, isSameSite: 'Lax' })
+  h.state(STATE_COOKIE_NAME, state, { isSecure: config.cookie.isSecure, isSameSite: 'Lax' })
 
   const authorizationParameters = {
     redirect_uri: redirectUri,
