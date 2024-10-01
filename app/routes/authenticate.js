@@ -6,6 +6,7 @@ const { getFromSession, setInSession } = require('../session/session-wrapper')
 const { validateUser, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
+const { licenceNotYetAccepted } = require('../lib/route-helpers')
 
 const determineRedirectUrl = returnUrl => {
   return returnUrl &&
@@ -95,6 +96,10 @@ module.exports = {
           idToken: authResult.idToken
         }
       })
+
+      if (await licenceNotYetAccepted(request, user)) {
+        return h.redirect(routes.secureAccessLicence.get)
+      }
 
       const verified = await isEmailVerified(user)
       if (!verified) {

@@ -1,0 +1,54 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% extends '_layout.njk' %}
+
+{% set pageHeading = "Agree to the Secure Access Licence" %}
+
+{% block pageTitle %}{{ serviceName }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+    {% if model.errors | length > 0 %}
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: model.errors
+      }) }}
+    {% endif %}
+
+      <form class="form" method="post">
+
+        <h1 class="govuk-heading-xl">
+          Agree to the Secure Access Licence
+        </h1>
+
+        <p class="govuk-body-l">To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.
+        </p>
+
+        {% include "./secure-access-licence-content.njk" %}
+
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-visually-hidden">
+            Agree to the terms and conditions
+            </legend>
+
+            {{ govukCheckboxes(model.accept) }}
+
+          </fieldset>
+        </div>
+
+        <button type="submit" class="govuk-button" data-module="govuk-button">
+        Agree and continue
+        </button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

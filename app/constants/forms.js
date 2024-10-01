@@ -16,6 +16,10 @@ const constants = {
       get: '/secure-access-licence',
       post: '/secure-access-licence'
     },
+    secureAccessLicenceView: {
+      get: '/secure-access-licence-view',
+      post: '/secure-access-licence-view'
+    },
     verifyCode: {
       get: '/verify-code',
       post: '/verify-code'
@@ -24,7 +28,8 @@ const constants = {
   views: {
     privacyNotice: 'privacy-notice',
     termsAndConditions: 'terms-and-conditions',
-    secureAccessLicence: 'secure-access-licence',
+    secureAccessLicenceAgree: 'secure-access-licence-agree',
+    secureAccessLicenceView: 'secure-access-licence-view',
     verifyCode: 'verify-code'
   },
   keys: {

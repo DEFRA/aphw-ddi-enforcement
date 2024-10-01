@@ -29,6 +29,9 @@ describe('Authenticate test', () => {
   jest.mock('../../../../app/session/session-wrapper')
   const { getFromSession } = require('../../../../app/session/session-wrapper')
 
+  jest.mock('../../../../app/lib/route-helpers')
+  const { licenceNotYetAccepted } = require('../../../../app/lib/route-helpers')
+
   beforeEach(async () => {
     getAuth.mockResolvedValue(mockOpenIdAuth)
     getFromSession.mockReturnValue('/cdo/search/basic')
@@ -39,6 +42,7 @@ describe('Authenticate test', () => {
   test('GET /authenticate route returns 302 to forward onto search page', async () => {
     isLicenceAccepted.mockResolvedValue(false)
     isEmailVerified.mockResolvedValue(true)
+    licenceNotYetAccepted.mockResolvedValue(false)
     getResult.mockResolvedValue({
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',
@@ -62,6 +66,35 @@ describe('Authenticate test', () => {
     expect(response.statusCode).toBe(302)
     expect(response.headers.location).toBe('/cdo/search/basic')
   })
+
+  test('GET /authenticate route returns 302 to forward to licence if licence not accepted', async () => {
+    isLicenceAccepted.mockResolvedValue(false)
+    isEmailVerified.mockResolvedValue(false)
+    licenceNotYetAccepted.mockResolvedValue(true)
+    getResult.mockResolvedValue({
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+      idToken: 'idToken',
+      idTokenDecoded: 'idTokenDecoded',
+      userinfo: JSON.stringify({ email: 'me@example.com' }, null, 2),
+      coreIdentity: 'coreIdentity'
+    })
+
+    const options = {
+      method: 'GET',
+      url: '/authenticate',
+      headers: {
+        'x-forwarded-proto': 'http',
+        host: 'localhost:3003',
+        Cookie: 'nonce=abcdede;state=fghijkl;'
+      }
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/secure-access-licence')
+  })
+
   test('GET /authenticate route for unregistered user returns 302 and logs user out', async () => {
     validateUser.mockRejectedValue({})
 
