@@ -21,7 +21,7 @@ describe('Authenticate test', () => {
   const { getAuth, getResult } = require('../../../../app/auth/openid-auth')
 
   jest.mock('../../../../app/api/ddi-index-api/user')
-  const { validateUser, isLicenceAccepted, isEmailVerified } = require('../../../../app/api/ddi-index-api/user')
+  const { validateUser } = require('../../../../app/api/ddi-index-api/user')
 
   jest.mock('../../../../app/auth/logout')
   const { logoutUser } = require('../../../../app/auth/logout')
@@ -30,7 +30,7 @@ describe('Authenticate test', () => {
   const { getFromSession } = require('../../../../app/session/session-wrapper')
 
   jest.mock('../../../../app/lib/route-helpers')
-  const { licenceNotYetAccepted } = require('../../../../app/lib/route-helpers')
+  const { checkUserAccess } = require('../../../../app/lib/route-helpers')
 
   beforeEach(async () => {
     getAuth.mockResolvedValue(mockOpenIdAuth)
@@ -40,9 +40,7 @@ describe('Authenticate test', () => {
   })
 
   test('GET /authenticate route returns 302 to forward onto search page', async () => {
-    isLicenceAccepted.mockResolvedValue(false)
-    isEmailVerified.mockResolvedValue(true)
-    licenceNotYetAccepted.mockResolvedValue(false)
+    checkUserAccess.mockResolvedValue(null)
     getResult.mockResolvedValue({
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',
@@ -68,9 +66,7 @@ describe('Authenticate test', () => {
   })
 
   test('GET /authenticate route returns 302 to forward to licence if licence not accepted', async () => {
-    isLicenceAccepted.mockResolvedValue(false)
-    isEmailVerified.mockResolvedValue(false)
-    licenceNotYetAccepted.mockResolvedValue(true)
+    checkUserAccess.mockResolvedValue('/secure-access-licence')
     getResult.mockResolvedValue({
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',

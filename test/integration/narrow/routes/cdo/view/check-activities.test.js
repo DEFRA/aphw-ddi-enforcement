@@ -22,14 +22,14 @@ describe('Check activities', () => {
   const { cleanUserDisplayName } = require('../../../../../../app/lib/model-helpers')
 
   jest.mock('../../../../../../app/lib/route-helpers')
-  const { licenceNotYetAccepted } = require('../../../../../../app/lib/route-helpers')
+  const { checkUserAccess } = require('../../../../../../app/lib/route-helpers')
 
   const createServer = require('../../../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
-    licenceNotYetAccepted.mockResolvedValue(false)
+    checkUserAccess.mockResolvedValue(null)
     server = await createServer()
     await server.initialize()
   })
@@ -392,7 +392,7 @@ describe('Check activities', () => {
   })
 
   test('GET /cdo/view/activity/xxx/owner route forwards to licence if not yet accepted', async () => {
-    licenceNotYetAccepted.mockResolvedValue(true)
+    checkUserAccess.mockResolvedValue('/secure-access-licence')
     getPersonByReference.mockResolvedValue()
 
     const options = {

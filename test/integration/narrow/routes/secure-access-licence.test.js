@@ -17,6 +17,16 @@ describe('Secure access licence test', () => {
     await server.initialize()
   })
 
+  test('GET /secure-access-licence-view route returns 200 even with no auth', async () => {
+    const options = {
+      method: 'GET',
+      url: '/secure-access-licence-view'
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+  })
+
   test('GET /secure-access-licence route returns 302 with no auth', async () => {
     const options = {
       method: 'GET',

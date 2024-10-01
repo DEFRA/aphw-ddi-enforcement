@@ -9,14 +9,14 @@ describe('View dog details', () => {
   const { getCdo } = require('../../../../../../app/api/ddi-index-api/cdo')
 
   jest.mock('../../../../../../app/lib/route-helpers')
-  const { licenceNotYetAccepted } = require('../../../../../../app/lib/route-helpers')
+  const { checkUserAccess } = require('../../../../../../app/lib/route-helpers')
 
   const createServer = require('../../../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
-    licenceNotYetAccepted.mockResolvedValue(false)
+    checkUserAccess.mockResolvedValue(null)
 
     server = await createServer()
     await server.initialize()
@@ -384,7 +384,7 @@ describe('View dog details', () => {
 
   test('GET /cdo/view/dog-details route forwards to accept licence if not accepted yet', async () => {
     getCdo.mockResolvedValue()
-    licenceNotYetAccepted.mockResolvedValue(true)
+    checkUserAccess.mockResolvedValue('/secure-access-licence')
 
     const options = {
       method: 'GET',
