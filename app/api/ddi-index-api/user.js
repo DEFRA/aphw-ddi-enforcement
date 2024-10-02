@@ -79,6 +79,18 @@ const isCodeCorrect = async (user, code) => {
   return result
 }
 
+/**
+ * @param data
+ * @param {{
+*    username: string;
+*    accessToken: string;
+*    displayname: string;
+* }} user
+*/
+const submitFeedback = async (data, user) => {
+  await post(endpoint + '/feedback', data, user)
+}
+
 module.exports = {
   userLogout,
   validateUser,
@@ -86,5 +98,6 @@ module.exports = {
   setLicenceAccepted,
   isEmailVerified,
   sendVerifyEmail,
-  isCodeCorrect
+  isCodeCorrect,
+  submitFeedback
 }

@@ -2,7 +2,8 @@ const { routes, views, errorCodes } = require('../constants/forms')
 const { enforcement } = require('../auth/permissions')
 const ViewModel = require('../models/feedback')
 const { validatePayload } = require('../schema/feedback')
-// const { getUser } = require('../auth')
+const { getUser } = require('../auth')
+const { submitFeedback } = require('../api/ddi-index-api/user')
 
 module.exports = [
   {
@@ -37,7 +38,13 @@ module.exports = [
         }
       },
       handler: async (request, h) => {
-        // await sendFeedback(getUser(request), request.payload)
+        const data = {
+          fields: [
+            { name: 'Satisfaction', value: request.payload?.satisfaction },
+            { name: 'Improvements', value: request.payload?.improvements ?? '' }
+          ]
+        }
+        await submitFeedback(data, getUser(request))
 
         return h.redirect(routes.feedbackSent.get)
       }

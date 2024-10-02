@@ -1,11 +1,12 @@
 const auth = require('../auth')
-const { routes, keys } = require('../constants/forms')
+const { keys } = require('../constants/forms')
 const { getAuth, getRedirectUri, NONCE_COOKIE_NAME, STATE_COOKIE_NAME, getResult } = require('../auth/openid-auth')
 const { hash } = require('../auth/openid-helper')
 const { getFromSession, setInSession } = require('../session/session-wrapper')
-const { validateUser, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
+const { validateUser } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
+const { getRedirectForUserAccess } = require('../lib/route-helpers')
 
 const determineRedirectUrl = returnUrl => {
   return returnUrl &&
@@ -96,10 +97,9 @@ module.exports = {
         }
       })
 
-      const verified = await isEmailVerified(user)
-      if (!verified) {
-        await sendVerifyEmail(user)
-        return h.redirect(routes.verifyCode.get)
+      const redirectRoute = await getRedirectForUserAccess(request, user)
+      if (redirectRoute) {
+        return h.redirect(redirectRoute)
       }
 
       setInSession(request, keys.acceptedLicence, null)

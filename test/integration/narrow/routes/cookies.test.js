@@ -13,14 +13,14 @@ describe('Cookies test', () => {
     await server.initialize()
   })
 
-  test('GET /cookies route returns 302', async () => {
+  test('GET /cookies route returns 200 if no auth', async () => {
     const options = {
       method: 'GET',
       url: '/cookies'
     }
 
     const response = await server.inject(options)
-    expect(response.statusCode).toBe(302)
+    expect(response.statusCode).toBe(200)
   })
 
   test('GET /cookies route returns 200', async () => {

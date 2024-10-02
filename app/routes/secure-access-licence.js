@@ -13,7 +13,17 @@ module.exports = [
     options: {
       auth: { scope: enforcement },
       handler: async (_request, h) => {
-        return h.view(views.secureAccessLicence, new ViewModel())
+        return h.view(views.secureAccessLicenceAgree, new ViewModel())
+      }
+    }
+  },
+  {
+    method: 'GET',
+    path: routes.secureAccessLicenceView.get,
+    options: {
+      auth: false,
+      handler: async (_request, h) => {
+        return h.view(views.secureAccessLicenceView)
       }
     }
   },
@@ -25,7 +35,7 @@ module.exports = [
       validate: {
         payload: validatePayload,
         failAction: async (_request, h, error) => {
-          return h.view(views.secureAccessLicence, new ViewModel(error)).code(errorCodes.validationError).takeover()
+          return h.view(views.secureAccessLicenceAgree, new ViewModel(error)).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {

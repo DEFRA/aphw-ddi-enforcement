@@ -1,11 +1,11 @@
 const { errorPusherDefault } = require('../lib/error-helpers')
 
 const satisfactionOptions = [
-  { text: 'Very satisfied', value: 'very-satisfied' },
-  { text: 'Satisfied', value: 'satisfied' },
-  { text: 'Neither satisfied or dissatisfied', value: 'neither' },
-  { text: 'Dissatisfied', value: 'dissatisfied' },
-  { text: 'Very dissatisfied', value: 'very-dissatisfied' }
+  { text: 'Very satisfied', value: 'Very satisfied' },
+  { text: 'Satisfied', value: 'Satisfied' },
+  { text: 'Neither satisfied or dissatisfied', value: 'Neither satisfied or dissatisfied' },
+  { text: 'Dissatisfied', value: 'Dissatisfied' },
+  { text: 'Very dissatisfied', value: 'Very dissatisfied' }
 ]
 
 function ViewModel (payload, errors) {

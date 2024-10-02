@@ -5,7 +5,7 @@ describe('DDI API user', () => {
   jest.mock('../../../../app/api/ddi-index-api/base')
   const { callDelete, get, put, post } = require('../../../../app/api/ddi-index-api/base')
 
-  const { userLogout, validateUser, isLicenceAccepted, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect } = require('../../../../app/api/ddi-index-api/user')
+  const { userLogout, validateUser, isLicenceAccepted, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect, submitFeedback } = require('../../../../app/api/ddi-index-api/user')
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -60,6 +60,13 @@ describe('DDI API user', () => {
     test('should check if code is correct or not', async () => {
       await isCodeCorrect(userWithDisplayname)
       expect(post).toHaveBeenCalledWith('user/me/email', expect.anything(), expect.anything())
+    })
+  })
+
+  describe('submitFeedback', () => {
+    test('should submit feedback', async () => {
+      await submitFeedback({ field1: 'value1' }, userWithDisplayname)
+      expect(post).toHaveBeenCalledWith('user/me/feedback', { field1: 'value1' }, expect.anything())
     })
   })
 })

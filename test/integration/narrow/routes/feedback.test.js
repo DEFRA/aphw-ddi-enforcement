@@ -5,14 +5,15 @@ describe('Feedback test', () => {
   jest.mock('../../../../app/auth')
   const mockAuth = require('../../../../app/auth')
 
-  // jest.mock('../../../../app/api/ddi-index-api/user')
-  // const { setLicenceAccepted, isEmailVerified, sendVerifyEmail } = require('../../../../app/api/ddi-index-api/user')
+  jest.mock('../../../../app/api/ddi-index-api/user')
+  const { submitFeedback } = require('../../../../app/api/ddi-index-api/user')
 
   const createServer = require('../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
+    submitFeedback.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })
@@ -31,6 +32,30 @@ describe('Feedback test', () => {
   test('GET /feedback route returns 200 for standard users', async () => {
     const options = {
       method: 'GET',
+      url: '/feedback-sent',
+      auth: standardAuth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+    const { document } = new JSDOM(response.payload).window
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Thank you for your feedback')
+  })
+
+  test('GET /feedback-sent route returns 302 with no auth', async () => {
+    const options = {
+      method: 'GET',
+      url: '/feedback-sent'
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/login?next=%2Ffeedback-sent')
+  })
+
+  test('GET /feedback-sent route returns 200 for standard users', async () => {
+    const options = {
+      method: 'GET',
       url: '/feedback',
       auth: standardAuth
     }
@@ -38,11 +63,10 @@ describe('Feedback test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Give feedback on Dangersous Dogs Index')
   })
 
   test('POST /feedback route returns 302 for no auth', async () => {
-    // sendFeedback.mockResolvedValue(true)
     const options = {
       method: 'POST',
       url: '/feedback'
@@ -54,7 +78,6 @@ describe('Feedback test', () => {
   })
 
   test('POST /feedback route returns 400 when auth but invalid content', async () => {
-    // setLicenceAccepted.mockResolvedValue(true)
     const payload = {
     }
     const options = {
@@ -67,13 +90,12 @@ describe('Feedback test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(400)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Tick the box to continue')
+    expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Select an option')
   })
 
-  test('POST /feedback route forwards to previous page when auth and valid content', async () => {
-    // setLicenceAccepted.mockResolvedValue(true)
+  test('POST /feedback route forwards to submitted page when auth and valid content', async () => {
     const payload = {
-      accept: 'Y'
+      satisfaction: 'Satisfied'
     }
     const options = {
       method: 'POST',
@@ -84,7 +106,7 @@ describe('Feedback test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(response.headers.location).toBe('/cdo/search/basic')
+    expect(response.headers.location).toBe('/feedback-sent')
   })
 
   afterEach(async () => {

@@ -1,3 +1,4 @@
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% extends "govuk/template.njk" %}
 
 {% block head %}
@@ -61,13 +62,30 @@
   {{ pageTitle }}
 {% endblock %}
 
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "Beta"
+    },
+    html: 'This is a new service. Help us improve it and <a class="govuk-link" href="/feedback">give your feedback</a>.'
+  }) }}
+{% endblock %}
+
 {% block footer %}
   {{ govukFooter({
       meta: {
         items: [
         {
+            href: "/privacy-notice",
+            text: "Privacy"
+        },
+        {
             href: "/cookies",
             text: "Cookies"
+        },
+        {
+            href: "/secure-access-licence-view",
+            text: "Access licence"
         }
         ]
       }

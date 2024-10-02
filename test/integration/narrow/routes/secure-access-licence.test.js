@@ -17,6 +17,16 @@ describe('Secure access licence test', () => {
     await server.initialize()
   })
 
+  test('GET /secure-access-licence-view route returns 200 even with no auth', async () => {
+    const options = {
+      method: 'GET',
+      url: '/secure-access-licence-view'
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+  })
+
   test('GET /secure-access-licence route returns 302 with no auth', async () => {
     const options = {
       method: 'GET',
@@ -38,7 +48,7 @@ describe('Secure access licence test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.')
+    expect(document.querySelectorAll('p')[8].textContent.trim()).toContain('To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.')
   })
 
   test('POST /secure-access-licence route returns 302 for no auth', async () => {
