@@ -6,7 +6,7 @@ const { getFromSession, setInSession } = require('../session/session-wrapper')
 const { validateUser } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
-const { checkUserAccess } = require('../lib/route-helpers')
+const { getRedirectForUserAccess } = require('../lib/route-helpers')
 
 const determineRedirectUrl = returnUrl => {
   return returnUrl &&
@@ -97,7 +97,7 @@ module.exports = {
         }
       })
 
-      const redirectRoute = await checkUserAccess(request, user)
+      const redirectRoute = await getRedirectForUserAccess(request, user)
       if (redirectRoute) {
         return h.redirect(redirectRoute)
       }

@@ -30,7 +30,7 @@ describe('Authenticate test', () => {
   const { getFromSession } = require('../../../../app/session/session-wrapper')
 
   jest.mock('../../../../app/lib/route-helpers')
-  const { checkUserAccess } = require('../../../../app/lib/route-helpers')
+  const { getRedirectForUserAccess } = require('../../../../app/lib/route-helpers')
 
   beforeEach(async () => {
     getAuth.mockResolvedValue(mockOpenIdAuth)
@@ -40,7 +40,7 @@ describe('Authenticate test', () => {
   })
 
   test('GET /authenticate route returns 302 to forward onto search page', async () => {
-    checkUserAccess.mockResolvedValue(null)
+    getRedirectForUserAccess.mockResolvedValue(null)
     getResult.mockResolvedValue({
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',
@@ -66,7 +66,7 @@ describe('Authenticate test', () => {
   })
 
   test('GET /authenticate route returns 302 to forward to licence if licence not accepted', async () => {
-    checkUserAccess.mockResolvedValue('/secure-access-licence')
+    getRedirectForUserAccess.mockResolvedValue('/secure-access-licence')
     getResult.mockResolvedValue({
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',

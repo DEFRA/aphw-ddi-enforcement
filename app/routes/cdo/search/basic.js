@@ -6,7 +6,7 @@ const searchSchema = require('../../../schema/portal/search/basic')
 const { doSearch } = require('../../../api/ddi-index-api/search')
 const { enforcement } = require('../../../auth/permissions')
 const { addBackNavigation } = require('../../../lib/back-helpers')
-const { checkUserAccess } = require('../../../lib/route-helpers')
+const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 
 module.exports = [{
   method: 'GET',
@@ -18,7 +18,7 @@ module.exports = [{
 
       await validateUser(user)
 
-      const redirectRoute = await checkUserAccess(request, user)
+      const redirectRoute = await getRedirectForUserAccess(request, user)
       if (redirectRoute) {
         return h.redirect(redirectRoute)
       }

@@ -4,7 +4,7 @@ const ViewModel = require('../../../models/cdo/view/dog-details')
 const { getCdo } = require('../../../api/ddi-index-api/cdo')
 const { addBackNavigation } = require('../../../lib/back-helpers')
 const getUser = require('../../../auth/get-user')
-const { checkUserAccess } = require('../../../lib/route-helpers')
+const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 
 module.exports = [
   {
@@ -16,7 +16,7 @@ module.exports = [
         const indexNumber = request.params.indexNumber
         const user = getUser(request)
 
-        const redirectRoute = await checkUserAccess(request, user)
+        const redirectRoute = await getRedirectForUserAccess(request, user)
         if (redirectRoute) {
           return h.redirect(redirectRoute)
         }

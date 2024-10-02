@@ -4,7 +4,7 @@ const ViewModel = require('../../../models/cdo/view/owner-details')
 const { getPersonAndDogs } = require('../../../api/ddi-index-api/person')
 const { addBackNavigation } = require('../../../lib/back-helpers')
 const getUser = require('../../../auth/get-user')
-const { checkUserAccess } = require('../../../lib/route-helpers')
+const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 
 module.exports = [
   {
@@ -15,7 +15,7 @@ module.exports = [
       handler: async (request, h) => {
         const user = getUser(request)
 
-        const redirectRoute = await checkUserAccess(request, user)
+        const redirectRoute = await getRedirectForUserAccess(request, user)
         if (redirectRoute) {
           return h.redirect(redirectRoute)
         }

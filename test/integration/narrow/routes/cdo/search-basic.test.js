@@ -2,7 +2,7 @@ const { auth, user } = require('../../../../mocks/auth')
 const FormData = require('form-data')
 const { doSearch } = require('../../../../../app/api/ddi-index-api/search')
 const { JSDOM } = require('jsdom')
-const { checkUserAccess } = require('../../../../../app/lib/route-helpers')
+const { getRedirectForUserAccess } = require('../../../../../app/lib/route-helpers')
 jest.mock('../../../../../app/lib/route-helpers')
 jest.mock('../../../../../app/api/ddi-index-api/search')
 jest.mock('../../../../../app/api/ddi-index-api/user')
@@ -21,7 +21,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic route returns 200 if access is ok', async () => {
-    checkUserAccess.mockResolvedValue(null)
+    getRedirectForUserAccess.mockResolvedValue(null)
     const options = {
       method: 'GET',
       url: '/cdo/search/basic',
@@ -47,7 +47,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic with valid data returns 200', async () => {
-    checkUserAccess.mockResolvedValue(null)
+    getRedirectForUserAccess.mockResolvedValue(null)
     doSearch.mockResolvedValue([])
 
     const options = {
@@ -61,7 +61,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic dog record search with valid data and empty Dog name and Microchip number returns 200', async () => {
-    checkUserAccess.mockResolvedValue(null)
+    getRedirectForUserAccess.mockResolvedValue(null)
     doSearch.mockResolvedValue([
       {
         address: {
@@ -100,7 +100,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic owner record search with valid data and empty Dog name returns 200', async () => {
-    checkUserAccess.mockResolvedValue(null)
+    getRedirectForUserAccess.mockResolvedValue(null)
     doSearch.mockResolvedValue([
       {
         personId: 183,
@@ -136,7 +136,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET /cdo/search/basic with invalid data returns error', async () => {
-    checkUserAccess.mockResolvedValue(null)
+    getRedirectForUserAccess.mockResolvedValue(null)
     const options = {
       method: 'GET',
       url: '/cdo/search/basic?searchTerms=',
@@ -148,7 +148,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET cdo/search/basic with invalid data returns error - invalid chars', async () => {
-    checkUserAccess.mockResolvedValue(null)
+    getRedirectForUserAccess.mockResolvedValue(null)
     const options = {
       method: 'GET',
       url: '/cdo/search/basic?searchTerms=**abc&&',
@@ -160,7 +160,7 @@ describe('SearchBasic test', () => {
   })
 
   test('GET cdo/search/basic forwards to licence - if not yet accepted', async () => {
-    checkUserAccess.mockResolvedValue('/secure-access-licence')
+    getRedirectForUserAccess.mockResolvedValue('/secure-access-licence')
     const options = {
       method: 'GET',
       url: '/cdo/search/basic?searchTerms=**abc&&',

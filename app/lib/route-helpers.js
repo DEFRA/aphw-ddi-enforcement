@@ -11,7 +11,7 @@ const throwIfPreConditionError = (request) => {
   }
 }
 
-const checkUserAccess = async (request, user) => {
+const getRedirectForUserAccess = async (request, user) => {
   const notAccepted = await licenceNotYetAccepted(request, user)
   if (notAccepted) {
     return constants.routes.secureAccessLicence.get
@@ -42,6 +42,6 @@ const licenceNotYetAccepted = async (request, user) => {
 
 module.exports = {
   throwIfPreConditionError,
-  checkUserAccess,
+  getRedirectForUserAccess,
   licenceNotYetAccepted
 }

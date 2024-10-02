@@ -9,7 +9,7 @@ const { getEvents } = require('../../../api/ddi-events-api/event')
 const { getMainReturnPoint } = require('../../../lib/back-helpers')
 const { sortEventsDesc, filterEvents } = require('../../../models/sorting/event')
 const { getUser } = require('../../../auth')
-const { checkUserAccess } = require('../../../lib/route-helpers')
+const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 
 const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
@@ -40,7 +40,7 @@ module.exports = [
         const pk = request.params.pk
         const source = request.params.source
 
-        const redirectRoute = await checkUserAccess(request, user)
+        const redirectRoute = await getRedirectForUserAccess(request, user)
         if (redirectRoute) {
           return h.redirect(redirectRoute)
         }
