@@ -19,13 +19,22 @@ const constants = {
     verifyCode: {
       get: '/verify-code',
       post: '/verify-code'
+    },
+    feedback: {
+      get: '/feedback',
+      post: '/feedback'
+    },
+    feedbackSent: {
+      get: '/feedback-sent'
     }
   },
   views: {
     privacyNotice: 'privacy-notice',
     termsAndConditions: 'terms-and-conditions',
     secureAccessLicence: 'secure-access-licence',
-    verifyCode: 'verify-code'
+    verifyCode: 'verify-code',
+    feedback: 'feedback',
+    feedbackSent: 'feedback-sent'
   },
   keys: {
     acceptedLicence: 'accepted-licence'

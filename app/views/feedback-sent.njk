@@ -1,0 +1,33 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% extends '_layout.njk' %}
+
+{% set pageHeading = "Feedback sent" %}
+
+{% block pageTitle %}{{ serviceName }}
+{% endblock %}
+
+{% block beforeContent %}
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="/cdo/search/basic">Home</a>
+      </li>
+    </ol>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukPanel({
+        titleText: "Thank you for your feedback",
+        classes: 'govuk-!-margin-bottom-7'
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}
