@@ -15,7 +15,6 @@ const routes = [].concat(
   require('../routes/unauthorised'),
   require('../routes/dev-auth'),
   require('../routes/privacy-notice'),
-  require('../routes/terms-and-conditions'),
   require('../routes/secure-access-licence'),
   require('../routes/verify-code')
 )

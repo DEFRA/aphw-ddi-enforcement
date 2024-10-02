@@ -1,14 +1,15 @@
-const { throwIfPreConditionError, licenceNotYetAccepted } = require('../../../app/lib/route-helpers')
+const { throwIfPreConditionError, licenceNotYetAccepted, getRedirectForUserAccess } = require('../../../app/lib/route-helpers')
 
 jest.mock('../../../app/session/session-wrapper')
 const { getFromSession, setInSession } = require('../../../app/session/session-wrapper')
 
 jest.mock('../../../app/api/ddi-index-api/user')
-const { isLicenceAccepted } = require('../../../app/api/ddi-index-api/user')
+const { isLicenceAccepted, isEmailVerified, sendVerifyEmail } = require('../../../app/api/ddi-index-api/user')
 
 beforeEach(() => {
   jest.clearAllMocks()
   setInSession.mockReturnValue()
+  sendVerifyEmail.mockResolvedValue()
 })
 
 describe('throwIfPreConditionError', () => {
@@ -52,5 +53,34 @@ describe('licenceNotYetAccepted', () => {
     getFromSession.mockReturnValue()
     isLicenceAccepted.mockResolvedValue(false)
     expect(await licenceNotYetAccepted({}, {})).toBeTruthy()
+  })
+})
+
+describe('getRedirectForUserAccess', () => {
+  test('should return null if already accepted and email verified', async () => {
+    getFromSession.mockReturnValue('Y')
+    isEmailVerified.mockResolvedValue(true)
+    expect(await getRedirectForUserAccess({}, {})).toBeFalsy()
+  })
+
+  test('should return null if not accepted in session but accepted in DB', async () => {
+    getFromSession.mockReturnValue()
+    isLicenceAccepted.mockResolvedValue(true)
+    isEmailVerified.mockResolvedValue(true)
+    expect(await getRedirectForUserAccess({}, {})).toBe(null)
+  })
+
+  test('should return url if not accepted in session and not accepted in DB', async () => {
+    getFromSession.mockReturnValue()
+    isLicenceAccepted.mockResolvedValue(false)
+    isEmailVerified.mockResolvedValue(false)
+    expect(await getRedirectForUserAccess({}, {})).toBe('/secure-access-licence')
+  })
+
+  test('should return url if not verified', async () => {
+    getFromSession.mockReturnValue()
+    isLicenceAccepted.mockResolvedValue(true)
+    isEmailVerified.mockResolvedValue(false)
+    expect(await getRedirectForUserAccess({}, {})).toBe('/verify-code')
   })
 })

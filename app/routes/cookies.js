@@ -5,16 +5,17 @@ const joi = require('joi')
 module.exports = [{
   method: 'GET',
   path: '/cookies',
-  handler: (request, h) => {
-    return h.view('cookies/cookie-policy', new ViewModel(request.state.cookies_policy, request.query.updated))
+  options: {
+    auth: false,
+    handler: (request, h) => {
+      return h.view('cookies/cookie-policy', new ViewModel(request.state.cookies_policy, request.query.updated))
+    }
   }
 }, {
   method: 'POST',
   path: '/cookies',
   options: {
-    plugins: {
-      crumb: false
-    },
+    auth: false,
     validate: {
       payload: joi.object({
         analytics: joi.boolean(),

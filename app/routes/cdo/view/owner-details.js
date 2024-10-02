@@ -1,11 +1,10 @@
 const { routes, views } = require('../../../constants/cdo/owner')
-const { routes: formRoutes } = require('../../../constants/forms')
 const { enforcement } = require('../../../auth/permissions')
 const ViewModel = require('../../../models/cdo/view/owner-details')
 const { getPersonAndDogs } = require('../../../api/ddi-index-api/person')
 const { addBackNavigation } = require('../../../lib/back-helpers')
 const getUser = require('../../../auth/get-user')
-const { licenceNotYetAccepted } = require('../../../lib/route-helpers')
+const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 
 module.exports = [
   {
@@ -16,8 +15,9 @@ module.exports = [
       handler: async (request, h) => {
         const user = getUser(request)
 
-        if (await licenceNotYetAccepted(request, user)) {
-          return h.redirect(formRoutes.secureAccessLicence.get)
+        const redirectRoute = await getRedirectForUserAccess(request, user)
+        if (redirectRoute) {
+          return h.redirect(redirectRoute)
         }
 
         const personAndDogs = await getPersonAndDogs(request.params.personReference, user)
