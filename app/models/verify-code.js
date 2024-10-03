@@ -7,8 +7,7 @@ function ViewModel (payload, errors) {
       id: 'code',
       name: 'code',
       label: {
-        text: 'Enter the 6 digit security code',
-        classes: 'govuk-label--m'
+        text: 'Enter the 6 digit security code'
       },
       value: payload?.code,
       autocomplete: forms.preventAutocomplete,

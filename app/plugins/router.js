@@ -16,7 +16,8 @@ const routes = [].concat(
   require('../routes/dev-auth'),
   require('../routes/privacy-notice'),
   require('../routes/secure-access-licence'),
-  require('../routes/verify-code')
+  require('../routes/verify-code'),
+  require('../routes/feedback')
 )
 
 module.exports = {

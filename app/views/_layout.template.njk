@@ -1,3 +1,4 @@
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% extends "govuk/template.njk" %}
 
 {% block head %}
@@ -35,7 +36,7 @@
       </a>
 
       <div class="defra-internal-service-name">
-          <a href="/" title="Go to the homepage" class="defra-internal-service-name__link">
+          <a href="{% if auth.isAuthenticated %}/cdo/search/basic{% else %}/{% endif %}" title="Go to the homepage" class="defra-internal-service-name__link">
             {{ serviceName }}
           </a>
       </div>
@@ -61,6 +62,15 @@
   {{ pageTitle }}
 {% endblock %}
 
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "Beta"
+    },
+    html: 'This is a new service. Help us improve it and <a class="govuk-link" href="/feedback">give your feedback</a>.'
+  }) }}
+{% endblock %}
+
 {% block footer %}
   {{ govukFooter({
       meta: {
@@ -75,7 +85,7 @@
         },
         {
             href: "/secure-access-licence-view",
-            text: "Access licence"
+            text: "Secure Access Licence"
         }
         ]
       }

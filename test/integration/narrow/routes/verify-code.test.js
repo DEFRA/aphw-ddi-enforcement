@@ -40,7 +40,7 @@ describe('verify code test', () => {
     expect(response.statusCode).toBe(200)
     expect(sendVerifyEmail).not.toHaveBeenCalled()
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('The email contains a 6 digit security code.')
+    expect(document.querySelectorAll('p')[8].textContent.trim()).toContain('The email contains a 6 digit security code.')
   })
 
   test('GET /verify-code route resends email if param supplied', async () => {
