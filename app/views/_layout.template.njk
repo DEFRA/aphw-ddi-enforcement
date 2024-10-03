@@ -36,7 +36,7 @@
       </a>
 
       <div class="defra-internal-service-name">
-          <a href="/" title="Go to the homepage" class="defra-internal-service-name__link">
+          <a href="{% if auth.isAuthenticated %}/cdo/search/basic{% else %}/{% endif %}" title="Go to the homepage" class="defra-internal-service-name__link">
             {{ serviceName }}
           </a>
       </div>
