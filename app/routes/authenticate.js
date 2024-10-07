@@ -77,7 +77,15 @@ module.exports = {
         const host = request.headers.host
         const unauthorisedReturnUrl = `${protocol}://${host}/unauthorised`
 
-        const result = await logoutUser(authResult.idToken, unauthorisedReturnUrl)
+        console.log('JB unauthorisedReturnUrl', unauthorisedReturnUrl)
+        console.log('JB request.headers', request.headers)
+        console.log('JB request.server.info.protocol', request.server.info.protocol)
+        let result
+        try {
+          result = await logoutUser(authResult.idToken, unauthorisedReturnUrl)
+        } catch (err) {
+          console.log('JB err', err)
+        }
 
         h.unstate('nonce')
         h.unstate('state')
