@@ -1,7 +1,7 @@
 const { forms } = require('../../../constants/forms')
 const { errorPusherDefault } = require('../../../lib/error-helpers')
 
-function ViewModel (searchCriteria, resultList, backNav, errors) {
+function ViewModel (searchCriteria, results, backNav, errors) {
   this.model = {
     backLink: backNav.backLink,
     srcHashParam: backNav.srcHashParam,
@@ -45,8 +45,23 @@ function ViewModel (searchCriteria, resultList, backNav, errors) {
         }
       ]
     },
+    fuzzy: {
+      id: 'fuzzy',
+      name: 'fuzzy',
+      items: [
+        {
+          value: 'Y',
+          text: 'Include close matches',
+          checked: searchCriteria?.fuzzy,
+          label: {
+            classes: 'govuk-!-font-size-16'
+          }
+        }
+      ],
+      classes: 'govuk-checkboxes--small'
+    },
     results: {
-      items: resultList?.map(resultObj => ({
+      items: results?.results?.map(resultObj => ({
         ...resultObj,
         dogs: resultObj.dogs?.map(dog => ({
           ...dog,
@@ -56,6 +71,7 @@ function ViewModel (searchCriteria, resultList, backNav, errors) {
         microchipNumberNotEntered: !resultObj.microchipNumber?.length
       })) || []
     },
+    totalFound: results?.totalFound,
     errors: []
   }
 
