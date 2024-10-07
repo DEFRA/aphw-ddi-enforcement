@@ -10,7 +10,9 @@ const getCurrentPolicy = (request, h) => {
 
 const createDefaultPolicy = (h) => {
   const cookiesPolicy = { confirmed: false, essential: true, analytics: false }
-  h.state('cookies_policy', cookiesPolicy, config)
+  if (h?.request?.route?.path === '/') {
+    h.state('cookies_policy', cookiesPolicy, config)
+  }
 
   return cookiesPolicy
 }

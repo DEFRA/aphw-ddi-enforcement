@@ -73,11 +73,19 @@ module.exports = {
         await validateUser(user)
       } catch (e) {
         console.error('Validation failed', e)
+        console.log('JB request.headers', request?.headers)
+        console.log('JB request.server.info.protocol', request?.server?.info?.protocol)
         const protocol = request.headers['x-forwarded-proto'] || request.server.info.protocol
         const host = request.headers.host
         const unauthorisedReturnUrl = `${protocol}://${host}/unauthorised`
 
-        const result = await logoutUser(authResult.idToken, unauthorisedReturnUrl)
+        console.log('JB unauthorisedReturnUrl', unauthorisedReturnUrl)
+        let result
+        try {
+          result = await logoutUser(authResult.idToken, unauthorisedReturnUrl)
+        } catch (err) {
+          console.log('JB err', err)
+        }
 
         h.unstate('nonce')
         h.unstate('state')
