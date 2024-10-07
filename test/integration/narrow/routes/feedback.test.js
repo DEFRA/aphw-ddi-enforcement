@@ -63,7 +63,7 @@ describe('Feedback test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Give feedback on Dangersous Dogs Index')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Give feedback on Dangerous Dogs Index')
   })
 
   test('POST /feedback route returns 302 for no auth', async () => {
