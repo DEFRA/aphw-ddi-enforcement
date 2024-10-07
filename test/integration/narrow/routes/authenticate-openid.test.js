@@ -118,6 +118,33 @@ describe('Authenticate test', () => {
     expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/unauthorised')
   })
 
+  test('GET /authenticate route for unregistered user returns 302 and logs user out - https url', async () => {
+    validateUser.mockRejectedValue({})
+
+    getResult.mockResolvedValue({
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+      idToken: 'idToken',
+      idTokenDecoded: 'idTokenDecoded',
+      userinfo: JSON.stringify({ email: 'me@example.com' }, null, 2),
+      coreIdentity: 'coreIdentity'
+    })
+
+    const options = {
+      method: 'GET',
+      url: '/authenticate',
+      headers: {
+        'x-forwarded-proto': 'http',
+        host: 'livehost',
+        Cookie: 'nonce=abcdede;state=fghijkl;'
+      }
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'https://livehost/unauthorised')
+  })
+
   test('GET /authenticate route for unregistered user returns 302 and logs user out & no x-forwarded-proto', async () => {
     validateUser.mockRejectedValue()
 

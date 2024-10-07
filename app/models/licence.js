@@ -8,7 +8,7 @@ function ViewModel (errors) {
       items: [
         {
           value: 'Y',
-          text: 'By ticking this box I confirm I have fully read and understood the terms of The Dangerous Dogs Index (DDI) Secure Access Licence (Licence)'
+          text: 'By ticking this box I confirm I have read and accepted the terms of The Dangerous Dogs Index Secure Access Licence'
         }
       ]
     },
