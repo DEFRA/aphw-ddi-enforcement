@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 const schema = Joi.object({
   accept: Joi.string().required().messages(
-    { '*': 'Tick the box to continue' }
+    { '*': 'You must accept the terms to continue.' }
   )
 }).required()
 
