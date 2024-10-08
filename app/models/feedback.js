@@ -8,33 +8,51 @@ const satisfactionOptions = [
   { text: 'Very dissatisfied', value: 'Very dissatisfied' }
 ]
 
-function ViewModel (payload, errors) {
+const completedTaskOptions = [
+  { text: 'Yes', value: 'Yes' },
+  { text: 'No', value: 'No' }
+]
+
+function ViewModel (payload, logout, errors) {
   this.model = {
+    completedTask: {
+      id: 'completedTask',
+      name: 'completedTask',
+      fieldset: {
+        legend: {
+          text: 'Did you complete your task today?',
+          classes: 'govuk-fieldset__legend--m'
+        }
+      },
+      value: payload?.completedTask,
+      items: completedTaskOptions
+    },
+    details: {
+      id: 'details',
+      name: 'details',
+      maxlength: 1200,
+      label: {
+        text: 'Can you provide more detail? (optional)',
+        classes: 'govuk-label--m'
+      },
+      hint: {
+        text: 'Do not include personal information like your name, phone number or email address.'
+      },
+      value: payload?.details
+    },
     satisfaction: {
       id: 'satisfaction',
       name: 'satisfaction',
       fieldset: {
         legend: {
           text: 'Overall, how did you feel about the service you received today?',
-          classes: 'govuk-fieldset__legend--s'
+          classes: 'govuk-fieldset__legend--m'
         }
       },
       value: payload?.satisfaction,
       items: satisfactionOptions
     },
-    improvements: {
-      id: 'improvements',
-      name: 'improvements',
-      maxlength: 1200,
-      label: {
-        text: 'How could we improve this service?',
-        classes: 'govuk-label--s'
-      },
-      hint: {
-        text: 'Do not include sensitive information.'
-      },
-      value: payload?.improvements
-    },
+    isLogout: !!logout,
     errors: []
   }
 

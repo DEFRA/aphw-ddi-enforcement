@@ -1,10 +1,12 @@
+const { views } = require('../constants/forms')
+
 module.exports = {
   method: 'GET',
   path: '/post-logout',
   options: {
     auth: false
   },
-  handler: async (_request, h) => {
-    return h.view('post-logout')
+  handler: async (request, h) => {
+    return h.view(request?.query?.feedback ? views.postLogoutWithFeedback : views.postLogout)
   }
 }

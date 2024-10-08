@@ -30,6 +30,12 @@ const constants = {
     },
     feedbackSent: {
       get: '/feedback-sent'
+    },
+    postLogout: {
+      get: '/post-logout'
+    },
+    postLogoutWithFeedback: {
+      get: '/post-logout-with-feedback'
     }
   },
   views: {
@@ -38,10 +44,13 @@ const constants = {
     secureAccessLicenceView: 'secure-access-licence-view',
     verifyCode: 'verify-code',
     feedback: 'feedback',
-    feedbackSent: 'feedback-sent'
+    feedbackSent: 'feedback-sent',
+    postLogout: 'post-logout',
+    postLogoutWithFeedback: 'post-logout-with-feedback'
   },
   keys: {
-    acceptedLicence: 'accepted-licence'
+    acceptedLicence: 'accepted-licence',
+    loggedInForNavRoutes: 'logged-in-for-nav-routes'
   }
 }
 

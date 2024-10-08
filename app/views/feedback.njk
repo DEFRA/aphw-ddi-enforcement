@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block beforeContent %}
+{{ super() }}
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
@@ -32,18 +33,31 @@
     {% endif %}
 
       <form class="form" method="post">
-      <h1 class="govuk-heading-l">Give feedback on Dangerous Dogs Index</h1>
-
-      <h2 class="govuk-heading-m">Satisfaction survey</h2>
+      <h1 class="govuk-heading-xl">Give feedback on the Dangerous Dogs Index</h1>
 
       <div class="govuk-form-group">
+        {{ govukRadios(model.completedTask) }}
+        {{ govukCharacterCount(model.details) }}
         {{ govukRadios(model.satisfaction) }}
-        {{ govukCharacterCount(model.improvements) }}
       </div>
 
+      <p class="govuk-body">Do not use this form for support requests. If you need support, email <a class="govuk-link govuk-link--no-visited-state" href="mailto:dogsindex@defra.gov.uk">dogsindex@defra.gov.uk</a>.
+      </p>
+
+      {% if model.isLogout %}
+      <div class="govuk-button-group">
+        <button class="govuk-button" data-module="govuk-button">
+          Give feedback and sign out
+        </button>
+        <a href="/logout" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+          Sign out without giving feedback
+        </a>
+      </div>
+      {% else %}
       <button class="govuk-button" data-module="govuk-button">
-        Send feedback
+        Give feedback
       </button>
+      {% endif %}
 
       </form>
 

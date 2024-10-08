@@ -39,7 +39,7 @@ describe('Feedback test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Thank you for your feedback')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Feedback received')
   })
 
   test('GET /feedback-sent route returns 302 with no auth', async () => {
@@ -63,7 +63,7 @@ describe('Feedback test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Give feedback on Dangerous Dogs Index')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toEqual('Give feedback on the Dangerous Dogs Index')
   })
 
   test('POST /feedback route returns 302 for no auth', async () => {
@@ -95,6 +95,7 @@ describe('Feedback test', () => {
 
   test('POST /feedback route forwards to submitted page when auth and valid content', async () => {
     const payload = {
+      completedTask: 'Yes',
       satisfaction: 'Satisfied'
     }
     const options = {

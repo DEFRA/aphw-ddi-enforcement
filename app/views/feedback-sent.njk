@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block beforeContent %}
+{{ super() }}
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
@@ -23,9 +24,11 @@
     <div class="govuk-grid-column-two-thirds">
 
       {{ govukPanel({
-        titleText: "Thank you for your feedback",
-        classes: 'govuk-!-margin-bottom-7'
+        titleText: "Feedback received"
       }) }}
+
+      <h2 class="govuk-heading-m govuk-!-margin-top-7">What happens next</h2>
+      <p>Your feedback will be used to help improve this service.</p>
 
     </div>
   </div>

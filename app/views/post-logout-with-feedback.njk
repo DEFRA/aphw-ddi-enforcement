@@ -1,0 +1,22 @@
+{% extends '_layout.njk' %}
+
+{% block pageTitle %}{{ serviceName }}{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-panel govuk-panel--confirmation">
+      <h1 class="govuk-panel__title">You are signed out</h1>
+      <div class="givuk-panel__body">We have received your feedback</div>
+    </div>
+    <h2 class="govuk-heading-m govuk-!-margin-top-7">What happens next</h2>
+    <p>Your feedback will be used to help improve this service.</p>
+    
+    <p>
+      <a href="/" class="govuk-link govuk-link--no-visited-state">Sign in again</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

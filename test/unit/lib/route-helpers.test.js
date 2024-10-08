@@ -1,4 +1,4 @@
-const { throwIfPreConditionError, licenceNotYetAccepted, getRedirectForUserAccess } = require('../../../app/lib/route-helpers')
+const { throwIfPreConditionError, licenceNotYetAccepted, getRedirectForUserAccess, getContextNav } = require('../../../app/lib/route-helpers')
 
 jest.mock('../../../app/session/session-wrapper')
 const { getFromSession, setInSession } = require('../../../app/session/session-wrapper')
@@ -82,5 +82,31 @@ describe('getRedirectForUserAccess', () => {
     isLicenceAccepted.mockResolvedValue(true)
     isEmailVerified.mockResolvedValue(false)
     expect(await getRedirectForUserAccess({}, {})).toBe('/verify-code')
+  })
+})
+
+describe('getContextNav', () => {
+  test('should return loggedIn paths', async () => {
+    getFromSession.mockReturnValue('Y')
+    const nav = getContextNav({})
+    expect(nav.sessionIsLoggedIn).toBeTruthy()
+    expect(nav.homeLink).toBe('/cdo/search/basic')
+    expect(nav.signOutLink).toBe('/feedback?logout=true')
+  })
+
+  test('should return not loggedIn paths', async () => {
+    getFromSession.mockReturnValue()
+    const nav = getContextNav({})
+    expect(nav.sessionIsLoggedIn).toBeFalsy()
+    expect(nav.homeLink).toBe('/')
+    expect(nav.signOutLink).toBe('/logout')
+  })
+
+  test('should handle excluded paths', async () => {
+    getFromSession.mockReturnValue('Y')
+    const nav = getContextNav({ url: { path: '/verify-code' } })
+    expect(nav.sessionIsLoggedIn).toBeTruthy()
+    expect(nav.homeLink).toBe('/')
+    expect(nav.signOutLink).toBe('/logout')
   })
 })

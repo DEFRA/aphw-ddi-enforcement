@@ -14,7 +14,7 @@
           <span class="defra-logo-name__link">Department <br>for Environment<br>Food &amp; Rural Affairs</span>
       </a>
       <div class="defra-internal-service-name">
-          <a href="/" title="Go to the homepage" class="defra-internal-service-name__link">
+          <a href="{{ nav.homeLink }}" title="Go to the homepage" class="defra-internal-service-name__link">
             {{ serviceName }}
           </a>
       </div>
@@ -27,7 +27,7 @@
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
-        <a class="govuk-breadcrumbs__link" href="{% if auth.isAuthenticated %}/cdo/search/basic{% else %}/{% endif %}">Home</a>
+        <a class="govuk-breadcrumbs__link" href="{{ nav.homeLink }}">Home</a>
       </li>
     </ol>
   </div>
