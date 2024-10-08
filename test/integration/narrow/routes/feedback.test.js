@@ -110,6 +110,23 @@ describe('Feedback test', () => {
     expect(response.headers.location).toBe('/feedback-sent')
   })
 
+  test('POST /feedback route forwards to logout page when auth and valid content and redirect set', async () => {
+    const payload = {
+      completedTask: 'Yes',
+      satisfaction: 'Satisfied'
+    }
+    const options = {
+      method: 'POST',
+      url: '/feedback?logout=true',
+      auth: standardAuth,
+      payload
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/logout?feedback=true')
+  })
+
   afterEach(async () => {
     await server.stop()
   })
