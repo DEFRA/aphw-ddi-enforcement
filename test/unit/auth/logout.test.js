@@ -37,4 +37,15 @@ describe('logout', () => {
       post_logout_redirect_uri: 'https://localhost:3003/not-authorised'
     })
   })
+
+  test('should logout a user with params', async () => {
+    authMock.client.endSessionUrl.mockResolvedValue('https://example.com')
+
+    const logoutResult = await logoutUser('xyzABCdef', null, '?feedback=true')
+    expect(logoutResult).toBe('https://example.com')
+    expect(authMock.client.endSessionUrl).toHaveBeenCalledWith({
+      id_token_hint: 'xyzABCdef',
+      post_logout_redirect_uri: 'http://localhost:3003/post-logout?feedback=true'
+    })
+  })
 })

@@ -58,7 +58,10 @@ function ViewModel (searchCriteria, results, backNav, errors) {
           }
         }
       ],
-      classes: 'govuk-checkboxes--small'
+      classes: 'govuk-checkboxes--small',
+      formGroup: {
+        classes: 'govuk-!-margin-bottom-2'
+      }
     },
     results: {
       items: results?.results?.map(resultObj => ({
