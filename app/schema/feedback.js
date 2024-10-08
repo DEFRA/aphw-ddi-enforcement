@@ -4,7 +4,10 @@ const schema = Joi.object({
   satisfaction: Joi.string().required().messages(
     { '*': 'Select an option' }
   ),
-  improvements: Joi.string().allow('').allow(null).optional()
+  completedTask: Joi.string().required().messages(
+    { '*': 'Select an option' }
+  ),
+  details: Joi.string().allow('').allow(null).optional()
 }).required()
 
 const validatePayload = (payload) => {

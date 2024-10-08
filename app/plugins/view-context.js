@@ -1,6 +1,7 @@
 const { serviceName } = require('../config')
 const { getUser } = require('../auth')
 const mapAuth = require('../auth/map-auth')
+const { getContextNav } = require('../lib/route-helpers')
 
 module.exports = {
   plugin: {
@@ -18,6 +19,7 @@ module.exports = {
           ctx.serviceUrl = serviceUrl
           ctx.auth = mapAuth(request)
           ctx.user = getUser(request)
+          ctx.nav = getContextNav(request)
 
           response.source.context = ctx
         }

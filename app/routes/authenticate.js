@@ -82,6 +82,7 @@ module.exports = {
         h.unstate('nonce')
         h.unstate('state')
         setInSession(request, keys.acceptedLicence, null)
+        setInSession(request, keys.loggedInForNavRoutes, null)
 
         return h.redirect(result)
       }
@@ -103,6 +104,7 @@ module.exports = {
       }
 
       setInSession(request, keys.acceptedLicence, null)
+      setInSession(request, keys.loggedInForNavRoutes, 'Y')
 
       return h.redirect(determineRedirectUrl(getFromSession(request, 'returnUrl')))
     } catch (err) {

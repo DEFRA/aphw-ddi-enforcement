@@ -16,17 +16,17 @@
         <legend class="govuk-fieldset__legend govuk-visually-hidden">Dog records - Search</legend>
           {{ govukInput(model.searchTerms) }}
 
-          {% if model.results.items.length > 0 %}
+          {% if model.searchTerms.value %}
           {{ govukCheckboxes(model.fuzzy) }}
           {% endif %}
-      </fieldset>
       
-      <input type="hidden" name="searchType" id="searchType" value="dog" />
+        <input type="hidden" name="searchType" id="searchType" value="dog" />
 
-      {{ govukButton({
-        text: "Search",
-        value: "primary"
-      }) }}
+        {{ govukButton({
+          text: "Search",
+          value: "primary"
+        }) }}
+      </fieldset>
 
       {% if not model.searchTerms.value %}
       <p class="govuk-body">Access the most up to date Defra information from the Dangerous Dogs Index.</p>

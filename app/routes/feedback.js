@@ -12,7 +12,7 @@ module.exports = [
     options: {
       auth: { scope: enforcement },
       handler: async (request, h) => {
-        return h.view(views.feedback, new ViewModel(request.payload))
+        return h.view(views.feedback, new ViewModel(request.payload, request.query.logout))
       }
     }
   },
@@ -34,19 +34,20 @@ module.exports = [
       validate: {
         payload: validatePayload,
         failAction: async (request, h, error) => {
-          return h.view(views.feedback, new ViewModel(request.payload, error)).code(errorCodes.validationError).takeover()
+          return h.view(views.feedback, new ViewModel(request.payload, request.query.logout, error)).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {
         const data = {
           fields: [
-            { name: 'Satisfaction', value: request.payload?.satisfaction },
-            { name: 'Improvements', value: request.payload?.improvements ?? '' }
+            { name: 'CompletedTask', value: request.payload?.completedTask },
+            { name: 'Details', value: request.payload?.details ?? '' },
+            { name: 'Satisfaction', value: request.payload?.satisfaction }
           ]
         }
         await submitFeedback(data, getUser(request))
 
-        return h.redirect(routes.feedbackSent.get)
+        return h.redirect(request?.query?.logout ? '/logout?feedback=true' : routes.feedbackSent.get)
       }
     }
   }

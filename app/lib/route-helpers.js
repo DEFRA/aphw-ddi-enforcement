@@ -40,8 +40,31 @@ const licenceNotYetAccepted = async (request, user) => {
   return true
 }
 
+const pathsForRoot = [
+  constants.routes.secureAccessLicence.get,
+  constants.routes.verifyCode.get,
+  constants.routes.postLogout.get,
+  constants.routes.postLogoutWithFeedback.get
+]
+
+const getContextNav = (request) => {
+  const loggedIn = getFromSession(request, constants.keys.loggedInForNavRoutes) === 'Y'
+  const homeLink = loggedIn && !pathsForRoot.includes(request.url?.path)
+    ? '/cdo/search/basic'
+    : '/'
+  const signOutLink = loggedIn && !pathsForRoot.includes(request.url?.path)
+    ? '/feedback?logout=true'
+    : '/logout'
+  return {
+    sessionIsLoggedIn: loggedIn,
+    homeLink,
+    signOutLink
+  }
+}
+
 module.exports = {
   throwIfPreConditionError,
   getRedirectForUserAccess,
-  licenceNotYetAccepted
+  licenceNotYetAccepted,
+  getContextNav
 }

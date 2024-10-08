@@ -16,7 +16,7 @@ module.exports = {
 
     const idToken = request.state['session-auth']?.account.idToken
 
-    const logoutRes = await logoutUser(idToken)
+    const logoutRes = await logoutUser(idToken, null, request?.query?.feedback ? '?feedback=true' : '')
 
     request.cookieAuth.clear()
     h.unstate('nonce')

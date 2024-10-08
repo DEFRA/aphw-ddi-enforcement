@@ -1,3 +1,4 @@
+const { keys } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/search')
 const { validateUser } = require('../../../api/ddi-index-api/user')
 const { getUser } = require('../../../auth')
@@ -7,6 +8,7 @@ const { doSearch } = require('../../../api/ddi-index-api/search')
 const { enforcement } = require('../../../auth/permissions')
 const { addBackNavigation } = require('../../../lib/back-helpers')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
+const { setInSession } = require('../../../session/session-wrapper')
 
 module.exports = [{
   method: 'GET',
@@ -22,6 +24,8 @@ module.exports = [{
       if (redirectRoute) {
         return h.redirect(redirectRoute)
       }
+
+      setInSession(request, keys.loggedInForNavRoutes, 'Y')
 
       const searchCriteria = request.query
 
