@@ -1,6 +1,7 @@
 const getUser = require('../auth/get-user')
 const { userLogout } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
+const { clearSessionDown } = require('../session/session-wrapper')
 
 module.exports = {
   method: 'GET',
@@ -18,10 +19,7 @@ module.exports = {
 
     const logoutRes = await logoutUser(idToken, null, request?.query?.feedback ? '?feedback=true' : '')
 
-    request.cookieAuth.clear()
-    h.unstate('nonce')
-    h.unstate('state')
-    request.yar.reset()
+    clearSessionDown(request, h)
 
     return h.redirect(logoutRes)
   }

@@ -62,9 +62,21 @@ const getContextNav = (request) => {
   }
 }
 
+const isUrlEndingFromList = (url, endingsToExclude) => {
+  let found = false
+  for (const ending of endingsToExclude) {
+    if (url.endsWith(ending)) {
+      found = true
+      break
+    }
+  }
+  return found
+}
+
 module.exports = {
   throwIfPreConditionError,
   getRedirectForUserAccess,
   licenceNotYetAccepted,
-  getContextNav
+  getContextNav,
+  isUrlEndingFromList
 }

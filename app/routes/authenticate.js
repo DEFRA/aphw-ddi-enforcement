@@ -2,17 +2,23 @@ const auth = require('../auth')
 const { keys } = require('../constants/forms')
 const { getAuth, getRedirectUri, NONCE_COOKIE_NAME, STATE_COOKIE_NAME, getResult } = require('../auth/openid-auth')
 const { hash } = require('../auth/openid-helper')
-const { getFromSession, setInSession } = require('../session/session-wrapper')
+const { getFromSession, setInSession, clearSessionDown } = require('../session/session-wrapper')
 const { validateUser } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
-const { getRedirectForUserAccess } = require('../lib/route-helpers')
+const { getRedirectForUserAccess, isUrlEndingFromList } = require('../lib/route-helpers')
+
+const urlPathsToExclude = [
+  '/post-logout',
+  '/post-logout?feedback=true',
+  '/unauthorised',
+  '/denied'
+]
 
 const determineRedirectUrl = returnUrl => {
   return returnUrl &&
     returnUrl !== '' &&
-    !returnUrl.endsWith('/post-logout') &&
-    !returnUrl.endsWith('/unauthorised')
+    !isUrlEndingFromList(returnUrl, urlPathsToExclude)
     ? returnUrl
     : '/'
 }
@@ -75,14 +81,11 @@ module.exports = {
         console.error('Validation failed', e)
         const host = request.headers.host
         const protocol = host?.indexOf('localhost') > -1 ? 'http' : 'https'
-        const unauthorisedReturnUrl = `${protocol}://${host}/unauthorised`
+        const unauthorisedReturnUrl = `${protocol}://${host}/denied`
 
         const result = await logoutUser(authResult.idToken, unauthorisedReturnUrl)
 
-        h.unstate('nonce')
-        h.unstate('state')
-        setInSession(request, keys.acceptedLicence, null)
-        setInSession(request, keys.loggedInForNavRoutes, null)
+        clearSessionDown(request, h)
 
         return h.redirect(result)
       }

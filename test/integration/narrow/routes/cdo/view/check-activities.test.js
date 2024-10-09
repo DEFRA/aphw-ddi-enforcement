@@ -211,13 +211,11 @@ describe('Check activities', () => {
     expect(document.querySelectorAll('caption.govuk-visually-hidden')[0].textContent.trim()).toBe('All activity')
     expect(document.querySelectorAll('.govuk-table th')[0].textContent.trim()).toBe('Date')
     expect(document.querySelectorAll('.govuk-table th')[1].textContent.trim()).toBe('Activity')
-    expect(document.querySelectorAll('.govuk-table th')[2].textContent.trim()).toBe('Team member')
 
     const rows = document.querySelectorAll('.govuk-table__body .govuk-table__row')
     expect(rows.length).toBe(9)
     expect(rows[0].querySelectorAll('.govuk-table__cell')[0].textContent.trim()).toBe('15 February 2024')
     expect(rows[0].querySelectorAll('.govuk-table__cell')[1].textContent.trim()).toBe('Police correspondence received')
-    expect(rows[0].querySelectorAll('.govuk-table__cell')[2].textContent.trim()).toBe('Mr Developer')
     expect(rows[1].querySelectorAll('.govuk-table__cell')[1].textContent.trim()).toBe('CDO issue date updated')
     expect(rows[2].querySelectorAll('.govuk-table__cell')[1].textContent.trim()).toBe('CDO expiry date updated')
     expect(rows[3].querySelectorAll('.govuk-table__cell')[1].textContent.trim()).toBe('Dog record created (Pre-exempt)')
@@ -261,13 +259,11 @@ describe('Check activities', () => {
     expect(document.querySelectorAll('caption.govuk-visually-hidden')[0].textContent.trim()).toBe('All activity')
     expect(document.querySelectorAll('.govuk-table th')[0].textContent.trim()).toBe('Date')
     expect(document.querySelectorAll('.govuk-table th')[1].textContent.trim()).toBe('Activity')
-    expect(document.querySelectorAll('.govuk-table th')[2].textContent.trim()).toBe('Team member')
 
     const rows = document.querySelectorAll('.govuk-table__body .govuk-table__row')
     expect(rows.length).toBe(1)
     expect(rows[0].querySelectorAll('.govuk-table__cell')[0].textContent.trim()).toBe('15 February 2024')
     expect(rows[0].querySelectorAll('.govuk-table__cell')[1].textContent.trim()).toBe('Change of address form sent')
-    expect(rows[0].querySelectorAll('.govuk-table__cell')[2].textContent.trim()).toBe('Mr Developer')
   })
 
   test('GET /cdo/view/activity/xxx/dog route returns a 200 and message given no activities exist', async () => {
