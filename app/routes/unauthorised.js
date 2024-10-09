@@ -9,7 +9,7 @@ module.exports = {
     auth: false
   },
   handler: (request, h) => {
-    clearSessionDown(request, h)
+    clearSessionDown(request, h, true)
 
     return h.view('unauthorized').code(UNAUTHORISED)
   }

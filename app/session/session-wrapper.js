@@ -8,15 +8,17 @@ const setInSession = (request, keyName, keyValue) => {
   request.yar.set(keyName, keyValue)
 }
 
-const clearSessionDown = (request, h) => {
+const clearSessionDown = (request, h, leaveMinimalSession = false) => {
   setInSession(request, keys.acceptedLicence, null)
   setInSession(request, keys.loggedInForNavRoutes, null)
-  setInSession(request, 'returnUrl', null)
   request.cookieAuth.clear()
+  if (!leaveMinimalSession) {
+    setInSession(request, 'returnUrl', null)
+    request.yar.reset()
+    h.unstate('dangerous_dog_act_portal_session')
+  }
   h.unstate('nonce')
   h.unstate('state')
-  request.yar.reset()
-  h.unstate('dangerous_dog_act_portal_session')
   h.unstate('session_auth')
 }
 
