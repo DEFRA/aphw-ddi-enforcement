@@ -43,7 +43,7 @@
       {% if auth.isAuthenticated or nav.sessionIsLoggedIn %}
       <div class="defra-header__right">
         <p class="govuk-body">
-          <a class="govuk-link defra-navigation__right" href="{{ nav.signOutLink }}">Sign out</a>
+          <a class="govuk-link defra-navigation__right govuk-link--no-visited-state" href="{{ nav.signOutLink }}">Sign out</a>
         </p>
       </div>
       {% endif %}
@@ -67,7 +67,7 @@
     tag: {
       text: "Beta"
     },
-    html: 'This is a new service. Help us improve it and <a class="govuk-link" href="/feedback">give your feedback</a>.'
+    html: 'This is a new service. Help us improve it and <a class="govuk-link govuk-link--no-visited-state" href="/feedback">give your feedback</a>.'
   }) }}
 {% endblock %}
 
@@ -80,12 +80,20 @@
             text: "Privacy"
         },
         {
+            href: "/accessibility",
+            text: "Accessibility"
+        },
+        {
             href: "/cookies",
             text: "Cookies"
         },
         {
             href: "/secure-access-licence-view",
             text: "Secure Access Licence"
+        },
+        {
+            href: "/feedback",
+            text: "Feedback"
         }
         ]
       }

@@ -115,7 +115,7 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/unauthorised')
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/denied')
   })
 
   test('GET /authenticate route for unregistered user returns 302 and logs user out - https url', async () => {
@@ -142,7 +142,7 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(logoutUser).toHaveBeenCalledWith('idToken', 'https://livehost/unauthorised')
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'https://livehost/denied')
   })
 
   test('GET /authenticate route for unregistered user returns 302 and logs user out & no x-forwarded-proto', async () => {
@@ -168,7 +168,7 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/unauthorised')
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/denied')
   })
 
   test('GET /authenticate route returns 500', async () => {

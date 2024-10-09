@@ -4,13 +4,13 @@ const UNAUTHORISED = 401
 
 module.exports = {
   method: 'GET',
-  path: '/unauthorised',
+  path: '/denied',
   options: {
     auth: false
   },
   handler: (request, h) => {
     clearSessionDown(request, h)
 
-    return h.view('unauthorized').code(UNAUTHORISED)
+    return h.view('denied').code(UNAUTHORISED)
   }
 }

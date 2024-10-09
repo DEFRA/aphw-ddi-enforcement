@@ -6,6 +6,9 @@ const constants = {
     preventAutocomplete: 'one-time-code'
   },
   routes: {
+    accessibility: {
+      get: '/accessibility'
+    },
     privacyNotice: {
       get: '/privacy-notice'
     },
@@ -39,6 +42,7 @@ const constants = {
     }
   },
   views: {
+    accessibility: 'accessibility',
     privacyNotice: 'privacy-notice',
     secureAccessLicenceAgree: 'secure-access-licence-agree',
     secureAccessLicenceView: 'secure-access-licence-view',
