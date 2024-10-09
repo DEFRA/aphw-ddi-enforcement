@@ -12,7 +12,9 @@ const determineRedirectUrl = returnUrl => {
   return returnUrl &&
     returnUrl !== '' &&
     !returnUrl.endsWith('/post-logout') &&
-    !returnUrl.endsWith('/unauthorised')
+    !returnUrl.endsWith('/post-logout?feedback=true') &&
+    !returnUrl.endsWith('/unauthorised') &&
+    !returnUrl.endsWith('/denied')
     ? returnUrl
     : '/'
 }

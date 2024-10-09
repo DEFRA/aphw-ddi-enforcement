@@ -11,6 +11,7 @@ const setInSession = (request, keyName, keyValue) => {
 const clearSessionDown = (request, h) => {
   setInSession(request, keys.acceptedLicence, null)
   setInSession(request, keys.loggedInForNavRoutes, null)
+  setInSession(request, 'returnUrl', null)
   request.cookieAuth.clear()
   h.unstate('nonce')
   h.unstate('state')
