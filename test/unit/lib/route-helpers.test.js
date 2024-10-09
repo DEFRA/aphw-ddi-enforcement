@@ -1,4 +1,4 @@
-const { throwIfPreConditionError, licenceNotYetAccepted, getRedirectForUserAccess, getContextNav } = require('../../../app/lib/route-helpers')
+const { throwIfPreConditionError, licenceNotYetAccepted, getRedirectForUserAccess, getContextNav, isUrlEndingFromList } = require('../../../app/lib/route-helpers')
 
 jest.mock('../../../app/session/session-wrapper')
 const { getFromSession, setInSession } = require('../../../app/session/session-wrapper')
@@ -108,5 +108,19 @@ describe('getContextNav', () => {
     expect(nav.sessionIsLoggedIn).toBeTruthy()
     expect(nav.homeLink).toBe('/')
     expect(nav.signOutLink).toBe('/logout')
+  })
+})
+
+describe('isUrlEndingFromList', () => {
+  test('should return false when path ending doesnt match', async () => {
+    expect(isUrlEndingFromList('https://host.com/12345', ['/23456', '/1345', '/22345'])).toBeFalsy()
+  })
+
+  test('should return true when path ending matches', async () => {
+    expect(isUrlEndingFromList('https://host.com/12345', ['/23456', '/2345', '/12345'])).toBeTruthy()
+  })
+
+  test('should return true when path ending matches multiple times', async () => {
+    expect(isUrlEndingFromList('https://host.com/12345', ['/123456', '/12345', '/12345', '/123'])).toBeTruthy()
   })
 })

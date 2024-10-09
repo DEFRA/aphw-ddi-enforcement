@@ -6,15 +6,19 @@ const { getFromSession, setInSession, clearSessionDown } = require('../session/s
 const { validateUser } = require('../api/ddi-index-api/user')
 const { logoutUser } = require('../auth/logout')
 const { enforcement } = require('../auth/permissions')
-const { getRedirectForUserAccess } = require('../lib/route-helpers')
+const { getRedirectForUserAccess, isUrlEndingFromList } = require('../lib/route-helpers')
+
+const urlPathsToExclude = [
+  '/post-logout',
+  '/post-logout?feedback=true',
+  '/unauthorised',
+  '/denied'
+]
 
 const determineRedirectUrl = returnUrl => {
   return returnUrl &&
     returnUrl !== '' &&
-    !returnUrl.endsWith('/post-logout') &&
-    !returnUrl.endsWith('/post-logout?feedback=true') &&
-    !returnUrl.endsWith('/unauthorised') &&
-    !returnUrl.endsWith('/denied')
+    !isUrlEndingFromList(returnUrl, urlPathsToExclude)
     ? returnUrl
     : '/'
 }
