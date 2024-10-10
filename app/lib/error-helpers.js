@@ -14,6 +14,10 @@ const errorPusherDefault = (errors, model) => {
   }
 }
 
+const code401 = 401
+const code403 = 403
+const code404 = 404
+
 const processPreErrorPageResponse = (request, h) => {
   const response = request.response
 
@@ -24,14 +28,14 @@ const processPreErrorPageResponse = (request, h) => {
 
     console.log('statusCode', statusCode)
     // if not authorised then request login
-    if (statusCode === 401 || statusCode === 403) {
+    if (statusCode === code401 || statusCode === code403) {
       clearSessionDown(request, h)
       return h.view('unauthorized').code(statusCode)
     }
 
     // In the event of 404
     // return the `404` view
-    if (statusCode === 404) {
+    if (statusCode === code404) {
       return h.view('404', { nav: { homeLink: '/' } }).code(statusCode)
     }
 
