@@ -20,7 +20,7 @@ const determineRedirectUrl = returnUrl => {
     returnUrl !== '' &&
     !isUrlEndingFromList(returnUrl, urlPathsToExclude)
     ? returnUrl
-    : '/'
+    : '/cdo/search/basic'
 }
 
 module.exports = {
@@ -81,7 +81,11 @@ module.exports = {
         console.error('Validation failed', e)
         const host = request.headers.host
         const protocol = host?.indexOf('localhost') > -1 ? 'http' : 'https'
-        const unauthorisedReturnUrl = `${protocol}://${host}/denied`
+        const lowerUsername = user.username?.toLowerCase() ?? ''
+        const unauthorisedReturnUrl =
+          lowerUsername.endsWith('.police.uk') || lowerUsername.endsWith('@defra.gov.uk')
+            ? `${protocol}://${host}/denied-access`
+            : `${protocol}://${host}/denied`
 
         const result = await logoutUser(authResult.idToken, unauthorisedReturnUrl)
 
