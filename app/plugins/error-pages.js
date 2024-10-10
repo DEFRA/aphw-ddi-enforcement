@@ -2,6 +2,8 @@
 * Add an `onPreResponse` listener to return error pages
 */
 
+const { clearSessionDown } = require('../session/session-wrapper')
+
 module.exports = {
   plugin: {
     name: 'error-pages',
@@ -16,6 +18,7 @@ module.exports = {
 
           // if not authorised then request login
           if (statusCode === 401 || statusCode === 403) {
+            clearSessionDown(request, h)
             return h.view('unauthorized').code(statusCode)
           }
 
