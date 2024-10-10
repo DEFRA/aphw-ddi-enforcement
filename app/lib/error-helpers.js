@@ -26,7 +26,6 @@ const processPreErrorPageResponse = (request, h) => {
     // processing the request
     const statusCode = response.output.statusCode
 
-    console.log('statusCode', statusCode)
     // if not authorised then request login
     if (statusCode === code401 || statusCode === code403) {
       clearSessionDown(request, h)
