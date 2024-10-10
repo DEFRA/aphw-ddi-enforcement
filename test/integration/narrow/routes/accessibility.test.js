@@ -23,7 +23,7 @@ describe('Accessibility test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('Content TBC')
+    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('This accessibility statement applies to the Dangerous Dogs Index')
   })
 
   test('GET /accessibility route returns 200 for standard users', async () => {
@@ -36,7 +36,7 @@ describe('Accessibility test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('Content TBC')
+    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('This accessibility statement applies to the Dangerous Dogs Index')
   })
 
   afterEach(async () => {
