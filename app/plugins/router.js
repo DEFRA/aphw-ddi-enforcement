@@ -14,6 +14,7 @@ const routes = [].concat(
   require('../routes/post-logout'),
   require('../routes/unauthorised'),
   require('../routes/denied'),
+  require('../routes/denied-access'),
   require('../routes/dev-auth'),
   require('../routes/accessibility'),
   require('../routes/privacy-notice'),

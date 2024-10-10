@@ -23,7 +23,7 @@ describe('Denied test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(401)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You need an authorised email address to access this service')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('Your account is not valid for this service')
   })
 
   test('GET /denied route returns 401 for standard users', async () => {
@@ -36,7 +36,7 @@ describe('Denied test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(401)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You need an authorised email address to access this service')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('Your account is not valid for this service')
   })
 
   afterEach(async () => {

@@ -1,7 +1,7 @@
 const { standardAuth, user } = require('../../../mocks/auth')
 const { JSDOM } = require('jsdom')
 
-describe('Accessibility test', () => {
+describe('Denied-access test', () => {
   jest.mock('../../../../app/auth')
   const mockAuth = require('../../../../app/auth')
 
@@ -14,29 +14,29 @@ describe('Accessibility test', () => {
     await server.initialize()
   })
 
-  test('GET /accessibility route returns 200 with no auth', async () => {
+  test('GET /denied-access route returns 401 with no auth', async () => {
     const options = {
       method: 'GET',
-      url: '/accessibility'
+      url: '/denied-access'
     }
 
     const response = await server.inject(options)
-    expect(response.statusCode).toBe(200)
+    expect(response.statusCode).toBe(401)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('This accessibility statement applies to the Dangerous Dogs Index')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You need an authorised email address to access this service')
   })
 
-  test('GET /accessibility route returns 200 for standard users', async () => {
+  test('GET /denied-access route returns 401 for standard users', async () => {
     const options = {
       method: 'GET',
-      url: '/accessibility',
+      url: '/denied-access',
       auth: standardAuth
     }
 
     const response = await server.inject(options)
-    expect(response.statusCode).toBe(200)
+    expect(response.statusCode).toBe(401)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[7].textContent.trim()).toContain('This accessibility statement applies to the Dangerous Dogs Index')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You need an authorised email address to access this service')
   })
 
   afterEach(async () => {

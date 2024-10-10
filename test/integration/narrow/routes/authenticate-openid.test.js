@@ -33,6 +33,7 @@ describe('Authenticate test', () => {
   const { getRedirectForUserAccess } = require('../../../../app/lib/route-helpers')
 
   beforeEach(async () => {
+    jest.clearAllMocks()
     getAuth.mockResolvedValue(mockOpenIdAuth)
     getFromSession.mockReturnValue('/cdo/search/basic')
     server = await createServer()
@@ -91,7 +92,7 @@ describe('Authenticate test', () => {
     expect(response.headers.location).toBe('/secure-access-licence')
   })
 
-  test('GET /authenticate route for unregistered user returns 302 and logs user out', async () => {
+  test('GET /authenticate route for unregistered user returns 302 and logs user out if invalid domain', async () => {
     validateUser.mockRejectedValue({})
 
     getResult.mockResolvedValue({
@@ -116,6 +117,33 @@ describe('Authenticate test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
     expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/denied')
+  })
+
+  test('GET /authenticate route for unregistered user returns 302 and logs user out if valid domain', async () => {
+    validateUser.mockRejectedValue({})
+
+    getResult.mockResolvedValue({
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+      idToken: 'idToken',
+      idTokenDecoded: 'idTokenDecoded',
+      userinfo: JSON.stringify({ email: 'me@example.Police.Uk' }, null, 2),
+      coreIdentity: 'coreIdentity'
+    })
+
+    const options = {
+      method: 'GET',
+      url: '/authenticate',
+      headers: {
+        'x-forwarded-proto': 'http',
+        host: 'localhost:3003',
+        Cookie: 'nonce=abcdede;state=fghijkl;'
+      }
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/denied-access')
   })
 
   test('GET /authenticate route for unregistered user returns 302 and logs user out - https url', async () => {
