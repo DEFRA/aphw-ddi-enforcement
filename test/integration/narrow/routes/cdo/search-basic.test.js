@@ -101,6 +101,7 @@ describe('SearchBasic test', () => {
     expect(dogNameResult.textContent.trim()).toBe('Not entered')
     expect(ownerNameResult.textContent.trim()).toBe('Wreck it Ralph')
     expect(microchipNumberResult.textContent.trim()).toBe('Not entered')
+    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Applying for exemption')
   })
 
   test('GET /cdo/search/basic owner record search with valid data and empty Dog name returns 200', async () => {

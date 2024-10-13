@@ -28,7 +28,7 @@ describe('View dog details', () => {
         id: 1,
         indexNumber: 'ED123',
         name: 'Bruno',
-        status: { status: 'TEST' },
+        status: 'Pre-exempt',
         dog_breed: { breed: 'breed1' }
       },
       person: {
@@ -68,6 +68,9 @@ describe('View dog details', () => {
       expect(document.querySelectorAll('.govuk-grid-column-one-half .govuk-button')[0].textContent.trim()).toBe('Check activity')
       expect(document.querySelector('.govuk-button[data-testid="delete-dog-record-btn"]')).toBeNull()
       expect(document.querySelectorAll('.govuk-summary-card')[2].querySelectorAll('.govuk-summary-list__actions')[1]).toBe(undefined)
+
+      const [,, exemptionDetails] = document.querySelectorAll('.govuk-summary-card')
+      expect(exemptionDetails.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Applying for exemption')
     })
 
     test('GET /cdo/view/dog-details route returns 200 with Not entered values given fields missing', async () => {
