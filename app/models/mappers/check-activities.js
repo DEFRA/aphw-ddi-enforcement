@@ -350,14 +350,16 @@ const getInactiveSubStatus = (edited) => {
   if (edited) {
     for (const edit of edited) {
       const [fieldName, , updatedTo] = edit
-      if (fieldName === 'dog_date_of_death' && updatedTo) {
-        return `${prefix} Dog dead`
-      } else if (fieldName === 'date_exported' && updatedTo) {
-        return `${prefix} Dog exported`
-      } else if (fieldName === 'date_stolen' && updatedTo) {
-        return `${prefix} Reported stolen`
-      } else if (fieldName === 'date_untraceable' && updatedTo) {
-        return `${prefix} Owner untraceable`
+      if (updatedTo) {
+        if (fieldName === 'dog_date_of_death') {
+          return `${prefix} Dog dead`
+        } else if (fieldName === 'date_exported') {
+          return `${prefix} Dog exported`
+        } else if (fieldName === 'date_stolen') {
+          return `${prefix} Reported stolen`
+        } else if (fieldName === 'date_untraceable') {
+          return `${prefix} Owner untraceable`
+        }
       }
     }
   }
