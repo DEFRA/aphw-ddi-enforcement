@@ -356,6 +356,8 @@ const getSubStatusText = (updatedTo, fieldName) => {
       return 'Reported stolen'
     } else if (fieldName === 'date_untraceable') {
       return 'Owner untraceable'
+    } else {
+      return null
     }
   }
   return null
