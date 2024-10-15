@@ -23,7 +23,7 @@ describe('Denied-access test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(401)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You need an authorised email address to access this service')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You cannot currently use this service - speak to your force\'s dangerous dogs team.')
   })
 
   test('GET /denied-access route returns 401 for standard users', async () => {
@@ -36,7 +36,7 @@ describe('Denied-access test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(401)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You need an authorised email address to access this service')
+    expect(document.querySelectorAll('h1')[0].textContent.trim()).toContain('You cannot currently use this service - speak to your force\'s dangerous dogs team.')
   })
 
   afterEach(async () => {

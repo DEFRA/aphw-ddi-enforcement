@@ -19,6 +19,14 @@ const statuses = {
   Withdrawn: 'Withdrawn'
 }
 
+const inactiveSubStatuses = {
+  dead: 'Dog dead',
+  exported: 'Dog exported',
+  stolen: 'Reported stolen',
+  untraceable: 'Owner untraceable'
+}
+
 module.exports = {
-  statuses
+  statuses,
+  inactiveSubStatuses
 }
