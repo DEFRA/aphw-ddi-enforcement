@@ -9,8 +9,9 @@ const getInactiveLabel = (dog) => {
     return inactiveSubStatuses.stolen
   } else if (dog.untraceable_date || dog.dateUntraceable) {
     return inactiveSubStatuses.untraceable
+  } else {
+    return dog.status
   }
-  return dog.status
 }
 
 const getNewStatusLabel = (dog) => {

@@ -342,6 +342,26 @@ const mapBreachesToArray = (breaches) => {
 }
 
 /**
+ * @param {string} updatedTo
+ * @param {string} fieldName
+ * @returns {string|null}
+ */
+const getSubStatusText = (updatedTo, fieldName) => {
+  if (updatedTo) {
+    if (fieldName === 'dog_date_of_death') {
+      return 'Dog dead'
+    } else if (fieldName === 'date_exported') {
+      return 'Dog exported'
+    } else if (fieldName === 'date_stolen') {
+      return 'Reported stolen'
+    } else if (fieldName === 'date_untraceable') {
+      return 'Owner untraceable'
+    }
+  }
+  return null
+}
+
+/**
  * @param {string[, ,]} edited
  * @returns {string}
  */
@@ -350,16 +370,9 @@ const getInactiveSubStatus = (edited) => {
   if (edited) {
     for (const edit of edited) {
       const [fieldName, , updatedTo] = edit
-      if (updatedTo) {
-        if (fieldName === 'dog_date_of_death') {
-          return `${prefix} Dog dead`
-        } else if (fieldName === 'date_exported') {
-          return `${prefix} Dog exported`
-        } else if (fieldName === 'date_stolen') {
-          return `${prefix} Reported stolen`
-        } else if (fieldName === 'date_untraceable') {
-          return `${prefix} Owner untraceable`
-        }
+      const subStatus = getSubStatusText(updatedTo, fieldName)
+      if (subStatus) {
+        return `${prefix} ${subStatus}`
       }
     }
   }
