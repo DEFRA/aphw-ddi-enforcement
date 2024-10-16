@@ -6,9 +6,7 @@ const { addHeaders } = require('../shared')
 const baseUrl = config.ddiEventsApi.baseUrl
 
 const get = async (endpoint, user) => {
-  const options = user?.username
-    ? { headers: addHeaders(user) }
-    : {}
+  const options = { headers: addHeaders(user, 'aphw-ddi-events') }
 
   const { payload } = await wreck.get(`${baseUrl}/${endpoint}`, { ...options, json: true })
 

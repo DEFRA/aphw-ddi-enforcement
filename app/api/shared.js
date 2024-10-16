@@ -1,9 +1,9 @@
 const { createBearerHeader } = require('../auth/jwt-utils')
-const addHeaders = (user, _request) => {
+const addHeaders = (user, audience = 'aphw-ddi-api') => {
   return {
     'ddi-username': user?.username,
     'ddi-displayname': user?.displayname,
-    ...createBearerHeader('aphw-ddi-api')(user)
+    ...createBearerHeader(audience)(user)
   }
 }
 
