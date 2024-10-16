@@ -2,7 +2,7 @@ const { routes, views } = require('../../../constants/cdo/dog')
 const { sources: activitySources } = require('../../../constants/cdo/activity')
 const { enforcement } = require('../../../auth/permissions')
 const ViewModel = require('../../../models/cdo/view/check-activities')
-const { getCdo } = require('../../../api/ddi-index-api/cdo')
+const { getCdoFromActivities } = require('../../../api/ddi-index-api/cdo')
 const { getDogOwner } = require('../../../api/ddi-index-api/dog')
 const { getPersonByReference } = require('../../../api/ddi-index-api/person')
 const { getEvents } = require('../../../api/ddi-events-api/event')
@@ -13,7 +13,7 @@ const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 
 const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
-    return getCdo(pk, user)
+    return getCdoFromActivities(pk, user)
   } else if (source === activitySources.owner) {
     return getPersonByReference(pk, user)
   }
