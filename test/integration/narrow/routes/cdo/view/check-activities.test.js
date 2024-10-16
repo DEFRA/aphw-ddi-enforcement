@@ -7,7 +7,7 @@ describe('Check activities', () => {
   const mockAuth = require('../../../../../../app/auth')
 
   jest.mock('../../../../../../app/api/ddi-index-api/cdo')
-  const { getCdo } = require('../../../../../../app/api/ddi-index-api/cdo')
+  const { getCdoFromActivities } = require('../../../../../../app/api/ddi-index-api/cdo')
 
   jest.mock('../../../../../../app/api/ddi-index-api/dog')
   const { getDogOwner } = require('../../../../../../app/api/ddi-index-api/dog')
@@ -167,7 +167,7 @@ describe('Check activities', () => {
 
   test('GET /cdo/view/activity/xxx/dog route returns a 200 and valid content', async () => {
     getEvents.mockResolvedValue(validDogEvent)
-    getCdo.mockResolvedValue({
+    getCdoFromActivities.mockResolvedValue({
       dog: {
         id: 300000,
         indexNumber: 'ED123',
@@ -267,7 +267,7 @@ describe('Check activities', () => {
   })
 
   test('GET /cdo/view/activity/xxx/dog route returns a 200 and message given no activities exist', async () => {
-    getCdo.mockResolvedValue({
+    getCdoFromActivities.mockResolvedValue({
       dog: {
         id: 300000,
         indexNumber: 'ED300000',
@@ -314,7 +314,7 @@ describe('Check activities', () => {
   })
 
   test('GET /cdo/view/activity/xxx/dog route returns 404 if no dog data found', async () => {
-    getCdo.mockResolvedValue(undefined)
+    getCdoFromActivities.mockResolvedValue(undefined)
 
     const options = {
       method: 'GET',
@@ -328,7 +328,7 @@ describe('Check activities', () => {
   })
 
   test('GET /cdo/view/activity route returns 404 if source is not dog', async () => {
-    getCdo.mockResolvedValue(undefined)
+    getCdoFromActivities.mockResolvedValue(undefined)
 
     const options = {
       method: 'GET',

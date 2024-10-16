@@ -12,6 +12,12 @@ const getCdo = async (indexNumber, user) => {
   return payload.cdo
 }
 
+const getCdoFromActivities = async (indexNumber, user) => {
+  const payload = await get(`${cdoEndpoint}/${indexNumber}?type=activity`, user)
+  return payload.cdo
+}
+
 module.exports = {
-  getCdo
+  getCdo,
+  getCdoFromActivities
 }

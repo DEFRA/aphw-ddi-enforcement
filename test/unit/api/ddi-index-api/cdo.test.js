@@ -14,7 +14,17 @@ describe('CDO API endpoints', () => {
       get.mockResolvedValue({ cdo: {} })
       await cdo.getCdo('ED123', user)
 
+      expect(get).toHaveBeenCalledWith('cdo/ED123', user)
+    })
+  })
+
+  describe('getCdoFromActivities', () => {
+    test('getCdo should do GET to API', async () => {
+      get.mockResolvedValue({ cdo: {} })
+      await cdo.getCdoFromActivities('ED123', user)
+
       expect(get).toHaveBeenCalledTimes(1)
+      expect(get).toHaveBeenCalledWith('cdo/ED123?type=activity', user)
     })
   })
 })
