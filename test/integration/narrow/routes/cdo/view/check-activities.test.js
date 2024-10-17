@@ -202,7 +202,7 @@ describe('Check activities', () => {
 
     const { document } = new JSDOM(response.payload).window
 
-    expect(getEvents).toBeCalledWith(['ED123', 'P-456'])
+    expect(getEvents).toBeCalledWith(['ED123', 'P-456'], user)
     expect(cleanUserDisplayName).toBeCalledWith('Developer')
     expect(response.statusCode).toBe(200)
     expect(document.querySelectorAll('.govuk-caption-l')[0].textContent.trim()).toBe('Dog ED123')
@@ -250,7 +250,7 @@ describe('Check activities', () => {
 
     const { document } = new JSDOM(response.payload).window
 
-    expect(getEvents).toBeCalledWith(['P-123'])
+    expect(getEvents).toBeCalledWith(['P-123'], user)
     expect(cleanUserDisplayName).toBeCalledWith('Developer')
     expect(response.statusCode).toBe(200)
     expect(document.querySelectorAll('.govuk-caption-l')[0].textContent.trim()).toBe('John Smith')

@@ -52,7 +52,7 @@ module.exports = [
 
         const eventPkList = await getEventPkList(pk, source, user)
 
-        const allEvents = await getEvents(eventPkList)
+        const allEvents = await getEvents(eventPkList, user)
 
         const sourceEntity = {
           pk,
