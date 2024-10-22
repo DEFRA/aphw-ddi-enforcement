@@ -13,7 +13,14 @@ const createServer = async () => {
     },
     router: {
       stripTrailingSlash: true
-    }
+    },
+    cache: [{
+      name: config.cacheConfig.cacheName,
+      provider: {
+        constructor: config.cacheConfig.catbox,
+        options: config.cacheConfig.catboxOptions
+      }
+    }]
   })
 
   await server.register(require('./plugins/auth'))

@@ -1,27 +1,18 @@
 const Joi = require('joi')
 const authConfig = require('./auth')
+const cacheConfig = require('./cache')
+const { DEVELOPMENT, TEST, PRODUCTION } = require('../constants/environments')
 
 // Define config schema
 const schema = Joi.object({
   serviceName: Joi.string().default('Dangerous Dogs Index'),
   port: Joi.number().default(3001),
   env: Joi.string().valid('development', 'test', 'production').default('development'),
-  useRedis: Joi.boolean().default(false),
   ddiIndexApi: {
     baseUrl: Joi.string().required()
   },
   ddiEventsApi: {
     baseUrl: Joi.string().required()
-  },
-  cache: {
-    expiresIn: Joi.number().default(1000 * 3600 * 24 * 3), // 3 days
-    options: {
-      host: Joi.string().default('redis-hostname.default'),
-      partition: Joi.string().default('dangerous-dog-act-portal'),
-      password: Joi.string().allow(''),
-      port: Joi.number().default(6379),
-      tls: Joi.object()
-    }
   },
   cookie: {
     cookieNameCookiePolicy: Joi.string().default('dangerous_dog_act_portal_cookie_policy'),
@@ -47,15 +38,6 @@ const config = {
   serviceName: process.env.SERVICE_NAME,
   port: process.env.PORT,
   env: process.env.NODE_ENV,
-  useRedis: process.env.NODE_ENV !== 'test',
-  cache: {
-    options: {
-      host: process.env.REDIS_HOSTNAME,
-      password: process.env.REDIS_PASSWORD,
-      port: process.env.REDIS_PORT,
-      tls: process.env.NODE_ENV === 'production' ? {} : undefined
-    }
-  },
   ddiIndexApi: {
     baseUrl: process.env.DDI_API_BASE_URL
   },
@@ -94,17 +76,42 @@ if (result.error) {
 const value = result.value
 
 value.authConfig = authConfig
+value.cacheConfig = cacheConfig
 
-value.isDev = value.env === 'development'
-value.isTest = value.env === 'test'
-value.isProd = value.env === 'production'
+value.isDev = value.env === DEVELOPMENT
+value.isTest = value.env === TEST
+value.isProd = value.env === PRODUCTION
 
-value.catboxOptions = {
-  host: value.cache.options.host,
-  port: value.cache.options.port,
-  password: value.cache.options.password,
-  tls: value.cache.options.tls,
-  partition: value.cache.options.partition
-}
-
+/**
+ * @type {{
+ *   cacheConfig: import('./cache');
+ *   authConfig: import('./auth');
+ *   serviceName: string;
+ *   port: string;
+ *   env: string;
+ *   environmentCode: string;
+ *   ddiIndexApi: {
+ *     baseUrl: string;
+ *   },
+ *   ddiEventsApi: {
+ *     baseUrl: string;
+ *   },
+ *   cookie: {
+ *     cookieNameCookiePolicy: string;
+ *     cookieNameSession: string;
+ *     isSameSite: string;
+ *     isSecure: boolean;
+ *     password: string;
+ *   },
+ *   cookieOptions: {
+ *     ttl: string;
+ *     isSameSite: string;
+ *     encoding: string;
+ *     isSecure: string;
+ *     isHttpOnly: boolean;
+ *     clearInvalid: boolean;
+ *     strictHeader: boolean;
+ *   }
+ * }}
+ */
 module.exports = value
