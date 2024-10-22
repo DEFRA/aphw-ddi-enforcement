@@ -2,9 +2,11 @@ const Joi = require('joi')
 const { serviceName } = require('../constants/service-name')
 const { DEVELOPMENT, TEST, PRODUCTION } = require('../constants/environments')
 
+const REDIS_PORT = 6379
+
 const schema = Joi.object({
   host: Joi.string(),
-  port: Joi.number().integer().default(6379),
+  port: Joi.number().integer().default(REDIS_PORT),
   password: Joi.string().allow(''),
   partition: Joi.string().default(serviceName),
   cacheName: Joi.string().default(serviceName),

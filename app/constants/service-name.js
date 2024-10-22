@@ -1,3 +1,3 @@
 module.exports = {
-  serviceName: 'aphw-ddi-portal'
+  serviceName: 'aphw-ddi-enforcement'
 }

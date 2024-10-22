@@ -15,8 +15,8 @@ const schema = Joi.object({
     baseUrl: Joi.string().required()
   },
   cookie: {
-    cookieNameCookiePolicy: Joi.string().default('dangerous_dog_act_portal_cookie_policy'),
-    cookieNameSession: Joi.string().default('dangerous_dog_act_portal_session'),
+    cookieNameCookiePolicy: Joi.string().default('dangerous_dog_act_enforcement_cookie_policy'),
+    cookieNameSession: Joi.string().default('dangerous_dog_act_enforcement_session'),
     isSameSite: Joi.string().default('Lax'),
     isSecure: Joi.boolean().default(true),
     password: Joi.string().min(32).required(),
@@ -45,8 +45,8 @@ const config = {
     baseUrl: process.env.DDI_EVENTS_BASE_URL
   },
   cookie: {
-    cookieNameCookiePolicy: 'dangerous_dog_act_portal_cookie_policy',
-    cookieNameSession: 'dangerous_dog_act_portal_session',
+    cookieNameCookiePolicy: 'dangerous_dog_act_enforcement_cookie_policy',
+    cookieNameSession: 'dangerous_dog_act_enforcement_session',
     isSameSite: 'Lax',
     isSecure: process.env.NODE_ENV === 'production',
     password: process.env.COOKIE_PASSWORD

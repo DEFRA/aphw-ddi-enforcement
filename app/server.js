@@ -23,6 +23,8 @@ const createServer = async () => {
     }]
   })
 
+  server.app.cache = server.cache({ cache: config.cacheConfig.cacheName, segment: 'auth', expiresIn: config.cacheConfig.ttl })
+
   await server.register(require('./plugins/auth'))
   await server.register(require('@hapi/inert'))
   await server.register(require('./plugins/router'))
