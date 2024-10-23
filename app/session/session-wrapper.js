@@ -15,7 +15,7 @@ const clearSessionDown = (request, h, leaveMinimalSession = false) => {
   if (!leaveMinimalSession) {
     setInSession(request, 'returnUrl', null)
     request.yar.reset()
-    h.unstate('dangerous_dog_act_portal_session')
+    h.unstate('dangerous_dog_act_enforcement_session')
   }
   h.unstate('nonce')
   h.unstate('state')
