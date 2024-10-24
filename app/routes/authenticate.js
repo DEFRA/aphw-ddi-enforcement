@@ -28,19 +28,24 @@ module.exports = {
     auth: false
   },
   handler: async (request, h) => {
+    console.log('~~~~~~ Chris Debug ~~~~~~ 31', '')
     try {
       const user = randomise()
       try {
         await validateUser(user)
       } catch (e) {
+        console.log('~~~~~~ Chris Debug ~~~~~~ 37', '')
         console.error('Validation failed', e)
 
         const host = request.headers.host
         const protocol = host?.indexOf('localhost') > -1 ? 'http' : 'https'
 
+        console.log('~~~~~~ Chris Debug ~~~~~~ 48', 'user.accessToken', user.accessToken)
         const result = await logoutUser(user.accessToken, `${protocol}://${host}/denied`)
 
+        console.log('~~~~~~ Chris Debug ~~~~~~ 51', '')
         clearSessionDown(request, h)
+        console.log('~~~~~~ Chris Debug ~~~~~~ 52', '')
 
         return h.redirect(result)
       }

@@ -40,19 +40,25 @@ module.exports = [
         const pk = request.params.pk
         const source = request.params.source
 
+        console.log('~~~~~~ Chris Debug ~~~~~~ activities before', '')
         const redirectRoute = await getRedirectForUserAccess(request, user)
         if (redirectRoute) {
           return h.redirect(redirectRoute)
         }
+        console.log('~~~~~~ Chris Debug ~~~~~~ activities after', '')
 
         const entity = await getSourceEntity(pk, source, user)
         if (entity === null || entity === undefined) {
           return h.response().code(404).takeover()
         }
 
+        console.log('~~~~~~ Chris Debug ~~~~~~ ', 'Entity', entity)
+
         const eventPkList = await getEventPkList(pk, source, user)
 
+        console.log('~~~~~~ Chris Debug ~~~~~~ ', 'EventPkList', eventPkList)
         const allEvents = await getEvents(eventPkList, user)
+        console.log('~~~~~~ Chris Debug ~~~~~~ ', 'AllEvents', allEvents)
 
         const sourceEntity = {
           pk,
@@ -68,6 +74,7 @@ module.exports = [
           backLink: getMainReturnPoint(request)
         }
 
+        console.log('~~~~~~ Chris Debug ~~~~~~ 73', '')
         return h.view(views.viewDogActivities, new ViewModel(sourceEntity, sortedActivities, backNav))
       }
     }
