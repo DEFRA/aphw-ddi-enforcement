@@ -5,6 +5,13 @@ module.exports = {
     auth: false
   },
   handler: async (request, h) => {
-    return h.redirect('/authenticate')
+    try {
+      // Redirect to the authorization server
+      return h.redirect('/authenticate')
+    } catch (err) {
+      console.error('Error authenticating:', err)
+    }
+
+    return h.view('500').code(500)
   }
 }
