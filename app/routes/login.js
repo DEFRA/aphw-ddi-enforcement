@@ -2,6 +2,8 @@ const auth = require('../auth')
 const { VECTOR_OF_TRUST } = require('../auth/openid-auth')
 const { setInSession } = require('../session/session-wrapper')
 
+const INTERNAL_SERVER_ERROR = 500
+
 module.exports = {
   method: 'GET',
   path: '/login',
@@ -27,6 +29,6 @@ module.exports = {
       console.error('Error authenticating:', err)
     }
 
-    return h.view('500').code(500)
+    return h.view('500').code(INTERNAL_SERVER_ERROR)
   }
 }
