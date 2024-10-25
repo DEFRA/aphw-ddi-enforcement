@@ -27,6 +27,12 @@ describe('main config', () => {
     expect(value.catboxOptions.host).toBe('redis.host')
   })
 
+  test('should not use redis when host is set and in dev', () => {
+    process.env.REDIS_HOST = 'dummy'
+    const value = require('../../../app/config/cache')
+    expect(value.catboxOptions.host).toBeUndefined()
+  })
+
   test('should not use redis when host is unset', () => {
     process.env.NODE_ENV = DEVELOPMENT
     process.env.REDIS_HOST = undefined
