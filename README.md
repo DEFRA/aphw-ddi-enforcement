@@ -29,7 +29,7 @@ By default, the start script will build (or rebuild) images so there will
 rarely be a need to build images manually. However, this can be achieved
 through the Docker Compose
 [build](https://docs.docker.com/compose/reference/build/) command:
-
+ 
 ```
 # Build container images
 docker-compose build
