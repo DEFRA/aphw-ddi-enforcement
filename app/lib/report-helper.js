@@ -55,9 +55,14 @@ const determineScreenAfterSelectDog = (selected, backNav) => {
   }
 }
 
+const sendReportEmail = async (data) => {
+  console.log('JB send email', data)
+}
+
 module.exports = {
   isSessionValid,
   getCdoOrPerson,
   determineScreenAfterReportType,
-  determineScreenAfterSelectDog
+  determineScreenAfterSelectDog,
+  sendReportEmail
 }

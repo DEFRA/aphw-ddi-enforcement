@@ -8,7 +8,7 @@ const { getUser } = require('../../../auth')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { addBackNavigation, addBackNavigationForErrorCondition } = require('../../../lib/back-helpers')
 const { getReportTypeDetails } = require('../../../session/report')
-const { isSessionValid } = require('../../../lib/report-helper')
+const { isSessionValid, sendReportEmail } = require('../../../lib/report-helper')
 
 module.exports = [{
   method: 'GET',
@@ -55,9 +55,9 @@ module.exports = [{
       }
     },
     handler: async (request, h) => {
-      const payload = { ...request.payload, ...getReportTypeDetails(request) }
+      const payload = { ...request.payload, ...getReportTypeDetails(request), user: getUser(request) }
 
-      console.log('JB final payload - manual address', payload)
+      await sendReportEmail(payload)
 
       return h.redirect(routes.reportConfirmation.get)
     }

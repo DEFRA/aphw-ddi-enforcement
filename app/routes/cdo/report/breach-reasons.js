@@ -8,7 +8,7 @@ const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { getReportTypeDetails } = require('../../../session/report')
 const { getBreachCategories } = require('../../../api/ddi-index-api/dog-breaches')
 const { validatePayload } = require('../../../schema/portal/report/breach-reasons')
-const { isSessionValid } = require('../../../lib/report-helper')
+const { isSessionValid, sendReportEmail } = require('../../../lib/report-helper')
 
 module.exports = [
   {
@@ -54,9 +54,9 @@ module.exports = [
       },
       auth: { scope: enforcement },
       handler: async (request, h) => {
-        const payload = { ...getReportTypeDetails(request), ...request.payload }
+        const payload = { ...getReportTypeDetails(request), ...request.payload, user: getUser(request) }
 
-        console.log('JB final payload - breach reasons', payload)
+        await sendReportEmail(payload)
 
         return h.redirect(routes.reportConfirmation.get)
       }

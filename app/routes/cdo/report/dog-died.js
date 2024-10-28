@@ -7,7 +7,7 @@ const getUser = require('../../../auth/get-user')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { getReportTypeDetails } = require('../../../session/report')
 const { validatePayload } = require('../../../schema/portal/report/dog-died')
-const { isSessionValid } = require('../../../lib/report-helper')
+const { isSessionValid, sendReportEmail } = require('../../../lib/report-helper')
 
 module.exports = [
   {
@@ -50,8 +50,9 @@ module.exports = [
       },
       auth: { scope: enforcement },
       handler: async (request, h) => {
-        const payload = { ...getReportTypeDetails(request), ...request.payload }
-        console.log('JB final payload - dog died', payload)
+        const payload = { ...getReportTypeDetails(request), ...request.payload, user: getUser(request) }
+
+        await sendReportEmail(payload)
 
         return h.redirect(routes.reportConfirmation.get)
       }
