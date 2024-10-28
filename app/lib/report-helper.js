@@ -40,8 +40,9 @@ const determineScreenAfterReportType = async (selected, details, backNav, user) 
       return buildNextScreenResponse(`${routes.selectDog.get}${backNav?.srcHashParam}`)
     }
     return buildNextScreenResponse(`${routes.dogDied.get}${backNav?.srcHashParam}`, dogIndexes[0])
+  } else {
+    return buildNextScreenResponse(`${routes.somethingElse.get}${backNav?.srcHashParam}`)
   }
-  return buildNextScreenResponse(`${routes.somethingElse.get}${backNav?.srcHashParam}`)
 }
 
 const determineScreenAfterSelectDog = (selected, backNav) => {
@@ -49,8 +50,9 @@ const determineScreenAfterSelectDog = (selected, backNav) => {
     return `${routes.breachReasons.get}${backNav?.srcHashParam}`
   } else if (selected === reportTypes.dogDied) {
     return `${routes.dogDied.get}${backNav?.srcHashParam}`
+  } else {
+    return `${routes.somethingElse.get}${backNav?.srcHashParam}`
   }
-  return `${routes.somethingElse.get}${backNav?.srcHashParam}`
 }
 
 module.exports = {
