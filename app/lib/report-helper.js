@@ -10,7 +10,7 @@ const getCdoOrPerson = async (sourceType, pk, user) => {
   if (!sourceType || !pk) {
     return null
   }
-  return sourceType === 'dog' ? await getCdo(pk, user) : await getPersonByReference(pk, user)
+  return sourceType === 'dog' ? getCdo(pk, user) : getPersonByReference(pk, user)
 }
 
 const getDogsIndexNumbers = async (details, user) => {
