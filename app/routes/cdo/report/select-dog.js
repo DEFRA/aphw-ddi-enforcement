@@ -1,3 +1,4 @@
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/cdo/report')
 const { getReportTypeDetails, setReportTypeDetails } = require('../../../session/report')
 const ViewModel = require('../../../models/cdo/report/select-dog')
@@ -23,7 +24,7 @@ module.exports = [{
 
       const details = getReportTypeDetails(request)
       if (!isSessionValid(details)) {
-        return h.response().code(404).takeover()
+        return h.response().code(errorCodes.notFoundError).takeover()
       }
 
       const personAndDogs = await getPersonAndDogs(details.pk, user)
@@ -54,7 +55,7 @@ module.exports = [{
 
         const backNav = addBackNavigationForErrorCondition(request)
 
-        return h.view(views.selectDog, new ViewModel(details, personAndDogs?.dogs, backNav, error)).code(400).takeover()
+        return h.view(views.selectDog, new ViewModel(details, personAndDogs?.dogs, backNav, error)).code(errorCodes.validationError).takeover()
       }
     },
     handler: async (request, h) => {

@@ -1,3 +1,4 @@
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/cdo/report')
 const { enforcement } = require('../../../auth/permissions')
 const ViewModel = require('../../../models/cdo/report/breach-reasons')
@@ -24,7 +25,7 @@ module.exports = [
 
         const details = getReportTypeDetails(request)
         if (!isSessionValid(details)) {
-          return h.response().code(404).takeover()
+          return h.response().code(errorCodes.notFoundError).takeover()
         }
 
         const backNav = addBackNavigation(request, false)
@@ -48,7 +49,7 @@ module.exports = [
           const backNav = addBackNavigationForErrorCondition(request)
           const viewModel = new ViewModel(payload, breachCategories, backNav, error)
 
-          return h.view(views.breachReasons, viewModel).code(400).takeover()
+          return h.view(views.breachReasons, viewModel).code(errorCodes.validationError).takeover()
         }
       },
       auth: { scope: enforcement },

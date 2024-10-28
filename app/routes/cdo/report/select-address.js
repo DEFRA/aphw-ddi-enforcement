@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/cdo/report')
 const { getPostcodeAddresses } = require('../../../api/os-places')
 const { getReportTypeDetails, setReportTypeDetails } = require('../../../session/report')
@@ -25,7 +26,7 @@ module.exports = [
 
         const details = getReportTypeDetails(request)
         if (!isSessionValid(details)) {
-          return h.response().code(404).takeover()
+          return h.response().code(errorCodes.notFoundError).takeover()
         }
 
         const postcode = details?.postcode
@@ -61,7 +62,7 @@ module.exports = [
           const details = getReportTypeDetails(request)
           const addresses = getFromSession(request, 'addresses')
 
-          return h.view(views.selectAddress, new ViewModel(details, addresses, error)).code(400).takeover()
+          return h.view(views.selectAddress, new ViewModel(details, addresses, error)).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {

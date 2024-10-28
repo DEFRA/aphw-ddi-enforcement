@@ -1,3 +1,4 @@
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/cdo/report')
 const { enforcement } = require('../../../auth/permissions')
 const { ViewModel } = require('../../../models/cdo/report/report-type')
@@ -29,7 +30,7 @@ module.exports = [
 
         const cdoOrPerson = await getCdoOrPerson(sourceType, pk, user)
         if (!cdoOrPerson) {
-          return h.response().code(404).takeover()
+          return h.response().code(errorCodes.notFoundError).takeover()
         }
 
         const data = getReportTypeDetails(request) || {
@@ -57,7 +58,7 @@ module.exports = [
           console.log('POST report-type validation error', error)
           const reportDetails = { ...getReportTypeDetails(request), ...request.payload }
           const backNav = addBackNavigationForErrorCondition(request)
-          return h.view(views.reportType, new ViewModel(reportDetails, backNav, error)).code(400).takeover()
+          return h.view(views.reportType, new ViewModel(reportDetails, backNav, error)).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {

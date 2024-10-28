@@ -1,3 +1,4 @@
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/cdo/report')
 const { enforcement } = require('../../../auth/permissions')
 const ViewModel = require('../../../models/cdo/report/postcode-lookup')
@@ -23,7 +24,7 @@ module.exports = [
 
         const details = getReportTypeDetails(request)
         if (!isSessionValid(details)) {
-          return h.response().code(404).takeover()
+          return h.response().code(errorCodes.notFoundError).takeover()
         }
 
         const backNav = addBackNavigation(request)
@@ -61,7 +62,7 @@ module.exports = [
 
           const viewModel = new ViewModel(data, backNav, error)
 
-          return h.view(views.postcodeLookup, viewModel).code(400).takeover()
+          return h.view(views.postcodeLookup, viewModel).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {

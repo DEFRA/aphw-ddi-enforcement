@@ -1,4 +1,5 @@
 const { routes, views } = require('../../../constants/cdo/report')
+const { errorCodes } = require('../../../constants/forms')
 const ViewModel = require('../../../models/cdo/report/address')
 const addressSchema = require('../../../schema/portal/report/address')
 const { enforcement } = require('../../../auth/permissions')
@@ -23,7 +24,7 @@ module.exports = [{
 
       const details = getReportTypeDetails(request)
       if (!isSessionValid(details)) {
-        return h.response().code(404).takeover()
+        return h.response().code(errorCodes.notFoundError).takeover()
       }
 
       const countries = await getCountries(user)
@@ -50,7 +51,7 @@ module.exports = [{
         const countries = await getCountries(user)
         const backNav = addBackNavigationForErrorCondition(request)
 
-        return h.view(views.address, new ViewModel(data, backNav, countries, error)).code(400).takeover()
+        return h.view(views.address, new ViewModel(data, backNav, countries, error)).code(errorCodes.validationError).takeover()
       }
     },
     handler: async (request, h) => {
