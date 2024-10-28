@@ -129,10 +129,9 @@ const buildReportSubTitle = (payload, forceOwnerDisplay = false) => {
   if (payload?.sourceType === 'dog') {
     return `Dog ${payload?.pk}`
   }
-  if (payload?.reportType === reportTypes.inBreach || payload?.reportType === reportTypes.dogDied) {
-    if (payload?.dogChosen?.indexNumber && !forceOwnerDisplay) {
-      return `Dog ${payload?.dogChosen?.indexNumber}`
-    }
+  if ((payload?.reportType === reportTypes.inBreach || payload?.reportType === reportTypes.dogDied) &&
+      payload?.dogChosen?.indexNumber && !forceOwnerDisplay) {
+    return `Dog ${payload?.dogChosen?.indexNumber}`
   }
   return `${payload?.firstName} ${payload?.lastName}`
 }

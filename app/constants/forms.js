@@ -4,7 +4,8 @@ const constants = {
     notFoundError: 404
   },
   forms: {
-    preventAutocomplete: 'one-time-code'
+    preventAutocomplete: 'one-time-code',
+    maxTextAreaLength: 1200
   },
   routes: {
     accessibility: {

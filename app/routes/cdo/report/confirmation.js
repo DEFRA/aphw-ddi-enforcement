@@ -1,3 +1,4 @@
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/cdo/report')
 const { enforcement } = require('../../../auth/permissions')
 const ViewModel = require('../../../models/cdo/report/confirmation')
@@ -21,7 +22,7 @@ module.exports = [
 
         const details = getReportTypeDetails(request)
         if (!isSessionValid(details)) {
-          return h.response().code(404).takeover()
+          return h.response().code(errorCodes.notFoundError).takeover()
         }
 
         return h.view(views.reportConfirmation, new ViewModel(details))

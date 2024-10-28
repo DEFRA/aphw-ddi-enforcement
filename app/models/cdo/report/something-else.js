@@ -1,3 +1,4 @@
+const { forms } = require('../../../constants/forms')
 const { errorPusherDefault } = require('../../../lib/error-helpers')
 const { buildReportSubTitle } = require('../../../lib/model-helpers')
 
@@ -11,7 +12,7 @@ function ViewModel (data, backNav, errors) {
     details: {
       id: 'details',
       name: 'details',
-      maxlength: 1200,
+      maxlength: forms.maxTextAreaLength,
       hint: {
         text: 'Do not include personal information like your name, phone number or email address.'
       },

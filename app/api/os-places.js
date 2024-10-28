@@ -25,12 +25,12 @@ const getPostcodeAddresses = async (postcode, houseNumber) => {
         if (houseNumber.toLowerCase() === `${result.DPA.BUILDING_NUMBER}`.toLowerCase() ||
           houseNumber.toLowerCase() === `${result.DPA.SUB_BUILDING_NAME}`.toLowerCase() ||
           `flat ${houseNumber.toLowerCase()}` === `${result.DPA.SUB_BUILDING_NAME}`.toLowerCase()) {
-          return buildAddressResult(result)
+          return [buildAddressResult(result)]
         } else {
           return []
         }
       }
-      return buildAddressResult(result)
+      return [buildAddressResult(result)]
     })
 
     return foundAddresses.sort((a, b) => {

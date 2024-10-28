@@ -1,7 +1,7 @@
 const { routes } = require('../../../constants/cdo/report')
 const { dedupeAddresses, buildReportSubTitle } = require('../../../lib/model-helpers')
 
-function ViewModel (details, addresses = [], error) {
+function ViewModel (details, addresses, error) {
   const items = addresses
     ? addresses.map((address, index) => ({
         text: `${address.addressLine1}, ${address.town}, ${address.postcode}`,

@@ -69,7 +69,7 @@ const mapToCountrySelector = (countries, validationError, selectedCountry = '') 
   /**
    * @type {{}|{ errorMessage: GovUkErrorMessage }}
    */
-  const errorMessage = (validationError?.details || []).reduce((errorMessage, error) => {
+  const errorMessage = (validationError?.details || []).reduce((errorMessages, error) => {
     if (error.path[0] === 'country') {
       return {
         errorMessage: {
@@ -77,7 +77,7 @@ const mapToCountrySelector = (countries, validationError, selectedCountry = '') 
         }
       }
     }
-    return errorMessage
+    return errorMessages
   }, {})
 
   return {

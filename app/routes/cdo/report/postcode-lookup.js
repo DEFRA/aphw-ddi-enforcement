@@ -54,11 +54,7 @@ module.exports = [
 
           const backNav = addBackNavigationForErrorCondition(request)
 
-          const data = {
-            ...details,
-            postcode: payload.postcode,
-            houseNumber: payload.houseNumber
-          }
+          const data = { ...details, ...payload }
 
           const viewModel = new ViewModel(data, backNav, error)
 
@@ -66,7 +62,7 @@ module.exports = [
         }
       },
       handler: async (request, h) => {
-        const payload = { ...request.payload, ...getReportTypeDetails(request) }
+        const payload = { ...getReportTypeDetails(request), ...request.payload }
 
         setReportTypeDetails(request, payload)
 
