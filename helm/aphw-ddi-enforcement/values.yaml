@@ -38,6 +38,9 @@ container:
   jwtPrivateKey: jwt-private-key
   postLogoutUrl: post-logout
   redirectUrl: authenticate
+  redisHostname: dummy
+  redisPort: 6379
+  redisPassword: dummy
 
 livenessProbe:
   path: /healthz
