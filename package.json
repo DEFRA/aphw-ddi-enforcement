@@ -22,8 +22,9 @@
   "contributors": [],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@date-fns/utc": "^1.1.0",
+    "@hapi/catbox": "^12.1.1",
     "@hapi/catbox-redis": "7.0.2",
+    "@date-fns/utc": "^1.1.0",
     "@hapi/cookie": "11.0.2",
     "@hapi/crumb": "8.0.1",
     "@hapi/hapi": "20.2.1",
@@ -49,7 +50,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@hapi/catbox-memory": "5.0.1",
+    "@hapi/catbox-memory": "^6.0.2",
     "@types/node": "^20.11.24",
     "blipp": "4.0.2",
     "clean-webpack-plugin": "3.0.0",
