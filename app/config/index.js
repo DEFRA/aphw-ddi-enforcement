@@ -13,6 +13,10 @@ const schema = Joi.object({
   ddiEventsApi: {
     baseUrl: Joi.string().required()
   },
+  osPlacesApi: {
+    baseUrl: Joi.string().default('https://api.os.uk/search/places/v1'),
+    token: Joi.string().required()
+  },
   cache: {
     expiresIn: Joi.number().default(1000 * 3600 * 24 * 3), // 3 days
     options: {
@@ -61,6 +65,10 @@ const config = {
   },
   ddiEventsApi: {
     baseUrl: process.env.DDI_EVENTS_BASE_URL
+  },
+  osPlacesApi: {
+    baseUrl: process.env.OS_PLACES_API_BASE_URL,
+    token: process.env.OS_PLACES_API_KEY
   },
   cookie: {
     cookieNameCookiePolicy: 'dangerous_dog_act_portal_cookie_policy',

@@ -15,4 +15,5 @@ data:
   AUTHENTICATION_ENABLED: "true"
   DDI_API_BASE_URL: {{ quote .Values.container.ddiApiBaseUrl }}
   DDI_EVENTS_BASE_URL: {{ quote .Values.container.ddiEventsBaseUrl }}
+  OS_PLACES_API_BASE_URL: {{ quote .Values.container.osPlacesBaseUrl }}
 {{- end -}}

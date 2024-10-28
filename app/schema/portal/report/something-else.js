@@ -1,15 +1,11 @@
 const Joi = require('joi')
 
 const schema = Joi.object({
-  completedTask: Joi.string().required().messages(
-    { '*': 'Select an option' }
-  ),
-  details: Joi.string().allow('').allow(null).optional().max(1200).messages({
+  details: Joi.string().required().max(1200).messages({
+    'any.required': 'Enter the details of your report',
+    'string.empty': 'Enter the details of your report',
     'string.max': 'Details must be 1200 characters or less'
-  }),
-  satisfaction: Joi.string().required().messages(
-    { '*': 'Select an option' }
-  )
+  })
 }).required()
 
 const validatePayload = (payload) => {
