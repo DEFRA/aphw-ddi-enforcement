@@ -12,6 +12,7 @@ function ViewModel (details, addresses, error) {
   this.model = {
     backLink: details?.backLink,
     changePostcodeLink: `${details?.backLink}#postcode`,
+    changeAddressLink: `${routes.address.get}${details.srcHashParam}`,
     addressRoute: `${routes.address.get}${details.srcHashParam}`,
     buttonText: 'Select address',
     subTitle: buildReportSubTitle(details),

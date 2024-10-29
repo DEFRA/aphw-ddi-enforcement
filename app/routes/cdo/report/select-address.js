@@ -9,7 +9,7 @@ const { addBackNavigation } = require('../../../lib/back-helpers')
 const { setInSession, getFromSession } = require('../../../session/session-wrapper')
 const getUser = require('../../../auth/get-user')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
-const { isSessionValid } = require('../../../lib/report-helper')
+const { isSessionValid, sendReportEmail } = require('../../../lib/report-helper')
 
 module.exports = [
   {
@@ -70,9 +70,9 @@ module.exports = [
         const addresses = getFromSession(request, 'addresses')
         const selectedAddress = addresses[request.payload.address]
 
-        const payload = { ...details, ...selectedAddress }
+        const payload = { ...details, ...selectedAddress, user: getUser(request) }
 
-        console.log('JB final payload - select address', payload)
+        await sendReportEmail(payload)
 
         return h.redirect(routes.reportConfirmation.get)
       }
