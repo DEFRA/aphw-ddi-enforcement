@@ -1,3 +1,5 @@
+const { reportTypes } = require('../constants/cdo/report')
+
 const extractEmail = (contacts) => {
   if (!contacts || contacts.length === 0) {
     return ''
@@ -123,6 +125,17 @@ const constructDateField = (data, id, labelText, hint = null, labelClass = null,
   return fieldMetadata
 }
 
+const buildReportSubTitle = (payload, forceOwnerDisplay = false) => {
+  if (payload?.sourceType === 'dog') {
+    return `Dog ${payload?.pk}`
+  }
+  if ((payload?.reportType === reportTypes.inBreach || payload?.reportType === reportTypes.dogDied) &&
+      payload?.dogChosen?.indexNumber && !forceOwnerDisplay) {
+    return `Dog ${payload?.dogChosen?.indexNumber}`
+  }
+  return `${payload?.firstName} ${payload?.lastName}`
+}
+
 module.exports = {
   extractEmail,
   extractLatestAddress,
@@ -132,5 +145,6 @@ module.exports = {
   extractLatestSecondaryTelephoneNumber,
   cleanUserDisplayName,
   dedupeAddresses,
-  constructDateField
+  constructDateField,
+  buildReportSubTitle
 }

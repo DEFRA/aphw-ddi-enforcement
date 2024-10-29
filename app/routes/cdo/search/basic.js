@@ -1,4 +1,5 @@
 const { keys } = require('../../../constants/forms')
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/search')
 const { validateUser } = require('../../../api/ddi-index-api/user')
 const { getUser } = require('../../../auth')
@@ -41,7 +42,7 @@ module.exports = [{
 
       const errors = searchSchema.validate(searchCriteria, { abortEarly: false })
       if (errors.error) {
-        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav, errors.error)).code(400).takeover()
+        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav, errors.error)).code(errorCodes.validationError).takeover()
       }
 
       const results = await doSearch(searchCriteria, getUser(request))
