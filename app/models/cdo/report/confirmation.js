@@ -5,7 +5,8 @@ function ViewModel (payload) {
     sourceType: payload?.sourceType,
     pk: payload?.pk,
     dogIndexOverride: payload?.dogChosen?.indexNumber,
-    subTitle: buildReportSubTitle(payload)
+    subTitle: buildReportSubTitle(payload),
+    numberOfDogs: payload?.dogs?.length ?? 1
   }
 }
 

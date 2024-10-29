@@ -1,6 +1,6 @@
 const { UTCDate } = require('@date-fns/utc')
 const { formatInTimeZone } = require('date-fns-tz')
-const { parse, isValid, isFuture, isToday, format } = require('date-fns')
+const { parse, isValid, isFuture, isToday, format, differenceInYears } = require('date-fns')
 
 const validDateFormats = [
   'yyyy-MM-dd',
@@ -41,6 +41,14 @@ const formatToGds = date => {
   }
 
   return format(new Date(date), 'dd MMMM yyyy')
+}
+
+const formatToDDMMYYYY = date => {
+  if (date === null || date === undefined) {
+    return date
+  }
+
+  return format(new Date(date), 'dd/MM/yyyy')
 }
 
 const formatToDateTime = date => {
@@ -128,7 +136,7 @@ const getDateComponents = (payload, prefix) => {
   return { year, month, day }
 }
 
-const validateDate = (value, helpers, required = false, preventFutureDates = false, preventPastDates = false) => {
+const validateDate = (value, helpers, required = false, preventFutureDates = false, preventPastDates = false, preventOlderThanFifteenYearsAgo = false) => {
   const { day, month, year } = value
   const dateComponents = { day, month, year }
   const invalidComponents = []
@@ -161,6 +169,10 @@ const validateDate = (value, helpers, required = false, preventFutureDates = fal
       return helpers.message('Date must be today or in the future', { path: [elementPath, ['day', 'month', 'year']] })
     }
 
+    if (preventOlderThanFifteenYearsAgo && differenceInYears(new Date(), date) >= 15) {
+      return helpers.message('Date must less than 15 years ago', { path: [elementPath, ['day', 'month', 'year']] })
+    }
+
     return date
   }
 
@@ -180,6 +192,7 @@ const validateDate = (value, helpers, required = false, preventFutureDates = fal
 module.exports = {
   dateComponentsToString,
   formatToGds,
+  formatToDDMMYYYY,
   stripTimeFromUTC,
   formatToDateTime,
   getElapsed,

@@ -16,12 +16,16 @@ describe('SelectAddress test', () => {
   jest.mock('../../../../../../app/lib/route-helpers')
   const { getRedirectForUserAccess } = require('../../../../../../app/lib/route-helpers')
 
+  jest.mock('../../../../../../app/api/ddi-index-api/user')
+  const { submitReportSomething } = require('../../../../../../app/api/ddi-index-api/user')
+
   const createServer = require('../../../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
     getRedirectForUserAccess.mockResolvedValue()
+    submitReportSomething.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })

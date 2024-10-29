@@ -1,4 +1,4 @@
-const { extractEmail, cleanUserDisplayName, extractLatestPrimaryTelephoneNumber, extractLatestSecondaryTelephoneNumber, extractLatestAddress, extractLatestInsurance, dedupeAddresses, constructDateField, buildReportSubTitle } = require('../../../app/lib/model-helpers')
+const { extractEmail, cleanUserDisplayName, extractLatestPrimaryTelephoneNumber, extractLatestSecondaryTelephoneNumber, extractLatestAddress, extractLatestInsurance, dedupeAddresses, constructDateField, buildReportSubTitle, buildReportTitle } = require('../../../app/lib/model-helpers')
 
 describe('ModelHelpers', () => {
   test('extractEmail handles no emails', () => {
@@ -323,6 +323,18 @@ describe('ModelHelpers', () => {
     test('should return owner name for owner source as catch-all', () => {
       const payload = { sourceType: 'owner', pk: 'P-123-456', reportType: 'select-dog', firstName: 'John', lastName: 'Smith' }
       expect(buildReportSubTitle(payload)).toBe('John Smith')
+    })
+  })
+
+  describe('buildReportTitle', () => {
+    test('should return Dog in breach for in-breach report', () => {
+      const payload = { reportType: 'in-breach' }
+      expect(buildReportTitle(payload)).toBe('Which of the owner\'s dogs is in breach?')
+    })
+
+    test('should return Dog idied for dog died report', () => {
+      const payload = { reportType: 'dog-died' }
+      expect(buildReportTitle(payload)).toBe('Which of the owner\'s dogs has died?')
     })
   })
 })

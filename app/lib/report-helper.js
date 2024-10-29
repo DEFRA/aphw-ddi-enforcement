@@ -1,6 +1,6 @@
 const { routes, reportTypes } = require('../constants/cdo/report')
 const { getCdo } = require('../api/ddi-index-api/cdo')
-const { getPersonByReference, getPersonAndDogs } = require('../api/ddi-index-api/person')
+const { getPersonAndDogs } = require('../api/ddi-index-api/person')
 
 const isSessionValid = (details) => {
   return details?.pk && details.pk !== '' && details?.sourceType && details.sourceType !== ''
@@ -10,7 +10,7 @@ const getCdoOrPerson = async (sourceType, pk, user) => {
   if (!sourceType || !pk) {
     return null
   }
-  return sourceType === 'dog' ? getCdo(pk, user) : getPersonByReference(pk, user)
+  return sourceType === 'dog' ? getCdo(pk, user) : getPersonAndDogs(pk, user)
 }
 
 const getDogsIndexNumbers = async (details, user) => {
@@ -55,14 +55,9 @@ const determineScreenAfterSelectDog = (selected, backNav) => {
   }
 }
 
-const sendReportEmail = async (data) => {
-  console.log('461732 To be implemented - about to send email', data)
-}
-
 module.exports = {
   isSessionValid,
   getCdoOrPerson,
   determineScreenAfterReportType,
-  determineScreenAfterSelectDog,
-  sendReportEmail
+  determineScreenAfterSelectDog
 }

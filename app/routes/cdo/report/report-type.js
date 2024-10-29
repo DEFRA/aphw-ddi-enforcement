@@ -37,7 +37,8 @@ module.exports = [
           sourceType,
           firstName: cdoOrPerson?.firstName,
           lastName: cdoOrPerson?.lastName,
-          pk
+          pk,
+          dogs: sourceType === 'dog' ? [pk] : cdoOrPerson?.dogs?.map(d => d.indexNumber)
         }
         setReportTypeDetails(request, data)
 

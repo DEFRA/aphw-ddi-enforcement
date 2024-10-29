@@ -1,7 +1,7 @@
 const { user } = require('../../mocks/auth')
 
 jest.mock('../../../app/api/ddi-index-api/person')
-const { getPersonByReference, getPersonAndDogs } = require('../../../app/api/ddi-index-api/person')
+const { getPersonAndDogs } = require('../../../app/api/ddi-index-api/person')
 
 jest.mock('../../../app/api/ddi-index-api/cdo')
 const { getCdo } = require('../../../app/api/ddi-index-api/cdo')
@@ -13,7 +13,6 @@ describe('Report helper', () => {
     jest.clearAllMocks()
     getCdo.mockResolvedValue()
     getPersonAndDogs.mockResolvedValue()
-    getPersonByReference.mockResolvedValue()
   })
 
   describe('isSessionValid', () => {
@@ -53,25 +52,25 @@ describe('Report helper', () => {
       const res = await getCdoOrPerson('dog', null, user)
       expect(res).toBe(null)
       expect(getCdo).not.toHaveBeenCalled()
-      expect(getPersonByReference).not.toHaveBeenCalled()
+      expect(getPersonAndDogs).not.toHaveBeenCalled()
     })
 
     test('should handle missing sourceType', async () => {
       const res = await getCdoOrPerson(null, 'ED123', user)
       expect(res).toBe(null)
       expect(getCdo).not.toHaveBeenCalled()
-      expect(getPersonByReference).not.toHaveBeenCalled()
+      expect(getPersonAndDogs).not.toHaveBeenCalled()
     })
 
     test('should call getCdo if dog', async () => {
       await getCdoOrPerson('dog', 'ED123', user)
       expect(getCdo).toHaveBeenCalledWith('ED123', user)
-      expect(getPersonByReference).not.toHaveBeenCalled()
+      expect(getPersonAndDogs).not.toHaveBeenCalled()
     })
 
     test('should call getPersonByReference if owner', async () => {
       await getCdoOrPerson('owner', 'P-123', user)
-      expect(getPersonByReference).toHaveBeenCalledWith('P-123', user)
+      expect(getPersonAndDogs).toHaveBeenCalledWith('P-123', user)
       expect(getCdo).not.toHaveBeenCalled()
     })
   })
@@ -126,7 +125,6 @@ describe('Report helper', () => {
       const details = { sourceType: 'owner' }
       const backNav = { srcHashParam: '?src=hash1' }
       const res = await determineScreenAfterReportType('dog-died', details, backNav, user)
-      console.log('JB res1', res)
       expect(res).toEqual({
         nextScreen: '/cdo/report/select-dog?src=hash1',
         override: undefined

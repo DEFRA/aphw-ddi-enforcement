@@ -136,6 +136,14 @@ const buildReportSubTitle = (payload, forceOwnerDisplay = false) => {
   return `${payload?.firstName} ${payload?.lastName}`
 }
 
+const buildReportTitle = (payload) => {
+  if (payload?.reportType === reportTypes.inBreach) {
+    return 'Which of the owner\'s dogs is in breach?'
+  } else {
+    return 'Which of the owner\'s dogs has died?'
+  }
+}
+
 module.exports = {
   extractEmail,
   extractLatestAddress,
@@ -146,5 +154,6 @@ module.exports = {
   cleanUserDisplayName,
   dedupeAddresses,
   constructDateField,
+  buildReportTitle,
   buildReportSubTitle
 }
