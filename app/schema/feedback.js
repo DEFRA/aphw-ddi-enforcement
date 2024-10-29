@@ -6,7 +6,7 @@ const schema = Joi.object({
     { '*': 'Select an option' }
   ),
   details: Joi.string().allow('').allow(null).optional().max(forms.maxTextAreaLength).messages({
-    'string.max': 'Details must be 1200 characters or less'
+    'string.max': 'Enter less than 1200 characters'
   }),
   satisfaction: Joi.string().required().messages(
     { '*': 'Select an option' }

@@ -5,7 +5,7 @@ const schema = Joi.object({
   details: Joi.string().required().max(forms.maxTextAreaLength).messages({
     'any.required': 'Enter the details of your report',
     'string.empty': 'Enter the details of your report',
-    'string.max': 'Details must be 1200 characters or less'
+    'string.max': 'Enter less than 1200 characters'
   })
 }).required()
 

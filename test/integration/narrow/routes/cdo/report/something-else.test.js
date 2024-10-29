@@ -120,7 +120,7 @@ describe('Something else test', () => {
 
       expect(response.statusCode).toBe(400)
       const { document } = (new JSDOM(response.payload)).window
-      expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Details must be 1200 characters or less')
+      expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Enter less than 1200 characters')
     })
 
     test('valid payload forwards onto confirm screen when valid payload', async () => {
