@@ -70,7 +70,7 @@ const buildReportSomethingPayload = (data, user) => {
     details = buildChangedAddress(data)
   } else if (data.reportType === reportTypes.dogDied) {
     details = buildDogDied(data)
-  } else if (data.reportType === reportTypes.somethingElse) {
+  } else {
     details = buildSomethingElse(data)
   }
   const outData = {
