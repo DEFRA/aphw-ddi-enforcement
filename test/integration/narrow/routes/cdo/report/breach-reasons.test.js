@@ -20,6 +20,9 @@ describe('Breach reasons test', () => {
   jest.mock('../../../../../../app/lib/route-helpers')
   const { getRedirectForUserAccess } = require('../../../../../../app/lib/route-helpers')
 
+  jest.mock('../../../../../../app/api/ddi-index-api/user')
+  const { submitReportSomething } = require('../../../../../../app/api/ddi-index-api/user')
+
   const createServer = require('../../../../../../app/server')
   let server
 
@@ -27,6 +30,7 @@ describe('Breach reasons test', () => {
     mockAuth.getUser.mockReturnValue(user)
     getRedirectForUserAccess.mockResolvedValue()
     getBreachCategories.mockResolvedValue(breachList)
+    submitReportSomething.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })

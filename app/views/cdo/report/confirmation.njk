@@ -31,16 +31,24 @@
     </div>
 
     <p class="govuk-body">
-      We will check the details you have reported and update the Index if we need to. If we need more information we will contact you.
+      We have sent you a confirmation email.
+    </p>
+
+    <h2 class="govuk-heading-m">
+      What happens next
+    </h2>
+
+    <p class="govuk-body">
+    We will check the details you have reported and update the Index if we need to. If we need more information we will contact you.
     </p>
 
     <p class="govuk-body">
       {% if model.sourceType == 'dog' %}
       <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/dog-details/{{ model.pk }}">Dog record {{ model.pk }}</a>
       {% elif model.dogIndexOverride %}
-      <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/dog-details/{{ model.dogIndexOverride }}">Dog record {{ model.subTitle }}</a>
+      <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/dog-details/{{ model.dogIndexOverride }}">Dog record {{ model.dogIndexOverride }}</a>
       {% else %}
-      <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/owner-details/{{ model.pk }}">Owner record {{ model.subTitle }}</a>
+      <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/owner-details/{{ model.pk }}">Owner record for {{ model.subTitle }}</a>
       {% endif %}
     </p>
   </div>

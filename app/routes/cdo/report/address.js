@@ -8,7 +8,8 @@ const { getUser } = require('../../../auth')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { addBackNavigation, addBackNavigationForErrorCondition } = require('../../../lib/back-helpers')
 const { getReportTypeDetails } = require('../../../session/report')
-const { isSessionValid, sendReportEmail } = require('../../../lib/report-helper')
+const { isSessionValid } = require('../../../lib/report-helper')
+const { submitReportSomething } = require('../../../api/ddi-index-api/user')
 
 module.exports = [{
   method: 'GET',
@@ -55,9 +56,9 @@ module.exports = [{
       }
     },
     handler: async (request, h) => {
-      const payload = { ...request.payload, ...getReportTypeDetails(request), user: getUser(request) }
+      const payload = { ...getReportTypeDetails(request), ...request.payload }
 
-      await sendReportEmail(payload)
+      await submitReportSomething(payload, getUser(request))
 
       return h.redirect(routes.reportConfirmation.get)
     }

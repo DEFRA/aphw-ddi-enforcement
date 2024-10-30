@@ -11,12 +11,16 @@ describe('Something else test', () => {
   jest.mock('../../../../../../app/lib/route-helpers')
   const { getRedirectForUserAccess } = require('../../../../../../app/lib/route-helpers')
 
+  jest.mock('../../../../../../app/api/ddi-index-api/user')
+  const { submitReportSomething } = require('../../../../../../app/api/ddi-index-api/user')
+
   const createServer = require('../../../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
     getRedirectForUserAccess.mockResolvedValue()
+    submitReportSomething.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })
@@ -116,7 +120,7 @@ describe('Something else test', () => {
 
       expect(response.statusCode).toBe(400)
       const { document } = (new JSDOM(response.payload)).window
-      expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Details must be 1200 characters or less')
+      expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Enter less than 1200 characters')
     })
 
     test('valid payload forwards onto confirm screen when valid payload', async () => {

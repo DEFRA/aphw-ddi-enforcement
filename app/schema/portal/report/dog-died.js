@@ -6,7 +6,7 @@ const dogDiedSchema = Joi.object({
     year: Joi.string().allow(null).allow(''),
     month: Joi.string().allow(null).allow(''),
     day: Joi.string().allow(null).allow('')
-  }).custom((value, helper) => validateDate(value, helper, true, true)).optional()
+  }).custom((value, helper) => validateDate(value, helper, true, true, false, true)).optional()
     .messages({ 'any.required': 'Enter a Date of death' })
 }).required()
 

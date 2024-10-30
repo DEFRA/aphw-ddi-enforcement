@@ -9,7 +9,8 @@ const { addBackNavigation } = require('../../../lib/back-helpers')
 const { setInSession, getFromSession } = require('../../../session/session-wrapper')
 const getUser = require('../../../auth/get-user')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
-const { isSessionValid, sendReportEmail } = require('../../../lib/report-helper')
+const { isSessionValid } = require('../../../lib/report-helper')
+const { submitReportSomething } = require('../../../api/ddi-index-api/user')
 
 module.exports = [
   {
@@ -70,9 +71,9 @@ module.exports = [
         const addresses = getFromSession(request, 'addresses')
         const selectedAddress = addresses[request.payload.address]
 
-        const payload = { ...details, ...selectedAddress, user: getUser(request) }
+        const payload = { ...details, ...selectedAddress }
 
-        await sendReportEmail(payload)
+        await submitReportSomething(payload, getUser(request))
 
         return h.redirect(routes.reportConfirmation.get)
       }

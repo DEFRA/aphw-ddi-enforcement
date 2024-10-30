@@ -11,12 +11,16 @@ describe('Dog died test', () => {
   jest.mock('../../../../../../app/lib/route-helpers')
   const { getRedirectForUserAccess } = require('../../../../../../app/lib/route-helpers')
 
+  jest.mock('../../../../../../app/api/ddi-index-api/user')
+  const { submitReportSomething } = require('../../../../../../app/api/ddi-index-api/user')
+
   const createServer = require('../../../../../../app/server')
   let server
 
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
     getRedirectForUserAccess.mockResolvedValue()
+    submitReportSomething.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })
@@ -87,6 +91,25 @@ describe('Dog died test', () => {
 
     test('missing date returns 400', async () => {
       const payload = {}
+
+      const options = {
+        method: 'POST',
+        url: '/cdo/report/dog-died',
+        auth,
+        payload
+      }
+
+      const response = await server.inject(options)
+
+      expect(response.statusCode).toBe(400)
+      const { document } = (new JSDOM(response.payload)).window
+      expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Enter a Date of death')
+    })
+
+    test('date older than 15 years returns 400', async () => {
+      const fifteenYearsAgo = new Date()
+      fifteenYearsAgo.setFullYear(fifteenYearsAgo.getFullYear() - 15)
+      const payload = { dateOfDeath: fifteenYearsAgo }
 
       const options = {
         method: 'POST',

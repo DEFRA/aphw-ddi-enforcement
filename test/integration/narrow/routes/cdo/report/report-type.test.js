@@ -70,7 +70,11 @@ describe('Report type test', () => {
       getReportTypeDetails.mockReturnValue()
       getCdoOrPerson.mockResolvedValue({
         firstName: 'John',
-        lastName: 'Smith'
+        lastName: 'Smith',
+        dogs: [
+          { indexNumber: 'ED123' },
+          { indexNumber: 'ED456' }
+        ]
       })
 
       const options = {

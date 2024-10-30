@@ -25,7 +25,7 @@ function ViewModel (details, breachCategories, backNav, errors) {
     subTitle: `Dog ${details?.dogChosen?.indexNumber || details?.pk}`,
     dogBreaches: {
       items: breachCategories.map(breachCategory => ({
-        value: breachCategory.short_name,
+        value: breachCategory.label,
         text: breachCategory.label,
         checked: false
       })),

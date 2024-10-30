@@ -8,7 +8,8 @@ const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { getReportTypeDetails } = require('../../../session/report')
 const { getBreachCategories } = require('../../../api/ddi-index-api/dog-breaches')
 const { validatePayload } = require('../../../schema/portal/report/breach-reasons')
-const { isSessionValid, sendReportEmail } = require('../../../lib/report-helper')
+const { isSessionValid } = require('../../../lib/report-helper')
+const { submitReportSomething } = require('../../../api/ddi-index-api/user')
 
 module.exports = [
   {
@@ -54,9 +55,9 @@ module.exports = [
       },
       auth: { scope: enforcement },
       handler: async (request, h) => {
-        const payload = { ...getReportTypeDetails(request), ...request.payload, user: getUser(request) }
+        const payload = { ...getReportTypeDetails(request), ...request.payload }
 
-        await sendReportEmail(payload)
+        await submitReportSomething(payload, getUser(request))
 
         return h.redirect(routes.reportConfirmation.get)
       }

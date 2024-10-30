@@ -16,6 +16,9 @@ describe('Address edit test', () => {
   jest.mock('../../../../../../app/session/report')
   const { getReportTypeDetails } = require('../../../../../../app/session/report')
 
+  jest.mock('../../../../../../app/api/ddi-index-api/user')
+  const { submitReportSomething } = require('../../../../../../app/api/ddi-index-api/user')
+
   const createServer = require('../../../../../../app/server')
   let server
 
@@ -23,6 +26,7 @@ describe('Address edit test', () => {
     mockAuth.getUser.mockReturnValue(user)
     getCountries.mockResolvedValue(mockCountries)
     getRedirectForUserAccess.mockResolvedValue()
+    submitReportSomething.mockResolvedValue()
     server = await createServer()
     await server.initialize()
   })

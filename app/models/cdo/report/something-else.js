@@ -14,7 +14,7 @@ function ViewModel (data, backNav, errors) {
       name: 'details',
       maxlength: forms.maxTextAreaLength,
       hint: {
-        text: 'Do not include personal information like your name, phone number or email address.'
+        text: 'If you are sharing information about a dog, tell us its name.'
       },
       value: data?.details
     },
