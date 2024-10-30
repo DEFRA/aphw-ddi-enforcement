@@ -1,6 +1,6 @@
 const {
   getElapsed, formatToDateTime, getMonthsSince, dateComponentsToString, getStatsTimestamp, getTimeInAmPm,
-  getDateAsReadableString, removeIndividualDateComponents
+  getDateAsReadableString, removeIndividualDateComponents, formatToDDMMYYYY
 } = require('../../../app/lib/date-helpers')
 
 describe('date-helpers', () => {
@@ -185,6 +185,21 @@ describe('date-helpers', () => {
       const payload = { 'field1-dayx': '01', 'field1-monthx': '01', 'field1-yearx': '2099', anotherField: 123 }
       const res = removeIndividualDateComponents(payload)
       expect(res).toEqual({ anotherField: 123, 'field1-dayx': '01', 'field1-monthx': '01', 'field1-yearx': '2099' })
+    })
+  })
+
+  describe('formatToDDMMYYYY', () => {
+    test('should format date', () => {
+      const res = formatToDDMMYYYY(new Date(2024, 5, 25))
+      expect(res).toBe('25/06/2024')
+    })
+    test('should handle null', () => {
+      const res = formatToDDMMYYYY(null)
+      expect(res).toBe(null)
+    })
+    test('should handle undefined', () => {
+      const res = formatToDDMMYYYY(undefined)
+      expect(res).toBe(undefined)
     })
   })
 })
