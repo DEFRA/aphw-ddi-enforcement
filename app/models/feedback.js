@@ -1,4 +1,3 @@
-const { forms } = require('../constants/forms')
 const { errorPusherDefault } = require('../lib/error-helpers')
 
 const satisfactionOptions = [
@@ -31,7 +30,7 @@ function ViewModel (payload, logout, errors) {
     details: {
       id: 'details',
       name: 'details',
-      maxlength: forms.maxTextAreaLength,
+      maxlength: 1200,
       label: {
         text: 'Can you provide more detail? (optional)',
         classes: 'govuk-label--m'

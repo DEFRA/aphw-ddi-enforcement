@@ -6,15 +6,11 @@ const constants = {
     },
     viewActivities: {
       get: '/cdo/view/activity'
-    },
-    reportType: {
-      get: '/cdo/report/report-type'
     }
   },
   views: {
     viewDogDetails: 'cdo/view/dog-details',
-    viewDogActivities: 'cdo/view/check-activities',
-    reportType: 'cdo/report/report-type'
+    viewDogActivities: 'cdo/view/check-activities'
   }
 }
 
