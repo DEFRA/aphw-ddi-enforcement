@@ -2,6 +2,42 @@ const { reportTypes } = require('../../../constants/cdo/report')
 const { errorPusherDefault } = require('../../../lib/error-helpers')
 const { buildReportSubTitle } = require('../../../lib/model-helpers')
 
+const standardOptions = [
+  {
+    value: reportTypes.inBreach,
+    text: 'The owner is in breach of their exemption'
+  },
+  {
+    value: reportTypes.changedAddress,
+    text: 'The owner has changed address'
+  },
+  {
+    value: reportTypes.dogDied,
+    text: 'The dog has died'
+  },
+  {
+    divider: 'or'
+  },
+  {
+    value: reportTypes.somethingElse,
+    text: 'Something else'
+  }
+]
+
+const orphanedOwnerOptions = [
+  {
+    value: reportTypes.changedAddress,
+    text: 'The owner has changed address'
+  },
+  {
+    divider: 'or'
+  },
+  {
+    value: reportTypes.somethingElse,
+    text: 'Something else'
+  }
+]
+
 function ViewModel (payload, backNav, errors) {
   this.model = {
     backLink: backNav.backLink,
@@ -19,34 +55,9 @@ function ViewModel (payload, backNav, errors) {
         classes: 'govuk-!-margin-bottom-2'
       },
       value: payload?.reportType,
-      items: [
-        {
-          value: reportTypes.inBreach,
-          text: 'The owner is in breach of their exemption'
-        },
-        {
-          value: reportTypes.changedAddress,
-          text: 'The owner has changed address'
-        },
-        {
-          value: reportTypes.dogDied,
-          text: 'The dog has died'
-        },
-        {
-          divider: 'or'
-        },
-        {
-          value: reportTypes.somethingElse,
-          text: 'Something else'
-        }
-      ]
+      items: (payload?.dogs?.length ?? 0) === 0 ? orphanedOwnerOptions : standardOptions
     },
     errors: []
-  }
-
-  if ((payload?.dogs?.length ?? 0) === 0) {
-    this.model.reportType.items.splice(0, 1)
-    this.model.reportType.items.splice(1, 1)
   }
 
   errorPusherDefault(errors, this.model)
