@@ -15,9 +15,10 @@ describe('Email helper', () => {
     const res = buildReportSomethingPayload(data, user)
     expect(res).toEqual({
       fields: [
-        { name: 'Details', value: 'Breach reported for Dog ED12345\n - breach 1\n - breach 2\n' },
+        { name: 'Details', value: 'Breach reported for Dog ED12345\nReasons:\n - breach 1\n - breach 2\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -35,9 +36,10 @@ describe('Email helper', () => {
     const res = buildReportSomethingPayload(data, user)
     expect(res).toEqual({
       fields: [
-        { name: 'Details', value: 'Breach reported for Dog ED12300\n - breach 1\n - breach 2\n' },
+        { name: 'Details', value: 'Breach reported for Dog ED12300\nReasons:\n - breach 1\n - breach 2\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -57,7 +59,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Change of address reported for Dog ED12345\nNew address:\n    addr1\n    addr2\n    town\n    postcode\n    country\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -80,7 +83,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Change of address reported for John Smith (owns dog ED45600)\nNew address:\n    addr1\n    addr2\n    town\n    postcode\n    country\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -103,7 +107,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Change of address reported for John Smith (owns dogs ED12300, ED45600)\nNew address:\n    addr1\n    addr2\n    town\n    postcode\n    country\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -119,7 +124,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Dog ED12300 has died\nDate of death: 25/06/2024\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -136,7 +142,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Dog ED12300 has died\nDate of death: 25/06/2024\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -152,7 +159,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Something else for Dog ED12300\nDetails: Example text\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -171,7 +179,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Something else for John Smith (owns dog ED12300)\nDetails: Example text\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 
@@ -190,7 +199,8 @@ describe('Email helper', () => {
       fields: [
         { name: 'Details', value: 'Something else for John Smith (owns dogs ED12300, ED45600)\nDetails: Example text\n' },
         { name: 'ReportedBy', value: user.username }
-      ]
+      ],
+      reportData: data
     })
   })
 })
