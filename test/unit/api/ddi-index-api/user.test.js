@@ -87,9 +87,10 @@ describe('DDI API user', () => {
         'user/me/report-something',
         {
           fields: [
-            { name: 'Details', value: 'Breach reported for Dog ED12345\n - breach 1\n - breach 2\n' },
+            { name: 'Details', value: 'Breach reported for Dog ED12345\nReasons:\n - breach 1\n - breach 2\n' },
             { name: 'ReportedBy', value: userWithDisplayname.username }
-          ]
+          ],
+          reportData: data
         },
         expect.anything())
     })
