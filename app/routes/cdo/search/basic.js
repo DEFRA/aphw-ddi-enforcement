@@ -10,6 +10,8 @@ const { addBackNavigation } = require('../../../lib/back-helpers')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { setInSession } = require('../../../session/session-wrapper')
 
+const FOUR_HUNDRED = 400
+
 module.exports = [{
   method: 'GET',
   path: routes.searchBasic.get,
@@ -41,7 +43,7 @@ module.exports = [{
 
       const errors = searchSchema.validate(searchCriteria, { abortEarly: false })
       if (errors.error) {
-        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav, errors.error)).code(400).takeover()
+        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav, errors.error)).code(FOUR_HUNDRED).takeover()
       }
 
       const results = await doSearch(searchCriteria, getUser(request))
