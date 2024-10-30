@@ -10,6 +10,7 @@ const buildInBreach = data => {
   } else {
     details = `Breach reported for Dog ${data?.dogChosen?.indexNumber}\n`
   }
+  details += 'Reasons:\n'
   details += data?.dogBreaches?.map(breach => ` - ${breach}\n`).join('')
   return details
 }
@@ -77,7 +78,8 @@ const buildReportSomethingPayload = (data, user) => {
     fields: [
       { name: 'Details', value: details },
       { name: 'ReportedBy', value: user?.username }
-    ]
+    ],
+    reportData: data
   }
   return outData
 }
