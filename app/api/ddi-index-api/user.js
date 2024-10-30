@@ -1,5 +1,4 @@
 const { get, callDelete, put, post } = require('./base')
-const { buildReportSomethingPayload } = require('../../lib/email-helper')
 const endpoint = 'user/me'
 
 const userLogout = async (user) => {
@@ -92,11 +91,6 @@ const submitFeedback = async (data, user) => {
   await post(endpoint + '/feedback', data, user)
 }
 
-const submitReportSomething = async (data, user) => {
-  const reportSomethingPayload = buildReportSomethingPayload(data, user)
-  await post(endpoint + '/report-something', reportSomethingPayload, user)
-}
-
 module.exports = {
   userLogout,
   validateUser,
@@ -105,6 +99,5 @@ module.exports = {
   isEmailVerified,
   sendVerifyEmail,
   isCodeCorrect,
-  submitFeedback,
-  submitReportSomething
+  submitFeedback
 }
