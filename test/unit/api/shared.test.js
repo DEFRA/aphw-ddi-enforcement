@@ -29,7 +29,7 @@ describe('shared', () => {
     })
 
     test('should add default header with user agent', () => {
-      const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0'
+      const userAgent = 'Mozilla/5.0'
 
       const headers = addHeaders({ ...user, userAgent })
       expect(headers).toEqual({

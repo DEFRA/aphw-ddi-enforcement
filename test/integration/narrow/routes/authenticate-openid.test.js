@@ -76,7 +76,7 @@ describe('Authenticate test', () => {
       userinfo: JSON.stringify({ email: 'me@example.com' }, null, 2),
       coreIdentity: 'coreIdentity'
     })
-    const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0'
+    const userAgent = 'Mozilla/5.0'
 
     const options = {
       method: 'GET',
