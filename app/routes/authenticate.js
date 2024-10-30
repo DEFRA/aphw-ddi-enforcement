@@ -72,7 +72,8 @@ module.exports = {
       const user = {
         username: userinfo.email,
         displayname: userinfo.email,
-        accessToken
+        accessToken,
+        userAgent: request.headers['user-agent']
       }
 
       try {

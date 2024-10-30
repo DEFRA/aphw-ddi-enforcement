@@ -23,7 +23,8 @@ describe('DDI API user', () => {
 
   describe('validateUser', () => {
     test('should check if user is validated or not', async () => {
-      await validateUser(userWithDisplayname)
+      const userAgent = 'Mozilla/5.0'
+      await validateUser({ ...userWithDisplayname, ...userAgent })
       expect(get).toHaveBeenCalledWith('user/me/validate', expect.anything())
     })
   })
