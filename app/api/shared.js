@@ -4,7 +4,7 @@ const { api } = require('../constants/audience')
 const addHeaders = (user, audience = api) => {
   const userAgent = {}
 
-  if (user.userAgent) {
+  if (user?.userAgent) {
     userAgent['enforcement-user-agent'] = user.userAgent
   }
 

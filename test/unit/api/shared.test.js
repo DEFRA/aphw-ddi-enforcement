@@ -19,6 +19,16 @@ describe('shared', () => {
       expect(headers.Authorization.startsWith('Bearer ')).toBe(true)
     })
 
+    test('should handle null users', () => {
+      const headers = addHeaders(null)
+      expect(headers).toEqual({
+        'ddi-username': undefined,
+        'ddi-displayname': undefined,
+        Authorization: expect.any(String)
+      })
+      expect(headers.Authorization.startsWith('Bearer ')).toBe(true)
+    })
+
     test('should add default header with audience', () => {
       const headers = addHeaders(user, audience)
       expect(headers).toEqual({
