@@ -66,6 +66,39 @@ describe('Authenticate test', () => {
     expect(response.headers.location).toBe('/cdo/search/basic')
   })
 
+  test('GET /authenticate route with user-agent returns 302 to forward onto search page', async () => {
+    getRedirectForUserAccess.mockResolvedValue(null)
+    getResult.mockResolvedValue({
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+      idToken: 'idToken',
+      idTokenDecoded: 'idTokenDecoded',
+      userinfo: JSON.stringify({ email: 'me@example.com' }, null, 2),
+      coreIdentity: 'coreIdentity'
+    })
+    const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0'
+
+    const options = {
+      method: 'GET',
+      url: '/authenticate',
+      headers: {
+        'x-forwarded-proto': 'http',
+        host: 'localhost:3003',
+        Cookie: 'nonce=abcdede;state=fghijkl;',
+        'user-agent': userAgent
+      }
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(validateUser).toHaveBeenCalledWith({
+      accessToken: 'accessToken',
+      displayname: 'me@example.com',
+      username: 'me@example.com',
+      userAgent
+    })
+  })
+
   test('GET /authenticate route returns 302 to forward to licence if licence not accepted', async () => {
     getRedirectForUserAccess.mockResolvedValue('/secure-access-licence')
     getResult.mockResolvedValue({
