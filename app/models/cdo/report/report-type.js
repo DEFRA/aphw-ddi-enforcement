@@ -44,6 +44,11 @@ function ViewModel (payload, backNav, errors) {
     errors: []
   }
 
+  if ((payload?.dogs?.length ?? 0) === 0) {
+    this.model.reportType.items.splice(0, 1)
+    this.model.reportType.items.splice(1, 1)
+  }
+
   errorPusherDefault(errors, this.model)
 }
 

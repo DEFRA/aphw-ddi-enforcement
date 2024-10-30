@@ -66,7 +66,7 @@ describe('Report type test', () => {
       expect(clearReportSession).not.toHaveBeenCalled()
     })
 
-    test('owner route returns 200 when data from DB', async () => {
+    test('owner route returns 200 when data from DB and owner has dogs', async () => {
       getReportTypeDetails.mockReturnValue()
       getCdoOrPerson.mockResolvedValue({
         firstName: 'John',
@@ -88,6 +88,33 @@ describe('Report type test', () => {
       expect(getCdoOrPerson).toHaveBeenCalledWith('owner', 'P-123-456', expect.anything())
       const { document } = (new JSDOM(response.payload)).window
       expect(document.querySelectorAll('.govuk-caption-l')[0].textContent.trim()).toBe('John Smith')
+      expect(document.querySelectorAll('.govuk-radios__label')[0].textContent.trim()).toBe('The owner is in breach of their exemption')
+      expect(document.querySelectorAll('.govuk-radios__label')[1].textContent.trim()).toBe('The owner has changed address')
+      expect(document.querySelectorAll('.govuk-radios__label')[2].textContent.trim()).toBe('The dog has died')
+      expect(document.querySelectorAll('.govuk-radios__label')[3].textContent.trim()).toBe('Something else')
+    })
+
+    test('owner route returns 200 when data from DB and orphaned owner', async () => {
+      getReportTypeDetails.mockReturnValue()
+      getCdoOrPerson.mockResolvedValue({
+        firstName: 'John',
+        lastName: 'Smith',
+        dogs: []
+      })
+
+      const options = {
+        method: 'GET',
+        url: '/cdo/report/report-type/P-123-456/owner',
+        auth
+      }
+
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(200)
+      expect(getCdoOrPerson).toHaveBeenCalledWith('owner', 'P-123-456', expect.anything())
+      const { document } = (new JSDOM(response.payload)).window
+      expect(document.querySelectorAll('.govuk-caption-l')[0].textContent.trim()).toBe('John Smith')
+      expect(document.querySelectorAll('.govuk-radios__label')[0].textContent.trim()).toBe('The owner has changed address')
+      expect(document.querySelectorAll('.govuk-radios__label')[1].textContent.trim()).toBe('Something else')
     })
 
     test('missing PK returns 404', async () => {
