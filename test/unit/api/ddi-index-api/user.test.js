@@ -5,7 +5,7 @@ describe('DDI API user', () => {
   jest.mock('../../../../app/api/ddi-index-api/base')
   const { callDelete, get, put, post } = require('../../../../app/api/ddi-index-api/base')
 
-  const { userLogout, validateUser, isLicenceAccepted, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect, submitFeedback } = require('../../../../app/api/ddi-index-api/user')
+  const { userLogout, validateUser, isLicenceAccepted, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect, submitFeedback, submitReportSomething } = require('../../../../app/api/ddi-index-api/user')
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -23,7 +23,8 @@ describe('DDI API user', () => {
 
   describe('validateUser', () => {
     test('should check if user is validated or not', async () => {
-      await validateUser(userWithDisplayname)
+      const userAgent = 'Mozilla/5.0'
+      await validateUser({ ...userWithDisplayname, ...userAgent })
       expect(get).toHaveBeenCalledWith('user/me/validate', expect.anything())
     })
   })
@@ -67,6 +68,31 @@ describe('DDI API user', () => {
     test('should submit feedback', async () => {
       await submitFeedback({ field1: 'value1' }, userWithDisplayname)
       expect(post).toHaveBeenCalledWith('user/me/feedback', { field1: 'value1' }, expect.anything())
+    })
+  })
+
+  describe('submitReportSomething', () => {
+    test('should submit report-something data', async () => {
+      const data = {
+        reportType: 'in-breach',
+        sourceType: 'dog',
+        pk: 'ED12345',
+        dogBreaches: [
+          'breach 1',
+          'breach 2'
+        ]
+      }
+      await submitReportSomething(data, userWithDisplayname)
+      expect(post).toHaveBeenCalledWith(
+        'user/me/report-something',
+        {
+          fields: [
+            { name: 'Details', value: 'Breach reported for Dog ED12345\nReasons:\n - breach 1\n - breach 2\n' },
+            { name: 'ReportedBy', value: userWithDisplayname.username }
+          ],
+          reportData: data
+        },
+        expect.anything())
     })
   })
 })

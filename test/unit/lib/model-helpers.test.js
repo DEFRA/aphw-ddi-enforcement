@@ -1,4 +1,4 @@
-const { extractEmail, cleanUserDisplayName, extractLatestPrimaryTelephoneNumber, extractLatestSecondaryTelephoneNumber, extractLatestAddress, extractLatestInsurance, dedupeAddresses, constructDateField } = require('../../../app/lib/model-helpers')
+const { extractEmail, cleanUserDisplayName, extractLatestPrimaryTelephoneNumber, extractLatestSecondaryTelephoneNumber, extractLatestAddress, extractLatestInsurance, dedupeAddresses, constructDateField, buildReportSubTitle, buildReportTitle } = require('../../../app/lib/model-helpers')
 
 describe('ModelHelpers', () => {
   test('extractEmail handles no emails', () => {
@@ -291,6 +291,50 @@ describe('ModelHelpers', () => {
         ],
         classes: 'govuk-!-margin-bottom-5'
       })
+    })
+  })
+
+  describe('buildReportSubTitle', () => {
+    test('should return Dog number for dog source', () => {
+      const payload = { sourceType: 'dog', pk: 'ED12345' }
+      expect(buildReportSubTitle(payload)).toBe('Dog ED12345')
+    })
+
+    test('should return Dog number for owner source if certain screens - scenario in-breach', () => {
+      const payload = { sourceType: 'owner', pk: 'P-123-456', dogChosen: { indexNumber: 'ED1000' }, reportType: 'in-breach' }
+      expect(buildReportSubTitle(payload)).toBe('Dog ED1000')
+    })
+
+    test('should return Dog number for owner source if certain screens - scenario dog-died', () => {
+      const payload = { sourceType: 'owner', pk: 'P-123-456', dogChosen: { indexNumber: 'ED1000' }, reportType: 'dog-died' }
+      expect(buildReportSubTitle(payload)).toBe('Dog ED1000')
+    })
+
+    test('should return Owner name for owner source if certain screens - scenario dog-died but forceOwnerDisplay', () => {
+      const payload = { sourceType: 'owner', pk: 'P-123-456', dogChosen: { indexNumber: 'ED1000' }, reportType: 'dog-died', firstName: 'John', lastName: 'Smith' }
+      expect(buildReportSubTitle(payload, true)).toBe('John Smith')
+    })
+
+    test('should return owner name for owner source if certain screens - scenario in-breach but no chosen dog', () => {
+      const payload = { sourceType: 'owner', pk: 'P-123-456', dogChosen: { indexNumber: null }, reportType: 'in-breach', firstName: 'John', lastName: 'Smith' }
+      expect(buildReportSubTitle(payload)).toBe('John Smith')
+    })
+
+    test('should return owner name for owner source as catch-all', () => {
+      const payload = { sourceType: 'owner', pk: 'P-123-456', reportType: 'select-dog', firstName: 'John', lastName: 'Smith' }
+      expect(buildReportSubTitle(payload)).toBe('John Smith')
+    })
+  })
+
+  describe('buildReportTitle', () => {
+    test('should return Dog in breach for in-breach report', () => {
+      const payload = { reportType: 'in-breach' }
+      expect(buildReportTitle(payload)).toBe('Which of the owner\'s dogs is in breach?')
+    })
+
+    test('should return Dog idied for dog died report', () => {
+      const payload = { reportType: 'dog-died' }
+      expect(buildReportTitle(payload)).toBe('Which of the owner\'s dogs has died?')
     })
   })
 })

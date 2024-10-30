@@ -1,4 +1,5 @@
 const { keys } = require('../../../constants/forms')
+const { errorCodes } = require('../../../constants/forms')
 const { routes, views } = require('../../../constants/search')
 const { validateUser } = require('../../../api/ddi-index-api/user')
 const { getUser } = require('../../../auth')
@@ -9,8 +10,6 @@ const { enforcement } = require('../../../auth/permissions')
 const { addBackNavigation } = require('../../../lib/back-helpers')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { setInSession } = require('../../../session/session-wrapper')
-
-const FOUR_HUNDRED = 400
 
 module.exports = [{
   method: 'GET',
@@ -43,7 +42,7 @@ module.exports = [{
 
       const errors = searchSchema.validate(searchCriteria, { abortEarly: false })
       if (errors.error) {
-        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav, errors.error)).code(FOUR_HUNDRED).takeover()
+        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav, errors.error)).code(errorCodes.validationError).takeover()
       }
 
       const results = await doSearch(searchCriteria, getUser(request))

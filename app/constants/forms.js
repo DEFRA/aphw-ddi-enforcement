@@ -1,9 +1,11 @@
 const constants = {
   errorCodes: {
-    validationError: 400
+    validationError: 400,
+    notFoundError: 404
   },
   forms: {
-    preventAutocomplete: 'one-time-code'
+    preventAutocomplete: 'one-time-code',
+    maxTextAreaLength: 1200
   },
   routes: {
     accessibility: {

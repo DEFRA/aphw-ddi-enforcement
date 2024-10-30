@@ -1,9 +1,18 @@
 const { createBearerHeader } = require('../auth/jwt-utils')
-const addHeaders = (user, audience = 'aphw-ddi-api') => {
+const { api } = require('../constants/audience')
+
+const addHeaders = (user, audience = api) => {
+  const userAgent = {}
+
+  if (user?.userAgent) {
+    userAgent['enforcement-user-agent'] = user.userAgent
+  }
+
   return {
     'ddi-username': user?.username,
     'ddi-displayname': user?.displayname,
-    ...createBearerHeader(audience)(user)
+    ...createBearerHeader(audience)(user),
+    ...userAgent
   }
 }
 

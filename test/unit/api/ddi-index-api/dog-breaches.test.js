@@ -31,11 +31,6 @@ describe('DDI API Dog Breeches', () => {
 
       const expectdBreachCategories = [
         {
-          id: 1,
-          label: 'Dog not covered by third party insurance',
-          short_name: 'NOT_COVERED_BY_INSURANCE'
-        },
-        {
           id: 2,
           label: 'Dog not kept on lead or muzzled',
           short_name: 'NOT_ON_LEAD_OR_MUZZLED'
@@ -52,7 +47,7 @@ describe('DDI API Dog Breeches', () => {
 
       const breachCategories = await getBreachCategories(user)
       expect(breachCategories).toBeInstanceOf(Array)
-      expect(breachCategories).toHaveLength(3)
+      expect(breachCategories).toHaveLength(2)
       expect(breachCategories).toEqual(expectdBreachCategories)
       expect(get).toHaveBeenCalledWith('breaches/categories', user)
     })

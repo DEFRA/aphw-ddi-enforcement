@@ -1,0 +1,56 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends '_layout.njk' %}
+
+{% block pageTitle %}{{ serviceName }}{% endblock %}
+
+{% block beforeContent %}
+{{ super() }}
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="/cdo/search/basic">Home</a>
+      </li>
+    </ol>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7">
+      <h1 class="govuk-panel__title">
+        Report received
+      </h1>
+
+      <div class="govuk-panel__body">
+        {{ model.subTitle }}
+      </div>
+    </div>
+
+    <p class="govuk-body">
+      We have sent you a confirmation email.
+    </p>
+
+    <h2 class="govuk-heading-m">
+      What happens next
+    </h2>
+
+    <p class="govuk-body">
+    We will check the details you have reported and update the Index if we need to. If we need more information we will contact you.
+    </p>
+
+    <p class="govuk-body">
+      {% if model.sourceType == 'dog' %}
+      <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/dog-details/{{ model.pk }}">Dog record for dog {{ model.pk }}</a>
+      {% elif model.dogIndexOverride %}
+      <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/dog-details/{{ model.dogIndexOverride }}">Dog record for dog {{ model.dogIndexOverride }}</a>
+      {% else %}
+      <a class="govuk-link govuk-link--no-visited-state" href="/cdo/view/owner-details/{{ model.pk }}">Owner record for {{ model.subTitle }}</a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% endblock %}
