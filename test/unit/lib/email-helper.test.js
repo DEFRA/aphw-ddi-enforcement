@@ -22,6 +22,23 @@ describe('Email helper', () => {
     })
   })
 
+  test('should handle in-breach for dog source where user selects reason not listed', () => {
+    const data = {
+      reportType: 'in-breach',
+      sourceType: 'dog',
+      pk: 'ED12345',
+      details: 'Example text for details'
+    }
+    const res = buildReportSomethingPayload(data, user)
+    expect(res).toEqual({
+      fields: [
+        { name: 'Details', value: 'Breach reported for Dog ED12345\nReasons:\nExample text for details\n' },
+        { name: 'ReportedBy', value: user.username }
+      ],
+      reportData: data
+    })
+  })
+
   test('should handle in-breach for owner source', () => {
     const data = {
       reportType: 'in-breach',
