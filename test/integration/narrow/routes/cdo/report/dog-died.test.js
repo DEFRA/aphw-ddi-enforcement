@@ -108,7 +108,7 @@ describe('Dog died test', () => {
 
     test('date older than 15 years returns 400', async () => {
       const fifteenYearsAgo = new Date()
-      fifteenYearsAgo.setFullYear(fifteenYearsAgo.getFullYear() - 15)
+      fifteenYearsAgo.setFullYear(fifteenYearsAgo.getFullYear() - 16)
       const payload = { dateOfDeath: fifteenYearsAgo }
 
       const options = {
@@ -122,7 +122,7 @@ describe('Dog died test', () => {
 
       expect(response.statusCode).toBe(400)
       const { document } = (new JSDOM(response.payload)).window
-      expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Enter a Date of death')
+      expect(document.querySelectorAll('.govuk-error-message')[0].textContent.trim()).toContain('Date must be within the last 15 years')
     })
 
     test('valid payload forwards onto confirm screen when valid payload', async () => {
