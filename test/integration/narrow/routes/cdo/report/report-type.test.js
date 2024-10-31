@@ -47,6 +47,9 @@ describe('Report type test', () => {
     test('dog route returns 200 when data from DB', async () => {
       getReportTypeDetails.mockReturnValue()
       getCdoOrPerson.mockResolvedValue({
+        person: {
+          personReference: 'P-1234-567'
+        },
         dog: {
           indexNumber: 'ED123000'
         }
@@ -64,6 +67,14 @@ describe('Report type test', () => {
       const { document } = (new JSDOM(response.payload)).window
       expect(document.querySelectorAll('.govuk-caption-l')[0].textContent.trim()).toBe('Dog ED123000')
       expect(clearReportSession).not.toHaveBeenCalled()
+      expect(setReportTypeDetails).toHaveBeenCalledWith(expect.anything(), {
+        sourceType: 'dog',
+        firstName: undefined,
+        lastName: undefined,
+        personReference: 'P-1234-567',
+        pk: 'ED123000',
+        dogs: ['ED123000']
+      })
     })
 
     test('owner route returns 200 when data from DB and owner has dogs', async () => {
@@ -71,6 +82,7 @@ describe('Report type test', () => {
       getCdoOrPerson.mockResolvedValue({
         firstName: 'John',
         lastName: 'Smith',
+        personReference: 'P-123-456',
         dogs: [
           { indexNumber: 'ED123' },
           { indexNumber: 'ED456' }
@@ -92,6 +104,14 @@ describe('Report type test', () => {
       expect(document.querySelectorAll('.govuk-radios__label')[1].textContent.trim()).toBe('The owner has changed address')
       expect(document.querySelectorAll('.govuk-radios__label')[2].textContent.trim()).toBe('The dog has died')
       expect(document.querySelectorAll('.govuk-radios__label')[3].textContent.trim()).toBe('Something else')
+      expect(setReportTypeDetails).toHaveBeenCalledWith(expect.anything(), {
+        sourceType: 'owner',
+        firstName: 'John',
+        lastName: 'Smith',
+        personReference: 'P-123-456',
+        pk: 'P-123-456',
+        dogs: ['ED123', 'ED456']
+      })
     })
 
     test('owner route returns 200 when data from DB and orphaned owner', async () => {

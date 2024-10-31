@@ -37,6 +37,7 @@ module.exports = [
           sourceType,
           firstName: cdoOrPerson?.firstName,
           lastName: cdoOrPerson?.lastName,
+          personReference: cdoOrPerson.personReference ?? cdoOrPerson.person?.personReference,
           pk,
           dogs: sourceType === 'dog' ? [pk] : cdoOrPerson?.dogs?.map(d => d.indexNumber)
         }
