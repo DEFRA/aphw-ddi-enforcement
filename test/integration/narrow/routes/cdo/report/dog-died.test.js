@@ -109,7 +109,11 @@ describe('Dog died test', () => {
     test('date older than 15 years returns 400', async () => {
       const fifteenYearsAgo = new Date()
       fifteenYearsAgo.setFullYear(fifteenYearsAgo.getFullYear() - 16)
-      const payload = { dateOfDeath: fifteenYearsAgo }
+      const payload = {
+        'dateOfDeath-day': `${fifteenYearsAgo.getDate()}`,
+        'dateOfDeath-month': `${fifteenYearsAgo.getMonth() + 1}`,
+        'dateOfDeath-year': `${fifteenYearsAgo.getFullYear()}`
+      }
 
       const options = {
         method: 'POST',
