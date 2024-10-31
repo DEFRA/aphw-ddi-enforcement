@@ -11,7 +11,11 @@ const buildInBreach = data => {
     details = `Breach reported for Dog ${data?.dogChosen?.indexNumber}\n`
   }
   details += 'Reasons:\n'
-  details += data?.dogBreaches?.map(breach => ` - ${breach}\n`).join('')
+  if (!data?.dogBreaches) {
+    details += `${data?.details}\n`
+  } else {
+    details += data?.dogBreaches?.map(breach => ` - ${breach}\n`).join('')
+  }
   return details
 }
 

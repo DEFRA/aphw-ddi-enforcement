@@ -170,7 +170,7 @@ const validateDate = (value, helpers, required = false, preventFutureDates = fal
     }
 
     if (preventOlderThanFifteenYearsAgo && differenceInYears(new Date(), date) >= 15) {
-      return helpers.message('Date must less than 15 years ago', { path: [elementPath, ['day', 'month', 'year']] })
+      return helpers.message('Date must be within the last 15 years', { path: [elementPath, ['day', 'month', 'year']] })
     }
 
     return date
