@@ -36,6 +36,32 @@ describe('Confirmation test', () => {
     expect(document.querySelectorAll('.govuk-panel__body')[0].textContent.trim()).toBe('Dog ED123000')
   })
 
+  test('GET /cdo/report/confirmation route returns 200 with owner sourceType', async () => {
+    getReportTypeDetails.mockReturnValue({
+      sourceType: 'owner',
+      pk: 'P-DA08-8028',
+      dogs: ['ED300000', 'ED400140'],
+      firstName: 'Robo',
+      lastName: 'Cop',
+      reportType: 'something-else',
+      dogChosen: {
+        indexNumber: 'ED300000',
+        arrayInd: 1
+      }
+    })
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/report/confirmation',
+      auth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+    const { document } = (new JSDOM(response.payload)).window
+    expect(document.querySelectorAll('#main-content .govuk-link')[0].textContent.trim()).toBe('Owner record for Robo Cop')
+  })
+
   test('GET /cdo/report/confirmation route redirects when user not accepted licence or verified', async () => {
     getRedirectForUserAccess.mockResolvedValue('/redirect-here')
     getReportTypeDetails.mockReturnValue({ sourceType: 'dog', pk: 'ED123000' })

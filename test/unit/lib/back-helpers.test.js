@@ -94,6 +94,32 @@ describe('BackHelpers', () => {
       expect(backNav.srcHashValue).toBe('729b-8f6f')
       expect(backNav.currentHashParam).toBe('789')
     })
+
+    test('addBackNavigation handles home link when not logged in', () => {
+      getFromSession.mockReturnValue()
+      setInSession.mockReturnValue()
+
+      const backNav = addBackNavigation({ url: { href: 'https://testhost.com/newpage' }, headers: { referer: 'https://testhost.com/differentpage?src=789' } })
+
+      expect(backNav.backLink).toBe('/')
+      expect(backNav.srcHashParam).toBe('?src=729b-8f6f')
+      expect(backNav.srcHashValue).toBe('729b-8f6f')
+      expect(backNav.currentHashParam).toBe('789')
+    })
+
+    test('addBackNavigation handles home link when logged in', () => {
+      getFromSession
+        .mockReturnValueOnce()
+        .mockReturnValue('Y')
+      setInSession.mockReturnValue()
+
+      const backNav = addBackNavigation({ url: { href: 'https://testhost.com/newpage' }, headers: { referer: 'https://testhost.com/differentpage?src=789' } })
+
+      expect(backNav.backLink).toBe('/cdo/search/basic')
+      expect(backNav.srcHashParam).toBe('?src=729b-8f6f')
+      expect(backNav.srcHashValue).toBe('729b-8f6f')
+      expect(backNav.currentHashParam).toBe('789')
+    })
   })
 
   describe('addBackNavForErrorCondition', () => {

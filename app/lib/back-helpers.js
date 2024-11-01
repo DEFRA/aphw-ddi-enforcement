@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid')
+const constants = require('../constants/forms')
 const { setInSession, getFromSession } = require('../session/session-wrapper')
 
 const lastHashParam = 'last-hash-param'
@@ -46,7 +47,12 @@ const extractBackNavParam = (request, stripSrcPrefix) => {
 const getPreviousUrl = (request) => {
   const url = getFromSession(request, `back-url-${request?.query?.src}`)
 
-  return url ?? '/'
+  if (!url) {
+    const loggedIn = getFromSession(request, constants.keys.loggedInForNavRoutes) === 'Y'
+    return loggedIn ? '/cdo/search/basic' : '/'
+  }
+
+  return url
 }
 
 const getMainReturnPoint = (request, pathOnly = true) => {
