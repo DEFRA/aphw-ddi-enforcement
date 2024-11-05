@@ -1,6 +1,6 @@
 const constants = require('../constants/forms')
 const { getFromSession, setInSession } = require('../session/session-wrapper')
-const { isLicenceAccepted, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
+const { isLicenceValid, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
 
 const throwIfPreConditionError = (request) => {
   for (const [key, value] of Object.entries(request.pre ?? {})) {
@@ -12,29 +12,39 @@ const throwIfPreConditionError = (request) => {
 }
 
 const getRedirectForUserAccess = async (request, user) => {
-  const notAccepted = await licenceNotYetAccepted(request, user)
-  if (notAccepted) {
+  const notValid = await licenseNotValid(request, user)
+
+  if (notValid) {
     return constants.routes.secureAccessLicence.get
   }
+
   const verified = await isEmailVerified(user)
+
   if (!verified) {
     await sendVerifyEmail(user)
     return constants.routes.verifyCode.get
   }
+
   return null
 }
 
-const licenceNotYetAccepted = async (request, user) => {
-  const accepted = getFromSession(request, constants.keys.acceptedLicence)
+const licenseNotValid = async (request, user) => {
+  const valid = getFromSession(request, constants.keys.validLicence)
 
-  if (accepted === 'Y') {
+  if (valid === 'Y') {
     return false
   }
 
-  const acceptedDb = await isLicenceAccepted(user)
-  if (acceptedDb) {
+  const acceptedDb = await isLicenceValid(user)
+
+  if (acceptedDb.valid) {
     setInSession(request, constants.keys.acceptedLicence, 'Y')
+    setInSession(request, constants.keys.validLicence, 'Y')
     return false
+  }
+
+  if (acceptedDb.accepted) {
+    setInSession(request, constants.keys.acceptedLicence, 'Y')
   }
 
   return true
@@ -76,7 +86,7 @@ const isUrlEndingFromList = (url, endingsToExclude) => {
 module.exports = {
   throwIfPreConditionError,
   getRedirectForUserAccess,
-  licenceNotYetAccepted,
   getContextNav,
-  isUrlEndingFromList
+  isUrlEndingFromList,
+  licenseNotValid
 }

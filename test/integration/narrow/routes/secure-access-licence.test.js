@@ -51,6 +51,19 @@ describe('Secure access licence test', () => {
     expect(document.querySelectorAll('p')[8].textContent.trim()).toContain('To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.')
   })
 
+  test('GET /secure-access-licence route returns 200 for standard users who agreed over a year ago', async () => {
+    const options = {
+      method: 'GET',
+      url: '/secure-access-licence',
+      auth: standardAuth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+    const { document } = new JSDOM(response.payload).window
+    expect(document.querySelectorAll('p')[8].textContent.trim()).toContain('To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.')
+  })
+
   test('POST /secure-access-licence route returns 302 for no auth', async () => {
     setLicenceAccepted.mockResolvedValue(true)
     const options = {
