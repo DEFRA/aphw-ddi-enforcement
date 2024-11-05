@@ -56,6 +56,7 @@ const constants = {
   },
   keys: {
     acceptedLicence: 'accepted-licence',
+    validLicence: 'valid-licence',
     loggedInForNavRoutes: 'logged-in-for-nav-routes'
   }
 }

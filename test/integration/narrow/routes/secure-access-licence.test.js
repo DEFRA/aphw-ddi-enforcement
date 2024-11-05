@@ -5,6 +5,9 @@ describe('Secure access licence test', () => {
   jest.mock('../../../../app/auth')
   const mockAuth = require('../../../../app/auth')
 
+  jest.mock('../../../../app/session/session-wrapper')
+  const { getFromSession } = require('../../../../app/session/session-wrapper')
+
   jest.mock('../../../../app/api/ddi-index-api/user')
   const { setLicenceAccepted, isEmailVerified, sendVerifyEmail } = require('../../../../app/api/ddi-index-api/user')
 
@@ -48,7 +51,21 @@ describe('Secure access licence test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('p')[8].textContent.trim()).toContain('To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.')
+    expect(document.querySelectorAll('p')[8].textContent.trim()).toContain('To access the Dangerous Dogs Index, you must agree to the terms of the secure access licence every 12 months.')
+  })
+
+  test('GET /secure-access-licence route returns 200 for standard users who agreed over a year ago', async () => {
+    getFromSession.mockReturnValue('Y')
+    const options = {
+      method: 'GET',
+      url: '/secure-access-licence',
+      auth: standardAuth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+    const { document } = new JSDOM(response.payload).window
+    expect(document.querySelector('.govuk-inset-text').textContent.trim()).toEqual('To access the Dangerous Dogs Index, you must agree to the terms of the Secure Access Licence every 12 months. The terms of the Secure Access Licence have not changed.')
   })
 
   test('POST /secure-access-licence route returns 302 for no auth', async () => {
