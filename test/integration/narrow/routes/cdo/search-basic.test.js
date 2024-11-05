@@ -30,6 +30,9 @@ describe('SearchBasic test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
+
+    const { document } = new JSDOM(response.payload).window
+    expect(document.querySelector('#main-content').textContent).toContain('Find exempt dangerous dogs or dog owners by searching with one or more of these terms')
   })
 
   test('GET /cdo/search/basic route returns 302 if not auth', async () => {
@@ -102,6 +105,7 @@ describe('SearchBasic test', () => {
     expect(ownerNameResult.textContent.trim()).toBe('Wreck it Ralph')
     expect(microchipNumberResult.textContent.trim()).toBe('Not entered')
     expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Applying for exemption')
+    expect(document.querySelector('#main-content')).not.toContain('Find exempt dangerous dogs or dog owners by searching with one or more of these terms')
   })
 
   test('GET /cdo/search/basic owner record search with valid data and empty Dog name returns 200', async () => {
