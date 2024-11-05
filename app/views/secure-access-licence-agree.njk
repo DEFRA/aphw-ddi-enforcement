@@ -19,15 +19,21 @@
         errorList: model.errors
       }) }}
     {% endif %}
-test
+
       <form class="form" method="post">
 
         <h1 class="govuk-heading-xl">
           Agree to the Secure Access Licence
         </h1>
 
-        <p class="govuk-body-l">To access the Dangerous Dogs Index, you must read and agree to the terms of the secure access licence listed below.
-        </p>
+        {% if model.acceptedLicence %}
+        <div class="govuk-inset-text">
+          To access the Dangerous Dogs Index, you must agree to the terms of the Secure Access Licence every 12 months. The terms of the Secure Access Licence have not changed.
+        </div>
+        {% else %}
+        <p class="govuk-body-l">To access the Dangerous Dogs Index, you must agree to the terms of the secure access licence every 12 months.</p>
+        {% endif %}
+
 
         {% include "./secure-access-licence-content.njk" %}
 
