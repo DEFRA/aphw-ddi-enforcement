@@ -24,12 +24,9 @@ const validateUser = async (user) => {
 *    accessToken: string;
 *    displayname: string;
 * }} user
-* @return {Promise<{
- *   valid: boolean,
- *   accepted: boolean
- * }>}
+* @return {Promise<boolean>}
 */
-const isLicenceValid = async (user) => {
+const isLicenceAccepted = async (user) => {
   const { result } = await get(endpoint + '/licence', user)
   return result
 }
@@ -103,7 +100,7 @@ const submitReportSomething = async (data, user) => {
 module.exports = {
   userLogout,
   validateUser,
-  isLicenceValid,
+  isLicenceAccepted,
   setLicenceAccepted,
   isEmailVerified,
   sendVerifyEmail,

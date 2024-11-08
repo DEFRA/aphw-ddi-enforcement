@@ -5,7 +5,7 @@ describe('DDI API user', () => {
   jest.mock('../../../../app/api/ddi-index-api/base')
   const { callDelete, get, put, post } = require('../../../../app/api/ddi-index-api/base')
 
-  const { userLogout, validateUser, isLicenceValid, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect, submitFeedback, submitReportSomething } = require('../../../../app/api/ddi-index-api/user')
+  const { userLogout, validateUser, isLicenceAccepted, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect, submitFeedback, submitReportSomething } = require('../../../../app/api/ddi-index-api/user')
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -31,7 +31,7 @@ describe('DDI API user', () => {
 
   describe('isLicenceAccepted', () => {
     test('should check if user has accepted licence or not', async () => {
-      await isLicenceValid(userWithDisplayname)
+      await isLicenceAccepted(userWithDisplayname)
       expect(get).toHaveBeenCalledWith('user/me/licence', expect.anything())
     })
   })
