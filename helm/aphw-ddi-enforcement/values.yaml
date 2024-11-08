@@ -21,7 +21,7 @@ containerSecret:
 deployment:
   replicas: 1
   minReplicas: 1
-  maxReplicas: 30
+  maxReplicas: 10
   cpuThreshold: 80
   memoryThreshold: 400Mi
 

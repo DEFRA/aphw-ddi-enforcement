@@ -66,6 +66,39 @@ describe('Authenticate test', () => {
     expect(response.headers.location).toBe('/cdo/search/basic')
   })
 
+  test('GET /authenticate route with user-agent returns 302 to forward onto search page', async () => {
+    getRedirectForUserAccess.mockResolvedValue(null)
+    getResult.mockResolvedValue({
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+      idToken: 'idToken',
+      idTokenDecoded: 'idTokenDecoded',
+      userinfo: JSON.stringify({ email: 'me@example.com' }, null, 2),
+      coreIdentity: 'coreIdentity'
+    })
+    const userAgent = 'Mozilla/5.0'
+
+    const options = {
+      method: 'GET',
+      url: '/authenticate',
+      headers: {
+        'x-forwarded-proto': 'http',
+        host: 'localhost:3003',
+        Cookie: 'nonce=abcdede;state=fghijkl;',
+        'user-agent': userAgent
+      }
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(302)
+    expect(validateUser).toHaveBeenCalledWith({
+      accessToken: 'accessToken',
+      displayname: 'me@example.com',
+      username: 'me@example.com',
+      userAgent
+    })
+  })
+
   test('GET /authenticate route returns 302 to forward to licence if licence not accepted', async () => {
     getRedirectForUserAccess.mockResolvedValue('/secure-access-licence')
     getResult.mockResolvedValue({
@@ -116,7 +149,7 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(logoutUser).toHaveBeenCalledWith(expect.any(String), 'http://localhost:3003/denied')
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/denied')
   })
 
   test('GET /authenticate route for unregistered user returns 302 and logs user out if valid domain', async () => {
@@ -143,7 +176,7 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(logoutUser).toHaveBeenCalledWith(expect.any(String), 'http://localhost:3003/denied')
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/denied-access')
   })
 
   test('GET /authenticate route for unregistered user returns 302 and logs user out - https url', async () => {
@@ -170,7 +203,7 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(logoutUser).toHaveBeenCalledWith(expect.any(String), 'https://livehost/denied')
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'https://livehost/denied')
   })
 
   test('GET /authenticate route for unregistered user returns 302 and logs user out & no x-forwarded-proto', async () => {
@@ -196,12 +229,10 @@ describe('Authenticate test', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(logoutUser).toHaveBeenCalledWith(expect.any(String), 'http://localhost:3003/denied')
+    expect(logoutUser).toHaveBeenCalledWith('idToken', 'http://localhost:3003/denied')
   })
 
   test('GET /authenticate route returns 500', async () => {
-    validateUser.mockResolvedValue(true)
-    getRedirectForUserAccess.mockRejectedValue(new Error(''))
     const options = {
       method: 'GET',
       url: '/authenticate?error=true&error_description=an%20error'
