@@ -1,7 +1,8 @@
 const { errorPusherDefault } = require('../lib/error-helpers')
 
-function ViewModel (errors) {
+function ViewModel (errors, { acceptedLicence }) {
   this.model = {
+    acceptedLicence,
     accept: {
       id: 'accept',
       name: 'accept',

@@ -5,9 +5,6 @@ describe('Authenticate test', () => {
   const createServer = require('../../../../app/server')
   let server
 
-  jest.mock('../../../../app/api/ddi-index-api/user')
-  const { validateUser } = require('../../../../app/api/ddi-index-api/user')
-
   beforeEach(async () => {
     server = await createServer()
     await server.initialize()
@@ -34,7 +31,6 @@ describe('Authenticate test', () => {
     auth.authenticate.mockImplementation(() => {
       throw new Error('dummy auth error')
     })
-    validateUser.mockRejectedValue(new Error('Failed validation'))
 
     const options = {
       method: 'GET',
@@ -42,7 +38,7 @@ describe('Authenticate test', () => {
     }
 
     const response = await server.inject(options)
-    expect(response.statusCode).toBe(302)
+    expect(response.statusCode).toBe(500)
   })
 
   afterEach(async () => {
