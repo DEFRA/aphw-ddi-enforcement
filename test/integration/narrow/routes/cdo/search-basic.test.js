@@ -32,7 +32,7 @@ describe('SearchBasic test', () => {
     expect(response.statusCode).toBe(200)
 
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelector('#main-content').textContent).toContain('Find exempt dangerous dogs, or dog owners, by using one or more of these terms:')
+    expect(document.querySelector('#main-content').textContent).toContain('Find registered dangerous dogs, or dog owners, by using one or more of these terms:')
   })
 
   test('GET /cdo/search/basic route returns 302 if not auth', async () => {

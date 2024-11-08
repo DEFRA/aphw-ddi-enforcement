@@ -2,12 +2,14 @@ const Joi = require('joi')
 const authConfig = require('./auth')
 const cacheConfig = require('./cache')
 const { DEVELOPMENT, TEST, PRODUCTION } = require('../constants/environments')
+const { server } = require('../constants/server')
 
 // Define config schema
 const schema = Joi.object({
   serviceName: Joi.string().default('Dangerous Dogs Index'),
   port: Joi.number().default(3001),
   env: Joi.string().valid('development', 'test', 'production').default('development'),
+  staticCacheTimeoutMillis: Joi.number().default(server.staticCacheTimeoutMillis),
   ddiIndexApi: {
     baseUrl: Joi.string().required()
   },

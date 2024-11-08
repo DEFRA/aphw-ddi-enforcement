@@ -29,7 +29,7 @@
       </fieldset>
 
       {% if not model.searchTerms.value %}
-      <p class="govuk-body">Find exempt dangerous dogs, or dog owners, by using one or more of these terms:</p>
+      <p class="govuk-body">Find registered dangerous dogs, or dog owners, by using one or more of these terms:</p>
       <ul class="govuk-list govuk-list--bullet">
         <li>owner’s name</li>
         <li>owner’s address, or part of it</li>
@@ -71,5 +71,15 @@
         <li>ensure all words are spelled correctly</li>
         <li>try different keywords to search</li>
       </ul>
+      <p class="govuk-body">Search with one or more of these terms:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>owner’s name</li>
+        <li>owner’s address, or part of it</li>
+        <li>owner’s email address</li>
+        <li>dog’s microchip number</li>
+        <li>dog’s index number</li>
+        <li>dog’s name</li>
+      </ul>
+
     {% endif %}
 {% endblock %}
