@@ -5,8 +5,6 @@ const ViewModel = require('../models/licence')
 const { validatePayload } = require('../schema/licence')
 const { getUser } = require('../auth')
 const { setLicenceAccepted, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
-const { getFromSession } = require('../session/session-wrapper')
-const constants = require('../constants/forms')
 
 module.exports = [
   {
@@ -14,9 +12,8 @@ module.exports = [
     path: routes.secureAccessLicence.get,
     options: {
       auth: { scope: enforcement },
-      handler: async (request, h) => {
-        const acceptedLicence = getFromSession(request, constants.keys.acceptedLicence) === 'Y'
-        return h.view(views.secureAccessLicenceAgree, new ViewModel(undefined, { acceptedLicence }))
+      handler: async (_request, h) => {
+        return h.view(views.secureAccessLicenceAgree, new ViewModel())
       }
     }
   },
@@ -37,10 +34,8 @@ module.exports = [
       auth: { scope: enforcement },
       validate: {
         payload: validatePayload,
-        failAction: async (request, h, error) => {
-          const acceptedLicence = getFromSession(request, constants.keys.acceptedLicence) === 'Y'
-
-          return h.view(views.secureAccessLicenceAgree, new ViewModel(error, { acceptedLicence })).code(errorCodes.validationError).takeover()
+        failAction: async (_request, h, error) => {
+          return h.view(views.secureAccessLicenceAgree, new ViewModel(error)).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {
