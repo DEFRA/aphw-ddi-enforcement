@@ -9,6 +9,13 @@ const createServer = async () => {
         options: {
           abortEarly: false
         }
+      },
+      security: {
+        hsts: {
+          includeSubDomains: true,
+          preload: true,
+          maxAge: config.hstsMaxAge
+        }
       }
     },
     router: {
