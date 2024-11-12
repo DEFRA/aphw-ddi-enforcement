@@ -1,8 +1,6 @@
 const config = require('./config')
 const Hapi = require('@hapi/hapi')
 
-const MAX_AGE_TWO_YRS = 63072000
-
 const createServer = async () => {
   const server = Hapi.Server({
     port: config.port,
@@ -16,7 +14,7 @@ const createServer = async () => {
         hsts: {
           includeSubDomains: true,
           preload: true,
-          maxAge: MAX_AGE_TWO_YRS
+          maxAge: config.hstsMaxAge
         }
       }
     },

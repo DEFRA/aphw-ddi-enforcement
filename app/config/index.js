@@ -10,6 +10,7 @@ const schema = Joi.object({
   port: Joi.number().default(3001),
   env: Joi.string().valid('development', 'test', 'production').default('development'),
   staticCacheTimeoutMillis: Joi.number().default(server.staticCacheTimeoutMillis),
+  hstsMaxAge: Joi.number().default(server.hstsMaxAge),
   ddiIndexApi: {
     baseUrl: Joi.string().required()
   },
@@ -97,6 +98,8 @@ value.isProd = value.env === PRODUCTION
  *   cacheConfig: import('./cache');
  *   authConfig: import('./auth');
  *   serviceName: string;
+ *   staticCacheTimeoutMillis: number;
+ *   hstsMaxAge: number;
  *   port: string;
  *   env: string;
  *   environmentCode: string;
