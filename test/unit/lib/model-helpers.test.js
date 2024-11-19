@@ -1,4 +1,4 @@
-const { extractEmail, cleanUserDisplayName, extractLatestPrimaryTelephoneNumber, extractLatestSecondaryTelephoneNumber, extractLatestAddress, extractLatestInsurance, dedupeAddresses, constructDateField, buildReportSubTitle, buildReportTitle } = require('../../../app/lib/model-helpers')
+const { extractEmail, cleanUserDisplayName, extractLatestPrimaryTelephoneNumber, extractLatestSecondaryTelephoneNumber, extractLatestAddress, extractLatestInsurance, dedupeAddresses, constructDateField, buildReportSubTitle, buildReportTitle, isMicrochipDeadlineVisibleInView, isNeuteringDeadlineVisibleInView } = require('../../../app/lib/model-helpers')
 
 describe('ModelHelpers', () => {
   test('extractEmail handles no emails', () => {
@@ -335,6 +335,40 @@ describe('ModelHelpers', () => {
     test('should return Dog idied for dog died report', () => {
       const payload = { reportType: 'dog-died' }
       expect(buildReportTitle(payload)).toBe('Which of the owner\'s dogs has died?')
+    })
+  })
+
+  describe('isMicrochipDeadlineVisibleInView', () => {
+    test('should return true for 2015', () => {
+      const cdo = { exemption: { exemptionOrder: '2015' } }
+      expect(isMicrochipDeadlineVisibleInView(cdo)).toBeTruthy()
+    })
+    test('should return true for 2023', () => {
+      const cdo = { exemption: { exemptionOrder: '2023' } }
+      expect(isMicrochipDeadlineVisibleInView(cdo)).toBeTruthy()
+    })
+    test('should return false for other', () => {
+      const cdo = { exemption: { exemptionOrder: '1991' } }
+      expect(isMicrochipDeadlineVisibleInView(cdo)).toBeFalsy()
+    })
+  })
+
+  describe('isNeuteringDeadlineVisibleInView', () => {
+    test('should return true for 2023', () => {
+      const cdo = { exemption: { exemptionOrder: '2023' } }
+      expect(isNeuteringDeadlineVisibleInView(cdo)).toBeTruthy()
+    })
+    test('should return true for 2015 if XLB', () => {
+      const cdo = { exemption: { exemptionOrder: '2015' }, dog: { breed: 'XL Bully' } }
+      expect(isNeuteringDeadlineVisibleInView(cdo)).toBeTruthy()
+    })
+    test('should return false for other', () => {
+      const cdo = { exemption: { exemptionOrder: '1991' } }
+      expect(isNeuteringDeadlineVisibleInView(cdo)).toBeFalsy()
+    })
+    test('should return false for 2015 but other breed', () => {
+      const cdo = { exemption: { exemptionOrder: '2015' }, dog: { breed: 'Other' } }
+      expect(isNeuteringDeadlineVisibleInView(cdo)).toBeFalsy()
     })
   })
 })

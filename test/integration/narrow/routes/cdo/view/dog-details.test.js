@@ -64,7 +64,7 @@ describe('View dog details', () => {
       expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED123')
       expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Bruno')
       expect(document.querySelectorAll('.govuk-summary-card:nth-child(2) .govuk-summary-list__value')[0].textContent.trim()).toBe('John Smith')
-      expect(document.querySelectorAll('.govuk-summary-card')[2].querySelectorAll('.govuk-summary-list__value')[6].textContent.trim()).toBe('Dogs Trust')
+      expect(document.querySelectorAll('.govuk-summary-card')[2].querySelectorAll('.govuk-summary-list__value')[7].textContent.trim()).toBe('Dogs Trust')
       expect(document.querySelectorAll('.govuk-grid-column-one-half .govuk-button')[0].textContent.trim()).toBe('Report something')
       expect(document.querySelectorAll('.govuk-grid-column-one-half .govuk-button')[1].textContent.trim()).toBe('Check activity')
       expect(document.querySelector('.govuk-button[data-testid="delete-dog-record-btn"]')).toBeNull()
@@ -203,7 +203,7 @@ describe('View dog details', () => {
       expect(telephoneNumberValue.textContent.trim()).toBe(notEntered)
 
       const [,
-        firstCertificateIssuedKey, ,
+        firstCertificateIssuedKey, , ,
         cdoExpiryKey,
         courtKey,
         policeForceKey,
@@ -214,7 +214,7 @@ describe('View dog details', () => {
         microchipNumberVerifiedKey
       ] = exemptionDetails.querySelectorAll('.govuk-summary-list__key')
       const [,
-        firstCertificateIssuedValue, ,
+        firstCertificateIssuedValue, , ,
         cdoExpiryValue,
         courtValue,
         policeForceValue,
@@ -329,11 +329,13 @@ describe('View dog details', () => {
       const [,
         firstCertificateIssuedKey,
         orderKey,
+        neuteringDeadlineKey,
         policeForceKey
       ] = exemptionDetails.querySelectorAll('.govuk-summary-list__key')
 
       expect(firstCertificateIssuedKey.textContent.trim()).toBe('First certificate issued')
       expect(orderKey.textContent.trim()).toBe('Order')
+      expect(neuteringDeadlineKey.textContent.trim()).toBe('Neutering deadline')
       expect(policeForceKey.textContent.trim()).toBe('Police force')
     })
 
