@@ -304,7 +304,7 @@ describe('Check Activity Mappers', () => {
       ['Insurance renewal date updated', 'insurance_renewal_date', 'updated'],
       ['Dog legislation officer updated', 'legislation_officer', 'updated'],
       ['Police force updated', 'police_force', 'updated'],
-      ['N/A', 'neutering_deadline', 'updated'],
+      ['Neutering deadline updated', 'neutering_deadline', 'updated'],
       ['Microchip deadline updated', 'microchip_deadline', 'updated'],
       ['Withdrawn from index updated', 'withdrawn', 'updated'],
       ['Dog name updated', 'dog_name', 'updated'],

@@ -144,6 +144,17 @@ const buildReportTitle = (payload) => {
   }
 }
 
+const isMicrochipDeadlineVisibleInView = cdo => {
+  return cdo.exemption.exemptionOrder === '2015' || cdo.exemption.exemptionOrder === '2023'
+}
+
+const isNeuteringDeadlineVisibleInView = cdo => {
+  if (cdo.exemption.exemptionOrder === '2023') {
+    return true
+  }
+  return cdo.exemption.exemptionOrder === '2015' && cdo.dog.breed === 'XL Bully'
+}
+
 module.exports = {
   extractEmail,
   extractLatestAddress,
@@ -155,5 +166,7 @@ module.exports = {
   dedupeAddresses,
   constructDateField,
   buildReportTitle,
-  buildReportSubTitle
+  buildReportSubTitle,
+  isMicrochipDeadlineVisibleInView,
+  isNeuteringDeadlineVisibleInView
 }
