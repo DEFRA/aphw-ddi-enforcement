@@ -69,12 +69,7 @@ describe('SearchBasic test', () => {
       {
         results: [
           {
-            address: {
-              town: 'LONDON',
-              postcode: 'W1K 7EB',
-              address_line_1: '47 PARK STREET',
-              address_line_2: null
-            },
+            address: '47 PARK STREET, LONDON, W1K 7EB',
             dogName: '',
             dogIndex: 'ED300242',
             lastName: 'Ralph',
@@ -100,11 +95,12 @@ describe('SearchBasic test', () => {
     const { document } = new JSDOM(response.payload).window
 
     expect(response.statusCode).toBe(200)
-    const [dogNameResult, ownerNameResult, microchipNumberResult] = document.querySelectorAll('.defra-results')
+    const [statusResult, dogNameResult, ownerNameResult, ownerAddressResult, microchipNumberResult] = document.querySelectorAll('.govuk-summary-list__value')
+    expect(statusResult.textContent.trim()).toBe('Applying for exemption')
     expect(dogNameResult.textContent.trim()).toBe('Not entered')
     expect(ownerNameResult.textContent.trim()).toBe('Wreck it Ralph')
+    expect(ownerAddressResult.textContent.trim()).toBe('47 PARK STREET, LONDON, W1K 7EB')
     expect(microchipNumberResult.textContent.trim()).toBe('Not entered')
-    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Applying for exemption')
     expect(document.querySelector('#main-content')).not.toContain('Find exempt dangerous dogs or dog owners by searching with one or more of these terms')
   })
 
