@@ -57,10 +57,6 @@
           {% endif %}
     </h2>
 
-      {% if model.pagination %}
-      {{ govukPagination(model.pagination) }}
-      {% endif %}
-
       {% for result in model.results.items %}
         {% include "./cdo/search/dog-results.njk" %}
       {% endfor %}
