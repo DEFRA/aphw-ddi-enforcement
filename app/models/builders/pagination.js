@@ -5,8 +5,8 @@ const calcMidSectionStart = (numOfPages, currentPage) => {
   if (startPos <= 1) {
     return 2
   }
-  if (startPos + 3 >= numOfPages) {
-    return Math.max(numOfPages - 3, 2)
+  if (startPos + pagination.midRangeNumOfPages >= numOfPages) {
+    return Math.max(numOfPages - pagination.midRangeNumOfPages, pagination.midRangeNumOfPages - 1)
   }
   return startPos
 }

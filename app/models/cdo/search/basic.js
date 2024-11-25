@@ -23,31 +23,6 @@ function ViewModel (searchCriteria, results, url, backNav, errors) {
       autocomplete: forms.preventAutocomplete,
       attributes: { maxlength: '100' }
     },
-    searchType: {
-      id: 'searchType',
-      name: 'searchType',
-      classes: 'govuk-radios--small govuk-radios--inline',
-      formGroup: {
-        classes: marginBottom2
-      },
-      value: searchCriteria?.searchType,
-      items: [
-        {
-          value: 'dog',
-          text: 'Dog record',
-          label: {
-            classes: 'govuk-!-font-size-16 defra-max-width-full'
-          }
-        },
-        {
-          value: 'owner',
-          text: 'Owner record',
-          label: {
-            classes: 'govuk-!-font-size-16 defra-max-width-full'
-          }
-        }
-      ]
-    },
     fuzzy: {
       id: 'fuzzy',
       name: 'fuzzy',

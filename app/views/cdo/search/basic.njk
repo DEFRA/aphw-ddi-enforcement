@@ -17,9 +17,7 @@
         <legend class="govuk-fieldset__legend govuk-visually-hidden">Dog records - Search</legend>
           {{ govukInput(model.searchTerms) }}
 
-          {% if model.searchTerms.value %}
           {{ govukCheckboxes(model.fuzzy) }}
-          {% endif %}
       
         <input type="hidden" name="searchType" id="searchType" value="dog" />
 

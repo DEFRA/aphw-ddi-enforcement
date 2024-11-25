@@ -13,7 +13,8 @@ const constants = {
     searchResults: 'searchResults'
   },
   pagination: {
-    resultsPerPage: 20
+    resultsPerPage: 20,
+    midRangeNumOfPages: 3
   }
 }
 
