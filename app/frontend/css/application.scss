@@ -369,3 +369,15 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
 .defra-max-width-full {
   max-width: 100% !important;
 }
+
+.govuk-pagination__item:not(.govuk-pagination__item--current) {
+  .govuk-link:visited {
+      color: #1d70b8 !important;
+  }
+}
+
+.govuk-pagination__next, .govuk-pagination__prev {
+  .govuk-link:visited {
+      color: #1d70b8 !important;
+  }
+}
