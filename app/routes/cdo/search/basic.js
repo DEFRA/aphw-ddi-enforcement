@@ -30,10 +30,6 @@ module.exports = [{
 
       const searchCriteria = request.query
 
-      if (searchCriteria.searchType === undefined) {
-        searchCriteria.searchType = 'dog'
-      }
-
       const backNav = addBackNavigation(request)
 
       const url = request.url.href

@@ -41,13 +41,10 @@ function ViewModel (searchCriteria, results, url, backNav, errors) {
         classes: marginBottom2
       }
     },
+    searchType: searchCriteria?.searchType,
     results: {
       items: results?.results?.map(resultObj => ({
         ...resultObj,
-        dogs: resultObj.dogs?.map(dog => ({
-          ...dog,
-          dogNameNotEntered: !dog.dogName?.length
-        })),
         dogNameNotEntered: !resultObj.dogName?.length,
         microchipNumberNotEntered: !resultObj.microchipNumber?.length
       })) || []

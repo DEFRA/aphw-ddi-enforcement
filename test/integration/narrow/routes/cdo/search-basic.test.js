@@ -104,47 +104,6 @@ describe('SearchBasic test', () => {
     expect(document.querySelector('#main-content')).not.toContain('Find exempt dangerous dogs or dog owners by searching with one or more of these terms')
   })
 
-  test('GET /cdo/search/basic owner record search with valid data and empty Dog name returns 200', async () => {
-    getRedirectForUserAccess.mockResolvedValue(null)
-    doSearch.mockResolvedValue(
-      {
-        results: [
-          {
-            personId: 183,
-            personReference: 'P-4813-BF4F',
-            lastName: 'Ralph',
-            firstName: 'Wreck it',
-            rank: 0.0607927,
-            distance: 9,
-            address: '47 PARK STREET, LONDON, W1K 7EB',
-            dogs: [
-              {
-                dogId: 300242,
-                dogIndex: 'ED300242',
-                dogName: '',
-                dogStatus: 'Pre-exempt'
-              }
-            ]
-          }
-        ],
-        totalFound: 1
-      })
-
-    const options = {
-      method: 'GET',
-      url: '/cdo/search/basic?searchTerms=ED300242&searchType=owner',
-      auth
-    }
-
-    const response = await server.inject(options)
-    const { document } = new JSDOM(response.payload).window
-
-    expect(response.statusCode).toBe(200)
-    const [, dogNameResult] = document.querySelectorAll('.govuk-table__body td')
-    expect(dogNameResult.textContent.trim()).toBe('Not entered')
-    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Applying for exemption')
-  })
-
   test('GET /cdo/search/basic with invalid data returns error', async () => {
     getRedirectForUserAccess.mockResolvedValue(null)
     const options = {

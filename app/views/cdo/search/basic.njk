@@ -62,11 +62,7 @@
       {% endif %}
 
       {% for result in model.results.items %}
-        {% if model.searchType.value == "dog" %}
-          {% include "./cdo/search/dog-results.njk" %}
-        {% else %}
-          {% include "./cdo/search/owner-results.njk" %}
-        {% endif %}
+        {% include "./cdo/search/dog-results.njk" %}
       {% endfor %}
 
       {% if model.pagination %}
