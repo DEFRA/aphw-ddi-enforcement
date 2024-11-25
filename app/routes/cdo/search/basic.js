@@ -30,24 +30,22 @@ module.exports = [{
 
       const searchCriteria = request.query
 
-      if (searchCriteria.searchType === undefined) {
-        searchCriteria.searchType = 'dog'
-      }
-
       const backNav = addBackNavigation(request)
 
+      const url = request.url.href
+
       if (searchCriteria.searchTerms === undefined) {
-        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav))
+        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], url, backNav))
       }
 
       const errors = searchSchema.validate(searchCriteria, { abortEarly: false })
       if (errors.error) {
-        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], backNav, errors.error)).code(errorCodes.validationError).takeover()
+        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], url, backNav, errors.error)).code(errorCodes.validationError).takeover()
       }
 
       const results = await doSearch(searchCriteria, getUser(request))
 
-      return h.view(views.searchBasic, new ViewModel(searchCriteria, results, backNav))
+      return h.view(views.searchBasic, new ViewModel(searchCriteria, results, url, backNav))
     }
   }
 }]

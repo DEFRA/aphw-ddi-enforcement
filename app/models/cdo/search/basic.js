@@ -1,9 +1,10 @@
 const { forms } = require('../../../constants/forms')
+const { buildPagination, buildRecordRangeText, buildTitle } = require('../../builders/pagination')
 const { errorPusherDefault } = require('../../../lib/error-helpers')
 
 const marginBottom2 = 'govuk-!-margin-bottom-2'
 
-function ViewModel (searchCriteria, results, backNav, errors) {
+function ViewModel (searchCriteria, results, url, backNav, errors) {
   this.model = {
     backLink: backNav.backLink,
     srcHashParam: backNav.srcHashParam,
@@ -21,31 +22,6 @@ function ViewModel (searchCriteria, results, backNav, errors) {
       value: searchCriteria?.searchTerms,
       autocomplete: forms.preventAutocomplete,
       attributes: { maxlength: '100' }
-    },
-    searchType: {
-      id: 'searchType',
-      name: 'searchType',
-      classes: 'govuk-radios--small govuk-radios--inline',
-      formGroup: {
-        classes: marginBottom2
-      },
-      value: searchCriteria?.searchType,
-      items: [
-        {
-          value: 'dog',
-          text: 'Dog record',
-          label: {
-            classes: 'govuk-!-font-size-16 defra-max-width-full'
-          }
-        },
-        {
-          value: 'owner',
-          text: 'Owner record',
-          label: {
-            classes: 'govuk-!-font-size-16 defra-max-width-full'
-          }
-        }
-      ]
     },
     fuzzy: {
       id: 'fuzzy',
@@ -65,18 +41,19 @@ function ViewModel (searchCriteria, results, backNav, errors) {
         classes: marginBottom2
       }
     },
+    searchType: searchCriteria?.searchType,
     results: {
       items: results?.results?.map(resultObj => ({
         ...resultObj,
-        dogs: resultObj.dogs?.map(dog => ({
-          ...dog,
-          dogNameNotEntered: !dog.dogName?.length
-        })),
         dogNameNotEntered: !resultObj.dogName?.length,
         microchipNumberNotEntered: !resultObj.microchipNumber?.length
       })) || []
     },
     totalFound: results?.totalFound,
+    pagination: buildPagination(results, url),
+    recordRangeText: buildRecordRangeText(results?.page, results?.totalFound),
+    title: buildTitle(results),
+    currentPage: results?.page,
     errors: []
   }
 
