@@ -4,7 +4,7 @@ const { errorPusherDefault } = require('../../../lib/error-helpers')
 
 const marginBottom2 = 'govuk-!-margin-bottom-2'
 
-function ViewModel (searchCriteria, results, url, backNav, errors) {
+function ViewModel (searchCriteria, results, url, policeForceName, backNav, errors) {
   this.model = {
     backLink: backNav.backLink,
     srcHashParam: backNav.srcHashParam,
@@ -30,10 +30,7 @@ function ViewModel (searchCriteria, results, url, backNav, errors) {
         {
           value: 'Y',
           text: 'Include close matches',
-          checked: searchCriteria?.fuzzy,
-          label: {
-            classes: 'govuk-!-font-size-16'
-          }
+          checked: searchCriteria?.fuzzy
         }
       ],
       classes: 'govuk-checkboxes--small',
@@ -52,17 +49,11 @@ function ViewModel (searchCriteria, results, url, backNav, errors) {
       items: [
         {
           value: 'false',
-          text: 'Local',
-          label: {
-            classes: 'govuk-!-font-size-16'
-          }
+          text: policeForceName ?? 'Local police force'
         },
         {
           value: 'true',
-          text: 'National records',
-          label: {
-            classes: 'govuk-!-font-size-16'
-          }
+          text: 'National records'
         }
       ]
     },

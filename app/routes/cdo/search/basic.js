@@ -8,7 +8,7 @@ const searchSchema = require('../../../schema/portal/search/basic')
 const { doSearch } = require('../../../api/ddi-index-api/search')
 const { enforcement } = require('../../../auth/permissions')
 const { addBackNavigation } = require('../../../lib/back-helpers')
-const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
+const { getRedirectForUserAccess, getPoliceForceName } = require('../../../lib/route-helpers')
 const { setInSession } = require('../../../session/session-wrapper')
 
 module.exports = [{
@@ -28,6 +28,8 @@ module.exports = [{
 
       setInSession(request, keys.loggedInForNavRoutes, 'Y')
 
+      const policeForceName = await getPoliceForceName(request, user)
+
       const searchCriteria = request.query
 
       const backNav = addBackNavigation(request)
@@ -35,17 +37,17 @@ module.exports = [{
       const url = request.url.href
 
       if (searchCriteria.searchTerms === undefined) {
-        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], url, backNav))
+        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], url, policeForceName, backNav))
       }
 
       const errors = searchSchema.validate(searchCriteria, { abortEarly: false })
       if (errors.error) {
-        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], url, backNav, errors.error)).code(errorCodes.validationError).takeover()
+        return h.view(views.searchBasic, new ViewModel(searchCriteria, [], url, policeForceName, backNav, errors.error)).code(errorCodes.validationError).takeover()
       }
 
       const results = await doSearch(searchCriteria, getUser(request))
 
-      return h.view(views.searchBasic, new ViewModel(searchCriteria, results, url, backNav))
+      return h.view(views.searchBasic, new ViewModel(searchCriteria, results, url, policeForceName, backNav))
     }
   }
 }]

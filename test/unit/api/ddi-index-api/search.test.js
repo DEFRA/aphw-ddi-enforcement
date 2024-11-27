@@ -58,8 +58,16 @@ describe('DDI API search', () => {
       expect(buildExtraParams({ page: 7 })).toEqual('?page=7')
     })
 
+    test('should handle national param', () => {
+      expect(buildExtraParams({ national: true })).toEqual('?national=true')
+    })
+
     test('should handle fuzzy and page params together', () => {
       expect(buildExtraParams({ page: 7, fuzzy: true })).toEqual('?fuzzy=true&page=7')
+    })
+
+    test('should handle fuzzy, national and page params together', () => {
+      expect(buildExtraParams({ national: true, page: 7, fuzzy: true })).toEqual('?fuzzy=true&national=true&page=7')
     })
   })
 })

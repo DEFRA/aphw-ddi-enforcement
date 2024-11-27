@@ -100,6 +100,11 @@ const submitReportSomething = async (data, user) => {
   await post(endpoint + '/report-something', reportSomethingPayload, user)
 }
 
+const getPoliceForceDisplayName = async (user) => {
+  const { result } = await get(endpoint + '/police-force', user)
+  return result
+}
+
 module.exports = {
   userLogout,
   validateUser,
@@ -109,5 +114,6 @@ module.exports = {
   sendVerifyEmail,
   isCodeCorrect,
   submitFeedback,
-  submitReportSomething
+  submitReportSomething,
+  getPoliceForceDisplayName
 }
