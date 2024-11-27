@@ -101,6 +101,10 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
       min-height: 35px;
     }
 
+    @media (max-width: 36em) {
+      padding-bottom: 8px;
+    }
+
     .defra-logo {
       min-width: 275px;
       margin-bottom: 15px;
@@ -113,36 +117,35 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
     }
 
     a.defra-logo {
-      display: block;
+      display: table-cell;
       text-decoration: none;
       color: $govuk-text-colour;
-
-      @media (min-width: 48.0625em) {
-        display: table-cell;
-      }
     }
   }
 
   &-internal-service-name {
+    display: table-cell;
+    font-size: 20px;
 
     @media (min-width: 48.0625em) {
-      display: table-cell;
       vertical-align: middle;
       padding-left: 2em;
+      font-size: 24px;
+    }
+
+
+    @media (max-width: 36em) {
+      display: inherit;
+      margin-top: 9px;
     }
 
     &__link {
       text-decoration: none;
-      font-size: 21px;
       font-weight: 400;
 
       &:link,
       &:visited {
         color: $govuk-text-colour
-      }
-
-      @media (min-width: 48.0625em) {
-        font-size: 24px;
       }
     }
   }
@@ -152,7 +155,11 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
     padding-left: 8px;
 
     &__link {
-      display: table;
+      display: table-cell;
+
+      @media (min-width: 48.0625em) {
+        display: table;
+      }
 
       &::before {
         content: '';
@@ -179,9 +186,29 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
 
     &-name__link {
       text-decoration: none;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 400;
       line-height: 1.35em;
+      vertical-align: middle;
+
+      &.show-desktop {
+        display: none !important;
+        @media (min-width: 48.0625em) {
+          display: table-cell !important;
+        }
+      }
+
+      &.show-mobile {
+        display: table-cell !important;
+        padding-left: 5px;
+        @media (min-width: 48.0625em) {
+          display: none !important;
+        }
+      }
+
+      @media (min-width: 48.0625em) {
+        font-size: 16px;
+      }
 
       &:link,
       &:visited {
@@ -249,8 +276,12 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
 
   &-navigation__right {
     color: #0b0c0c !important;
-    font-size: 1rem;
+    font-size: 0.875rem;
     float: right;
+
+    @media (min-width: 48.0625em) {
+      font-size: 1rem;
+    }
 
     &:visited {
       color: #0b0c0c;
