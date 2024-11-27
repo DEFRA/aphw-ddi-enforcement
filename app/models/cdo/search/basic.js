@@ -41,6 +41,31 @@ function ViewModel (searchCriteria, results, url, backNav, errors) {
         classes: marginBottom2
       }
     },
+    national: {
+      id: 'national',
+      name: 'national',
+      classes: 'govuk-radios--small',
+      formGroup: {
+        classes: marginBottom2
+      },
+      value: searchCriteria?.national ?? 'false',
+      items: [
+        {
+          value: 'false',
+          text: 'Local',
+          label: {
+            classes: 'govuk-!-font-size-16'
+          }
+        },
+        {
+          value: 'true',
+          text: 'National records',
+          label: {
+            classes: 'govuk-!-font-size-16'
+          }
+        }
+      ]
+    },
     searchType: searchCriteria?.searchType,
     results: {
       items: results?.results?.map(resultObj => ({

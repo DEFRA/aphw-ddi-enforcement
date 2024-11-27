@@ -2,6 +2,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
 
 {% extends '_layout.njk' %}
@@ -16,6 +17,8 @@
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-visually-hidden">Dog records - Search</legend>
           {{ govukInput(model.searchTerms) }}
+
+          {{ govukRadios(model.national) }}
 
           {{ govukCheckboxes(model.fuzzy) }}
       

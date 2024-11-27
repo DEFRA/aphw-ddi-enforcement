@@ -7,6 +7,9 @@ const buildExtraParams = (criteria) => {
   if (criteria.fuzzy) {
     extraParamList.push('fuzzy=true')
   }
+  if (criteria.national === 'true') {
+    extraParamList.push('national=true')
+  }
   if (criteria.page) {
     extraParamList.push(`page=${criteria.page}`)
   }

@@ -10,6 +10,7 @@ const schema = Joi.object({
     '*': 'Select a search type'
   }),
   fuzzy: Joi.string(),
+  national: Joi.string(),
   page: Joi.number().optional()
 }).required()
 
