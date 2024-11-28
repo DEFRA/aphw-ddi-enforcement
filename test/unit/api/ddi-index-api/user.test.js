@@ -5,7 +5,7 @@ describe('DDI API user', () => {
   jest.mock('../../../../app/api/ddi-index-api/base')
   const { callDelete, get, put, post } = require('../../../../app/api/ddi-index-api/base')
 
-  const { userLogout, validateUser, isLicenceValid, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect, submitFeedback, submitReportSomething } = require('../../../../app/api/ddi-index-api/user')
+  const { userLogout, validateUser, isLicenceValid, setLicenceAccepted, isEmailVerified, sendVerifyEmail, isCodeCorrect, submitFeedback, submitReportSomething, getPoliceForceDisplayName } = require('../../../../app/api/ddi-index-api/user')
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -93,6 +93,13 @@ describe('DDI API user', () => {
           reportData: data
         },
         expect.anything())
+    })
+  })
+
+  describe('getPoliceForceDisplayName', () => {
+    test('should get force name', async () => {
+      await getPoliceForceDisplayName(userWithDisplayname)
+      expect(get).toHaveBeenCalledWith('user/me/police-force', expect.anything())
     })
   })
 })

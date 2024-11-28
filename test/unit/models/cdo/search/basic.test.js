@@ -8,8 +8,9 @@ describe('Confirm Dog and Owner ViewModel', () => {
       lastName: 'Bloggs',
       ownerPk: 'P-1234-5678',
       pk: 'ED300002'
-    }, { results: [], totalFOund: 0 }, '/url', {})
+    }, { results: [], totalFOund: 0 }, '/url', 'Force name', {})
 
     expect(model.model.results.items).toEqual([])
+    expect(model.model.national.items[0].text).toEqual('Force name')
   })
 })

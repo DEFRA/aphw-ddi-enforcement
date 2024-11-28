@@ -1,10 +1,10 @@
-const { throwIfPreConditionError, licenseNotValid, getRedirectForUserAccess, getContextNav, isUrlEndingFromList } = require('../../../app/lib/route-helpers')
+const { throwIfPreConditionError, licenseNotValid, getRedirectForUserAccess, getContextNav, isUrlEndingFromList, getPoliceForceName } = require('../../../app/lib/route-helpers')
 
 jest.mock('../../../app/session/session-wrapper')
 const { getFromSession, setInSession } = require('../../../app/session/session-wrapper')
 
 jest.mock('../../../app/api/ddi-index-api/user')
-const { isLicenceValid, isEmailVerified, sendVerifyEmail } = require('../../../app/api/ddi-index-api/user')
+const { isLicenceValid, isEmailVerified, sendVerifyEmail, getPoliceForceDisplayName } = require('../../../app/api/ddi-index-api/user')
 const constants = require('../../../app/constants/forms')
 
 beforeEach(() => {
@@ -141,6 +141,22 @@ describe('route-helpers', () => {
       expect(await licenseNotValid({}, {})).toBeTruthy()
       expect(setInSession).toHaveBeenCalledWith({}, constants.keys.acceptedLicence, 'Y')
       expect(setInSession).not.toHaveBeenCalledWith({}, constants.keys.validLicence, expect.anything())
+    })
+  })
+
+  describe('getPoliceForceName', () => {
+    test('should make API call to get name if not set in session ', async () => {
+      getFromSession.mockReturnValue()
+      getPoliceForceDisplayName.mockResolvedValue('Force 1')
+      expect(await getPoliceForceName({}, {})).toBe('Force 1')
+      expect(getPoliceForceDisplayName).toHaveBeenCalledTimes(1)
+    })
+
+    test('should not make API call if already set in session ', async () => {
+      getFromSession.mockReturnValue('Force 2')
+      getPoliceForceDisplayName.mockResolvedValue('Force 1')
+      expect(await getPoliceForceName({}, {})).toBe('Force 2')
+      expect(getPoliceForceDisplayName).toHaveBeenCalledTimes(0)
     })
   })
 })

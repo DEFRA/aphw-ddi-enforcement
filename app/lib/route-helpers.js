@@ -1,6 +1,7 @@
 const constants = require('../constants/forms')
 const { getFromSession, setInSession } = require('../session/session-wrapper')
 const { isLicenceValid, isEmailVerified, sendVerifyEmail } = require('../api/ddi-index-api/user')
+const { getPoliceForceDisplayName } = require('../api/ddi-index-api/user')
 
 const throwIfPreConditionError = (request) => {
   for (const [key, value] of Object.entries(request.pre ?? {})) {
@@ -83,10 +84,22 @@ const isUrlEndingFromList = (url, endingsToExclude) => {
   return found
 }
 
+const getPoliceForceName = async (request, user) => {
+  let policeForceName = getFromSession(request, constants.keys.policeForceDisplayName)
+
+  if (!policeForceName) {
+    policeForceName = await getPoliceForceDisplayName(user)
+    setInSession(request, constants.keys.policeForceDisplayName, policeForceName)
+  }
+
+  return policeForceName
+}
+
 module.exports = {
   throwIfPreConditionError,
   getRedirectForUserAccess,
   getContextNav,
   isUrlEndingFromList,
-  licenseNotValid
+  licenseNotValid,
+  getPoliceForceName
 }
