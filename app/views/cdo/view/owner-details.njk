@@ -3,8 +3,11 @@
 
 {% extends '_layout.njk' %}
 
-{% block pageTitle %}{{ serviceName }}
-{% endblock %}
+{% block pageTitle %}{% if model.person.organisationName %}
+{{ model.person.organisationName }}
+{% else %}
+{{ model.person.firstName }} {{ model.person.lastName }}
+{% endif %} - {{ serviceName }}{% endblock %}
 
 {% block beforeContent %}
 {{ super() }}
