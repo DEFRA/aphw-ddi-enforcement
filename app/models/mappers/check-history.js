@@ -430,7 +430,7 @@ const mapAuditedChangeEventToCheckActivityRows = (event) => {
   /**
    * @type {ActivityRow[]}
    */
-  const activityRows = []
+  const activityRowsBase = []
 
   return auditedFieldRecords.reduce((activityRows, changeRecord) => {
     let changeType = addedEvents.includes(changeRecord[0]) ? 'added' : 'updated'
@@ -454,7 +454,7 @@ const mapAuditedChangeEventToCheckActivityRows = (event) => {
     }
 
     return [...activityRows]
-  }, activityRows)
+  }, activityRowsBase)
 }
 
 /**

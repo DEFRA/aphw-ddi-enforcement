@@ -1,7 +1,7 @@
 const { routes, views } = require('../../../constants/cdo/dog')
 const { sources: activitySources } = require('../../../constants/cdo/activity')
 const { enforcement } = require('../../../auth/permissions')
-const ViewModel = require('../../../models/cdo/view/check-activities')
+const ViewModel = require('../../../models/cdo/view/check-history')
 const { getCdoFromActivities } = require('../../../api/ddi-index-api/cdo')
 const { getDogOwner } = require('../../../api/ddi-index-api/dog')
 const { getPersonByReference } = require('../../../api/ddi-index-api/person')
@@ -10,11 +10,13 @@ const { getMainReturnPoint } = require('../../../lib/back-helpers')
 const { sortEventsDesc, filterEvents } = require('../../../models/sorting/event')
 const { getUser } = require('../../../auth')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
+const { statusCodes } = require('../../../constants/server')
 
 const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
     return getCdoFromActivities(pk, user)
-  } else if (source === activitySources.owner) {
+  }
+  if (source === activitySources.owner) {
     return getPersonByReference(pk, user)
   }
 
@@ -47,7 +49,7 @@ module.exports = [
 
         const entity = await getSourceEntity(pk, source, user)
         if (entity === null || entity === undefined) {
-          return h.response().code(404).takeover()
+          return h.response().code(statusCodes['404']).takeover()
         }
 
         const eventPkList = await getEventPkList(pk, source, user)
@@ -57,7 +59,8 @@ module.exports = [
         const sourceEntity = {
           pk,
           source: request.params.source,
-          title: source === activitySources.dog ? `Dog ${pk}` : `${entity.firstName} ${entity.lastName}`
+          title: source === activitySources.dog ? `Dog ${pk}` : `${entity.firstName} ${entity.lastName}`,
+          pageTitle: source === activitySources.dog ? 'Check history' : 'Check owner history'
         }
 
         const filteredEvents = filterEvents(allEvents, sourceEntity)
