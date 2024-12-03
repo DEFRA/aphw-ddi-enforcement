@@ -13,7 +13,7 @@ const constants = {
   },
   views: {
     viewDogDetails: 'cdo/view/dog-details',
-    viewDogActivities: 'cdo/view/check-activities',
+    viewDogActivities: 'cdo/view/check-history',
     reportType: 'cdo/report/report-type'
   }
 }
