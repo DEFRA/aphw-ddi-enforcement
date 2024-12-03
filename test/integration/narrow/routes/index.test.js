@@ -27,7 +27,7 @@ describe('Index test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('form p')[0].textContent.trim()).toContain('This service is only for dog legislation officers working for a UK police force.')
+    expect(document.querySelectorAll('form p')[0].textContent.trim()).toContain('This service is only for police officers working for a UK police force.')
     expect(document.querySelectorAll('head meta')[3].outerHTML.trim()).toBe('<meta name="robots" content="noindex, nofollow">')
   })
 
@@ -41,7 +41,7 @@ describe('Index test', () => {
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
     const { document } = new JSDOM(response.payload).window
-    expect(document.querySelectorAll('form p')[0].textContent.trim()).toContain('This service is only for dog legislation officers working for a UK police force.')
+    expect(document.querySelectorAll('form p')[0].textContent.trim()).toContain('This service is only for police officers working for a UK police force.')
   })
 
   afterEach(async () => {
