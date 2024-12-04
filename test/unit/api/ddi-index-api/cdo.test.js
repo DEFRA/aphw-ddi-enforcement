@@ -27,4 +27,14 @@ describe('CDO API endpoints', () => {
       expect(get).toHaveBeenCalledWith('cdo/ED123?type=activity', user)
     })
   })
+
+  describe('getManageCdoDetails', () => {
+    test('should do GET to API with correct endpoint', async () => {
+      get.mockResolvedValue({ tasks: {} })
+      const res = await cdo.getManageCdoDetails('ED123', user)
+
+      expect(get).toHaveBeenCalledWith('cdo/ED123/manage', user)
+      expect(res).toEqual({ tasks: {} })
+    })
+  })
 })
