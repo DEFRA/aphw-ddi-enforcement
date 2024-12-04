@@ -1,0 +1,39 @@
+const applicationPackSent = 'applicationPackSent'
+const insuranceDetailsRecorded = 'insuranceDetailsRecorded'
+const microchipNumberRecorded = 'microchipNumberRecorded'
+const applicationFeePaid = 'applicationFeePaid'
+const form2Sent = 'form2Sent'
+const verificationDateRecorded = 'verificationDateRecorded'
+const microchipDeadlineRecorded = 'microchipDeadlineRecorded'
+const certificateIssued = 'certificateIssued'
+
+const constants = {
+  routes: {
+    manageCdo: {
+      get: '/cdo/manage/cdo',
+      post: '/cdo/manage/cdo'
+    }
+  },
+  progressTasks: [
+    applicationPackSent,
+    insuranceDetailsRecorded,
+    microchipNumberRecorded,
+    applicationFeePaid,
+    form2Sent
+  ],
+  tasks: {
+    applicationPackSent,
+    insuranceDetailsRecorded,
+    microchipNumberRecorded,
+    applicationFeePaid,
+    form2Sent,
+    verificationDateRecorded,
+    microchipDeadlineRecorded,
+    certificateIssued
+  },
+  views: {
+    manageCdo: 'cdo/manage/cdo'
+  }
+}
+
+module.exports = constants
