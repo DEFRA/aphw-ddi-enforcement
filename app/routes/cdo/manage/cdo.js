@@ -4,6 +4,7 @@ const { getManageCdoDetails } = require('../../../api/ddi-index-api/cdo')
 const ViewModel = require('../../../models/cdo/manage/cdo')
 const { getCdo } = require('../../../api/ddi-index-api/cdo')
 const { getUser } = require('../../../auth')
+const { responseStatus } = require('../../../constants/server')
 
 module.exports = [
   {
@@ -18,7 +19,7 @@ module.exports = [
         const details = await getManageCdoDetails(dogIndex, user)
 
         if (details == null) {
-          return h.response().code(404).takeover()
+          return h.response().code(responseStatus.notFound404).takeover()
         }
 
         const cdo = await getCdo(dogIndex, user)

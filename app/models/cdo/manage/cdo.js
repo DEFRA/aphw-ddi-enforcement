@@ -16,42 +16,37 @@ const getTaskCompletedDate = task => {
 }
 
 const NOT_RECEIVED_TAG = '<span class="defra-secondary-text">Not received</span>'
+const GOVUK_ONE_HALF = 'govuk-!-width-one-half'
 
 const showValOrNotEnteredObj = val => val ? ({ text: val }) : ({ html: NOT_RECEIVED_TAG })
+
+const breadcrumbs = [
+  {
+    label: 'Home',
+    link: '/'
+  }
+]
+
 /**
- * @param {CdoTaskListDto} tasklist
- * @param cdo
- * @param backNav
- * @constructor
+ * @param modelDetails
+ * @returns {GovukSummaryList[]}
  */
-function ViewModel (tasklist, cdo, backNav) {
-  const breadcrumbs = [
-    {
-      label: 'Home',
-      link: '/'
-    }
-  ]
-
-  const modelDetails = mapManageCdoDetails(tasklist, cdo)
-
-  /**
-   * @type {GovukSummaryList[]}
-   */
-  const summaries = [
+const getSummaries = modelDetails => {
+  return [
     {
       classes: 'defra-responsive-!-font-size-16',
       rows: [
         {
           key: {
             text: 'Dog name',
-            classes: 'govuk-!-width-one-half'
+            classes: GOVUK_ONE_HALF
           },
           value: showValOrNotEnteredObj(modelDetails.summary.dogName)
         },
         {
           key: {
             text: 'Owner name',
-            classes: 'govuk-!-width-one-half'
+            classes: GOVUK_ONE_HALF
           },
           value: showValOrNotEnteredObj(modelDetails.summary.ownerName)
         }
@@ -63,26 +58,41 @@ function ViewModel (tasklist, cdo, backNav) {
         {
           key: {
             text: 'Microchip number',
-            classes: 'govuk-!-width-one-half'
+            classes: GOVUK_ONE_HALF
           },
           value: {
             html: [modelDetails.summary.microchipNumber || NOT_RECEIVED_TAG, modelDetails.summary.microchipNumber2].join('<br>'),
-            classes: 'govuk-!-width-one-half'
+            classes: GOVUK_ONE_HALF
           }
         },
         {
           key: {
             text: 'CDO expiry',
-            classes: 'govuk-!-width-one-half'
+            classes: GOVUK_ONE_HALF
           },
           value: {
             text: formatToGdsShort(modelDetails.summary.cdoExpiry),
-            classes: 'govuk-!-width-one-half'
+            classes: GOVUK_ONE_HALF
           }
         }
       ]
     }
   ]
+}
+
+/**
+ * @param {CdoTaskListDto} tasklist
+ * @param cdo
+ * @param backNav
+ * @constructor
+ */
+function ViewModel (tasklist, cdo, backNav) {
+  const modelDetails = mapManageCdoDetails(tasklist, cdo)
+
+  /**
+   * @type {GovukSummaryList[]}
+   */
+  const summaries = getSummaries(modelDetails)
 
   this.model = {
     breadcrumbs,
