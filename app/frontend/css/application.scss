@@ -88,9 +88,20 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
     }
   }
 
-//defra header
 .defra {
 
+  &-responsive {
+
+    &-\!-font-size-16 {
+
+      @media all and (min-width: $tablet-min) {
+        font-size: 1rem !important;
+        line-height: 1.25 !important;
+      }
+    }
+  }
+
+  //defra header
   &-internal-header {
     padding: 20px 0;
     border-bottom: 8px solid $defra-brand-colour;

@@ -4,6 +4,7 @@ const { setInSession } = require('../../../../../../app/session/session-wrapper'
 const { JSDOM } = require('jsdom')
 jest.mock('../../../../../../app/api/ddi-index-api/search')
 const { buildTaskListFromInitial, buildCdoSummary, buildTaskListFromComplete } = require('../../../../../mocks/cdo/manage/tasks/builder')
+const { someTasksCompletedButNotYetAvailable } = require('../../../../../mocks/cdo/manage/cdo')
 
 describe('Manage Cdo test', () => {
   jest.mock('../../../../../../app/auth')
@@ -134,6 +135,49 @@ describe('Manage Cdo test', () => {
     expect(document.querySelector('.govuk-tag').textContent.trim()).toBe('Failed to exempt dog')
   })
 
+  test('GET /cdo/manage/cdo/ED123 route returns 200 with completed tasks overriding "Cannot start yet"', async () => {
+    getCdo.mockResolvedValue({
+      dog: {
+        indexNumber: 'ED20001'
+      },
+      person: {
+        personReference: 'P-A133-7E4C'
+      },
+      exemption: {
+        cdoExpiry: new Date('2024-04-19')
+      }
+    })
+    getManageCdoDetails.mockResolvedValue(someTasksCompletedButNotYetAvailable)
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/manage/cdo/ED123',
+      auth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+
+    const { document } = (new JSDOM(response.payload)).window
+    expect(document.querySelector('h1.govuk-heading-xl').textContent.trim()).toBe('Dog ED20001')
+    const [dogName, ownerName, microchipNumber, cdoExpiry] = document.querySelectorAll('.govuk-summary-list__value')
+    expect(dogName.textContent.trim()).toBe('Not received')
+    expect(ownerName.textContent.trim()).toBe('Not received')
+    expect(microchipNumber.textContent.trim()).toBe('Not received')
+    expect(cdoExpiry.textContent.trim()).toBe('19 Apr 2024')
+
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[0].textContent.trim()).toBe('Application pack')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Not sent')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[1].textContent.trim()).toBe('Evidence of insurance')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[1].textContent.trim()).toBe('Received on 01 February 2024')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[2].textContent.trim()).toBe('Microchip number')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[2].textContent.trim()).toBe('Not received')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[3].textContent.trim()).toBe('Application fee')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[3].textContent.trim()).toBe('Received on 02 March 2024')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[4].textContent.trim()).toBe('Form 2 confirming dog microchipped and neutered')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[4].textContent.trim()).toBe('Not received')
+  })
+
   test('GET /cdo/manage/cdo/ED123 route returns 200 with completed tasks', async () => {
     getCdo.mockResolvedValue({
       dog: {
@@ -160,7 +204,7 @@ describe('Manage Cdo test', () => {
     const { document } = (new JSDOM(response.payload)).window
     expect(document.querySelector('h1.govuk-heading-xl').textContent.trim()).toBe('Dog ED20001')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[0].textContent.trim()).toBe('Application pack')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Received on 27 November 2024')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Sent on 27 November 2024')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[1].textContent.trim()).toBe('Evidence of insurance')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[1].textContent.trim()).toBe('Received on 27 November 2024')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[2].textContent.trim()).toBe('Microchip number')

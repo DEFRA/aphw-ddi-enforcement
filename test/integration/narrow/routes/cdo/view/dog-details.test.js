@@ -73,6 +73,7 @@ describe('View dog details', () => {
 
       const [,, exemptionDetails] = document.querySelectorAll('.govuk-summary-card')
       expect(exemptionDetails.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Applying for exemption')
+      expect(document.querySelector('#main-content').textContent).toContain('CDO Progress')
     })
 
     test('GET /cdo/view/dog-details route returns 200 with Not entered values given fields missing', async () => {
@@ -534,7 +535,7 @@ describe('View dog details', () => {
     expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Dog dead')
   })
 
-  test('GET /cdo/view/dog-details?force=true on Failed shows Manage CDO application', async () => {
+  test('GET /cdo/view/dog-details?force=true on Failed shows CDO progress application', async () => {
     getCdo.mockResolvedValue(buildCdo({
       dog: {
         id: 300242,
@@ -559,7 +560,7 @@ describe('View dog details', () => {
     expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED300242')
     expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Fido')
     expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Failed to exempt dog')
-    expect(document.querySelector('#main-content').textContent).toContain('Manage CDO application')
+    expect(document.querySelector('#main-content').textContent).toContain('CDO Progress')
   })
 
   test('GET /cdo/view/dog-details route forwards to accept licence if not accepted yet', async () => {

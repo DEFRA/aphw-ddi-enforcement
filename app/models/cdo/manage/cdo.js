@@ -4,8 +4,8 @@ const { getTaskDetails } = require('../../../routes/cdo/manage/tasks/generic-tas
 const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
 
 const getTaskStatus = task => {
-  if (task.key === tasks.applicationPackSent && !task.completed) {
-    return 'Not sent'
+  if (task.key === tasks.applicationPackSent) {
+    return task.completed ? 'Sent' : 'Not sent'
   }
 
   return task.completed ? 'Received' : 'Not received'
@@ -15,9 +15,9 @@ const getTaskCompletedDate = task => {
   return task.completed ? task.timestamp : undefined
 }
 
-const NOT_ENTERED_TAG = '<span class="defra-secondary-text">Not entered</span>'
+const NOT_RECEIVED_TAG = '<span class="defra-secondary-text">Not received</span>'
 
-const showValOrNotEnteredObj = val => val ? ({ text: val }) : ({ html: NOT_ENTERED_TAG })
+const showValOrNotEnteredObj = val => val ? ({ text: val }) : ({ html: NOT_RECEIVED_TAG })
 /**
  * @param {CdoTaskListDto} tasklist
  * @param cdo
@@ -66,7 +66,7 @@ function ViewModel (tasklist, cdo, backNav) {
             classes: 'govuk-!-width-one-half'
           },
           value: {
-            html: [modelDetails.summary.microchipNumber || NOT_ENTERED_TAG, modelDetails.summary.microchipNumber2].join('<br>'),
+            html: [modelDetails.summary.microchipNumber || NOT_RECEIVED_TAG, modelDetails.summary.microchipNumber2].join('<br>'),
             classes: 'govuk-!-width-one-half'
           }
         },
@@ -99,7 +99,11 @@ function ViewModel (tasklist, cdo, backNav) {
 
         const { label } = getTaskDetails(task)
 
-        const status = getTaskStatus(tasklist.tasks[task])
+        let status = getTaskStatus(tasklist.tasks[task])
+
+        if (status === 'Received' && task === tasks.form2Sent) {
+          status = getTaskStatus(tasklist.tasks[tasks.verificationDateRecorded])
+        }
         const completedDate = formatToGds(getTaskCompletedDate(tasklist.tasks[task]))
 
         const notComplete = status === 'Not sent' || status === 'Not received'
@@ -108,6 +112,8 @@ function ViewModel (tasklist, cdo, backNav) {
 
         if (notComplete) {
           statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
+        } else if (status === 'Sent') {
+          statusTag.text = status === 'Sent' ? `${status} on ${completedDate}` : status
         } else {
           statusTag.text = status === 'Received' && completedDate ? `${status} on ${completedDate}` : status
         }

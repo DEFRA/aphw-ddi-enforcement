@@ -81,7 +81,7 @@ const someTasksCompletedButNotYetAvailable = buildTaskListFromInitial({
     microchipNumberRecorded: {
       key: 'microchipNumberRecorded',
       available: false,
-      completed: true,
+      completed: false,
       readonly: false
     },
     applicationFeePaid: {
@@ -101,9 +101,8 @@ const someTasksCompletedButNotYetAvailable = buildTaskListFromInitial({
     verificationDateRecorded: {
       key: 'verificationDateRecorded',
       available: false,
-      completed: true,
-      readonly: false,
-      timestamp: new Date(2024, 3, 10)
+      completed: false,
+      readonly: false
     },
     certificateIssued: {
       key: 'certificateIssued',
