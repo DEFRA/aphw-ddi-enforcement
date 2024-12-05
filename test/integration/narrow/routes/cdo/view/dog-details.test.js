@@ -66,8 +66,8 @@ describe('View dog details', () => {
       expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Bruno')
       expect(document.querySelectorAll('.govuk-summary-card:nth-child(2) .govuk-summary-list__value')[0].textContent.trim()).toBe('John Smith')
       expect(document.querySelectorAll('.govuk-summary-card')[2].querySelectorAll('.govuk-summary-list__value')[7].textContent.trim()).toBe('Dogs Trust')
-      expect(document.querySelectorAll('.govuk-grid-column-one-half .govuk-button')[0].textContent.trim()).toBe('Report something')
-      expect(document.querySelectorAll('.govuk-grid-column-one-half .govuk-button')[1].textContent.trim()).toBe('Check history')
+      expect(document.querySelectorAll('.defra-actions-header__actions .govuk-button')[0].textContent.trim()).toBe('Report something')
+      expect(document.querySelectorAll('.defra-actions-header__actions .govuk-button')[1].textContent.trim()).toBe('Check history')
       expect(document.querySelector('.govuk-button[data-testid="delete-dog-record-btn"]')).toBeNull()
       expect(document.querySelectorAll('.govuk-summary-card')[2].querySelectorAll('.govuk-summary-list__actions')[1]).toBe(undefined)
 
