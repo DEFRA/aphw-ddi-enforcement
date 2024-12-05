@@ -167,9 +167,9 @@ describe('Manage Cdo test', () => {
     expect(cdoExpiry.textContent.trim()).toBe('19 Apr 2024')
 
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[0].textContent.trim()).toBe('Application pack')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Not sent')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Sent')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[1].textContent.trim()).toBe('Evidence of insurance')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[1].textContent.trim()).toBe('Received on 01 February 2024')
+    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[1].textContent.trim()).toBe('Received')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[2].textContent.trim()).toBe('Microchip number')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[2].textContent.trim()).toBe('Not received')
     expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[3].textContent.trim()).toBe('Application fee')

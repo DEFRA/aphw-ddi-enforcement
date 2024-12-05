@@ -123,7 +123,7 @@ function ViewModel (tasklist, cdo, backNav) {
         if (notComplete) {
           statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
         } else if (status === 'Sent') {
-          statusTag.text = status === 'Sent' ? `${status} on ${completedDate}` : status
+          statusTag.text = status === 'Sent' && completedDate ? `${status} on ${completedDate}` : status
         } else {
           statusTag.text = status === 'Received' && completedDate ? `${status} on ${completedDate}` : status
         }

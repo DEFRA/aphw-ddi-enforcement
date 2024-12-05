@@ -67,7 +67,7 @@ const someTasksCompletedButNotYetAvailable = buildTaskListFromInitial({
     applicationPackSent: {
       key: 'applicationPackSent',
       available: true,
-      completed: false,
+      completed: true,
       readonly: false,
       timestamp: undefined
     },
@@ -75,8 +75,7 @@ const someTasksCompletedButNotYetAvailable = buildTaskListFromInitial({
       key: 'insuranceDetailsRecorded',
       available: false,
       completed: true,
-      readonly: false,
-      timestamp: new Date(2024, 1, 1)
+      readonly: false
     },
     microchipNumberRecorded: {
       key: 'microchipNumberRecorded',
