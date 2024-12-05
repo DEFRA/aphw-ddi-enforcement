@@ -80,6 +80,28 @@ const getSummaries = modelDetails => {
   ]
 }
 
+const getStatusTag = (tasklist, task) => {
+  let status = getTaskStatus(tasklist.tasks[task])
+
+  if (status === 'Received' && task === tasks.form2Sent) {
+    status = getTaskStatus(tasklist.tasks[tasks.verificationDateRecorded])
+  }
+  const completedDate = formatToGds(getTaskCompletedDate(tasklist.tasks[task]))
+
+  const notComplete = status === 'Not sent' || status === 'Not received'
+
+  const statusTag = {}
+
+  if (notComplete) {
+    statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
+  } else if (status === 'Sent') {
+    statusTag.text = status === 'Sent' && completedDate ? `${status} on ${completedDate}` : status
+  } else {
+    statusTag.text = status === 'Received' && completedDate ? `${status} on ${completedDate}` : status
+  }
+  return statusTag
+}
+
 /**
  * @param {CdoTaskListDto} tasklist
  * @param cdo
@@ -109,24 +131,7 @@ function ViewModel (tasklist, cdo, backNav) {
 
         const { label } = getTaskDetails(task)
 
-        let status = getTaskStatus(tasklist.tasks[task])
-
-        if (status === 'Received' && task === tasks.form2Sent) {
-          status = getTaskStatus(tasklist.tasks[tasks.verificationDateRecorded])
-        }
-        const completedDate = formatToGds(getTaskCompletedDate(tasklist.tasks[task]))
-
-        const notComplete = status === 'Not sent' || status === 'Not received'
-
-        const statusTag = {}
-
-        if (notComplete) {
-          statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
-        } else if (status === 'Sent') {
-          statusTag.text = status === 'Sent' && completedDate ? `${status} on ${completedDate}` : status
-        } else {
-          statusTag.text = status === 'Received' && completedDate ? `${status} on ${completedDate}` : status
-        }
+        const statusTag = getStatusTag(tasklist, task)
 
         const taskProperties = {
           title: {
