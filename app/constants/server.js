@@ -3,11 +3,12 @@ const server = {
   hstsMaxAge: 63072000 // 2 yrs
 }
 
-const statusCodes = {
-  404: 404
+const responseStatus = {
+  badRequest400: 400,
+  notFound404: 404
 }
 
 module.exports = {
   server,
-  statusCodes
+  responseStatus
 }

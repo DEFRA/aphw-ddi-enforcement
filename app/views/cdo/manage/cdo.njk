@@ -1,0 +1,71 @@
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "components/statusTag/macro.njk" import statusTag %}
+
+{% extends '_layout.njk' %}
+
+{% block pageTitle %}Dog {{ model.details.dogIndex }} - {{ serviceName }}{% endblock %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div class="govuk-breadcrumbs">
+        <ol class="govuk-breadcrumbs__list">
+          {% for breadcrumb in model.breadcrumbs %}
+          <li class="govuk-breadcrumbs__list-item">
+            <a class="govuk-breadcrumbs__link" href="{{breadcrumb.link}}">
+              {{breadcrumb.label}}
+            </a>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+    <form class="form" method="post">
+      <div class="govuk-grid-column-three-quarters govuk-!-margin-bottom-2">
+        <div class="defra-actions-header govuk-!-margin-bottom-2">
+          <div class="defra-actions-header__title">
+            <h1 class="govuk-heading-xl">Dog {{ model.details.dogIndex }}</h1>
+          </div>
+          <div class="defra-actions-header__actions">
+            <div class="defra-actions-header__wrapper">
+              <a href="/cdo/view/dog-details/{{ model.details.dogIndex }}{{ model.srcHashParam }}&force=true" role="button" draggable="false" class="govuk-button govuk-button--secondary defra-actions-header__action-item" data-module="govuk-button">
+                Dog record
+              </a>
+              <a href="/cdo/view/owner-details/{{ model.details.personReference }}{{ model.srcHashParam }}" role="button" draggable="false" class="govuk-button govuk-button--secondary defra-actions-header__action-item" data-module="govuk-button">
+                Owner record
+              </a>
+            </div>
+          </div>
+        </div>
+        {{ statusTag(model.dog.status, model.dog.subStatus, 'defra-tag-nowrap govuk-!-margin-right-3') }}
+      </div>
+
+      {% for summary in model.summaries %}
+      <div class="govuk-grid-column-one-third defra-summary-width govuk-!-margin-top-4">
+        {{ govukSummaryList(summary) }}
+      </div>
+      {% endfor %}
+
+
+      <div class="govuk-grid-column-three-quarters">
+
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+        CDO progress
+      </h2>
+
+      {{ govukTaskList(model.taskList) }}
+      </div>
+    </form>
+
+  </div>
+
+{% endblock %}

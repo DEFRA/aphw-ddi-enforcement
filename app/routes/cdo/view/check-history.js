@@ -10,7 +10,7 @@ const { getMainReturnPoint } = require('../../../lib/back-helpers')
 const { sortEventsDesc, filterEvents } = require('../../../models/sorting/event')
 const { getUser } = require('../../../auth')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
-const { statusCodes } = require('../../../constants/server')
+const { responseStatus } = require('../../../constants/server')
 
 const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
@@ -49,7 +49,7 @@ module.exports = [
 
         const entity = await getSourceEntity(pk, source, user)
         if (entity === null || entity === undefined) {
-          return h.response().code(statusCodes['404']).takeover()
+          return h.response().code(responseStatus.notFound404).takeover()
         }
 
         const eventPkList = await getEventPkList(pk, source, user)

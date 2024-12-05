@@ -43,6 +43,14 @@ const formatToGds = date => {
   return format(new Date(date), 'dd MMMM yyyy')
 }
 
+const formatToGdsShort = date => {
+  if (date === null || date === undefined) {
+    return date
+  }
+
+  return format(new Date(date), 'dd MMM yyyy')
+}
+
 const formatToDDMMYYYY = date => {
   if (date === null || date === undefined) {
     return date
@@ -192,6 +200,7 @@ const validateDate = (value, helpers, required = false, preventFutureDates = fal
 module.exports = {
   dateComponentsToString,
   formatToGds,
+  formatToGdsShort,
   formatToDDMMYYYY,
   stripTimeFromUTC,
   formatToDateTime,

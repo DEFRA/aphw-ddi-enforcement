@@ -1,5 +1,6 @@
 const { auth, user, standardAuth } = require('../../../../../mocks/auth')
 const { JSDOM } = require('jsdom')
+const { buildCdo } = require('../../../../../mocks/cdo/cdo')
 
 describe('View dog details', () => {
   jest.mock('../../../../../../app/auth')
@@ -8,8 +9,8 @@ describe('View dog details', () => {
   jest.mock('../../../../../../app/api/ddi-index-api/cdo')
   const { getCdo } = require('../../../../../../app/api/ddi-index-api/cdo')
 
-  jest.mock('../../../../../../app/lib/route-helpers')
-  const { getRedirectForUserAccess } = require('../../../../../../app/lib/route-helpers')
+  jest.mock('../../../../../../app/lib/route-helpers/user')
+  const { getRedirectForUserAccess } = require('../../../../../../app/lib/route-helpers/user')
 
   const createServer = require('../../../../../../app/server')
   let server
@@ -52,7 +53,7 @@ describe('View dog details', () => {
     test('GET /cdo/view/dog-details route returns 200 given standard', async () => {
       const options = {
         method: 'GET',
-        url: '/cdo/view/dog-details/ED123',
+        url: '/cdo/view/dog-details/ED123?force=true',
         auth: standardAuth
       }
 
@@ -72,6 +73,7 @@ describe('View dog details', () => {
 
       const [,, exemptionDetails] = document.querySelectorAll('.govuk-summary-card')
       expect(exemptionDetails.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Applying for exemption')
+      expect(document.querySelector('#main-content').textContent).toContain('CDO Progress')
     })
 
     test('GET /cdo/view/dog-details route returns 200 with Not entered values given fields missing', async () => {
@@ -388,6 +390,179 @@ describe('View dog details', () => {
     expect(response.statusCode).toBe(404)
   })
 
+  test('GET /cdo/view/dog-details route redirects to Manage CDO when no force param and dog Pre-exempt', async () => {
+    getCdo.mockResolvedValue(buildCdo({
+      dog: {
+        id: 300243,
+        indexNumber: 'ED300243',
+        status: 'Pre-exempt'
+      }
+    }))
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/view/dog-details/ED300243?src=abc123',
+      auth
+    }
+
+    const response = await server.inject(options)
+
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/cdo/manage/cdo/ED300243?src=abc123')
+  })
+
+  test('GET /cdo/view/dog-details route redirects to Manage CDO when no force param and dog Failed', async () => {
+    getCdo.mockResolvedValue(buildCdo({
+      dog: {
+        id: 300243,
+        indexNumber: 'ED300243',
+        status: 'Failed'
+      }
+    }))
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/view/dog-details/ED300243?src=abc123',
+      auth
+    }
+
+    const response = await server.inject(options)
+
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/cdo/manage/cdo/ED300243?src=abc123')
+  })
+
+  test('GET /cdo/view/dog-details route redirects to Manage CDO when no force param and dog Pre-exempt and no src', async () => {
+    getCdo.mockResolvedValue(buildCdo({
+      dog: {
+        id: 300243,
+        indexNumber: 'ED300243',
+        status: 'Pre-exempt'
+      }
+    }))
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/view/dog-details/ED300243',
+      auth
+    }
+
+    const response = await server.inject(options)
+
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/cdo/manage/cdo/ED300243')
+  })
+
+  test('GET /cdo/view/dog-details shows status translations - Dog dead', async () => {
+    getCdo.mockResolvedValue({
+      person: {
+        id: 183,
+        personReference: 'P-4813-BF4F',
+        firstName: 'Wreck it',
+        lastName: 'Ralph',
+        dateOfBirth: null,
+        addresses: [{
+          id: 197,
+          person_id: 183,
+          address_id: 197,
+          created_at: '2024-05-08T07:25:58.625Z',
+          deleted_at: null,
+          updated_at: '2024-05-08T07:25:58.668Z',
+          address: {
+            id: 197,
+            address_line_1: '47 PARK STREET',
+            address_line_2: null,
+            town: 'LONDON',
+            postcode: 'W1K 7EB',
+            county: null,
+            country_id: 1,
+            created_at: '2024-05-08T07:25:58.625Z',
+            deleted_at: null,
+            updated_at: '2024-05-08T07:25:58.657Z',
+            country: { id: 1, country: 'England' }
+          }
+        }],
+        person_contacts: [],
+        organisationName: null
+      },
+      dog: {
+        id: 300242,
+        dogReference: '7f241e8f-1960-4375-92ff-cb40b172e4be',
+        indexNumber: 'ED300242',
+        name: 'Fido',
+        breed: 'Pit Bull Terrier',
+        status: 'Inactive',
+        dateOfBirth: null,
+        dateOfDeath: '2024-05-05',
+        tattoo: null,
+        colour: null,
+        sex: null,
+        dateExported: null,
+        dateStolen: null,
+        dateUntraceable: null,
+        microchipNumber: null,
+        microchipNumber2: null
+      },
+      exemption: {
+        exemptionOrder: '2015',
+        cdoIssued: '2024-01-01',
+        cdoExpiry: null,
+        policeForce: null,
+        legislationOfficer: '',
+        certificateIssued: null,
+        applicationFeePaid: null,
+        insurance: [],
+        neuteringConfirmation: null,
+        microchipVerification: null,
+        joinedExemptionScheme: null,
+        nonComplianceLetterSent: null
+      }
+    })
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/view/dog-details/ED123',
+      auth: standardAuth
+    }
+
+    const response = await server.inject(options)
+
+    const { document } = new JSDOM(response.payload).window
+
+    expect(response.statusCode).toBe(200)
+    expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED300242')
+    expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Fido')
+    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Dog dead')
+  })
+
+  test('GET /cdo/view/dog-details?force=true on Failed shows CDO progress application', async () => {
+    getCdo.mockResolvedValue(buildCdo({
+      dog: {
+        id: 300242,
+        indexNumber: 'ED300242',
+        name: 'Fido',
+        breed: 'Pit Bull Terrier',
+        status: 'Failed'
+      }
+    }))
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/view/dog-details/ED123?force=true',
+      auth: standardAuth
+    }
+
+    const response = await server.inject(options)
+
+    const { document } = new JSDOM(response.payload).window
+
+    expect(response.statusCode).toBe(200)
+    expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED300242')
+    expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Fido')
+    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Failed to exempt dog')
+    expect(document.querySelector('#main-content').textContent).toContain('CDO Progress')
+  })
+
   test('GET /cdo/view/dog-details route forwards to accept licence if not accepted yet', async () => {
     getCdo.mockResolvedValue()
     getRedirectForUserAccess.mockResolvedValue('/secure-access-licence')
@@ -648,170 +823,6 @@ describe('View dog details', () => {
     expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED300242')
     expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Fido')
     expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Applying for exemption')
-  })
-
-  test('GET /cdo/view/dog-details shows status translations - withdrawn', async () => {
-    getCdo.mockResolvedValue({
-      person: {
-        id: 183,
-        personReference: 'P-4813-BF4F',
-        firstName: 'Wreck it',
-        lastName: 'Ralph',
-        dateOfBirth: null,
-        addresses: [{
-          id: 197,
-          person_id: 183,
-          address_id: 197,
-          created_at: '2024-05-08T07:25:58.625Z',
-          deleted_at: null,
-          updated_at: '2024-05-08T07:25:58.668Z',
-          address: {
-            id: 197,
-            address_line_1: '47 PARK STREET',
-            address_line_2: null,
-            town: 'LONDON',
-            postcode: 'W1K 7EB',
-            county: null,
-            country_id: 1,
-            created_at: '2024-05-08T07:25:58.625Z',
-            deleted_at: null,
-            updated_at: '2024-05-08T07:25:58.657Z',
-            country: { id: 1, country: 'England' }
-          }
-        }],
-        person_contacts: [],
-        organisationName: null
-      },
-      dog: {
-        id: 300242,
-        dogReference: '7f241e8f-1960-4375-92ff-cb40b172e4be',
-        indexNumber: 'ED300242',
-        name: 'Fido',
-        breed: 'Pit Bull Terrier',
-        status: 'Inactive',
-        dateOfBirth: null,
-        dateOfDeath: '2024-05-05',
-        tattoo: null,
-        colour: null,
-        sex: null,
-        dateExported: null,
-        dateStolen: null,
-        dateUntraceable: null,
-        microchipNumber: null,
-        microchipNumber2: null
-      },
-      exemption: {
-        exemptionOrder: '2015',
-        cdoIssued: '2024-01-01',
-        cdoExpiry: null,
-        policeForce: null,
-        legislationOfficer: '',
-        certificateIssued: null,
-        applicationFeePaid: null,
-        insurance: [],
-        neuteringConfirmation: null,
-        microchipVerification: null,
-        joinedExemptionScheme: null,
-        nonComplianceLetterSent: null
-      }
-    })
-
-    const options = {
-      method: 'GET',
-      url: '/cdo/view/dog-details/ED123',
-      auth: standardAuth
-    }
-
-    const response = await server.inject(options)
-
-    const { document } = new JSDOM(response.payload).window
-
-    expect(response.statusCode).toBe(200)
-    expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED300242')
-    expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Fido')
-    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Dog dead')
-  })
-
-  test('GET /cdo/view/dog-details shows status translations - withdrawn', async () => {
-    getCdo.mockResolvedValue({
-      person: {
-        id: 183,
-        personReference: 'P-4813-BF4F',
-        firstName: 'Wreck it',
-        lastName: 'Ralph',
-        dateOfBirth: null,
-        addresses: [{
-          id: 197,
-          person_id: 183,
-          address_id: 197,
-          created_at: '2024-05-08T07:25:58.625Z',
-          deleted_at: null,
-          updated_at: '2024-05-08T07:25:58.668Z',
-          address: {
-            id: 197,
-            address_line_1: '47 PARK STREET',
-            address_line_2: null,
-            town: 'LONDON',
-            postcode: 'W1K 7EB',
-            county: null,
-            country_id: 1,
-            created_at: '2024-05-08T07:25:58.625Z',
-            deleted_at: null,
-            updated_at: '2024-05-08T07:25:58.657Z',
-            country: { id: 1, country: 'England' }
-          }
-        }],
-        person_contacts: [],
-        organisationName: null
-      },
-      dog: {
-        id: 300242,
-        dogReference: '7f241e8f-1960-4375-92ff-cb40b172e4be',
-        indexNumber: 'ED300242',
-        name: 'Fido',
-        breed: 'Pit Bull Terrier',
-        status: 'Failed',
-        dateOfBirth: null,
-        dateOfDeath: null,
-        tattoo: null,
-        colour: null,
-        sex: null,
-        dateExported: null,
-        dateStolen: null,
-        dateUntraceable: null,
-        microchipNumber: null,
-        microchipNumber2: null
-      },
-      exemption: {
-        exemptionOrder: '2015',
-        cdoIssued: '2024-01-01',
-        cdoExpiry: null,
-        policeForce: null,
-        legislationOfficer: '',
-        certificateIssued: null,
-        applicationFeePaid: null,
-        insurance: [],
-        neuteringConfirmation: null,
-        microchipVerification: null,
-        joinedExemptionScheme: null,
-        nonComplianceLetterSent: null
-      }
-    })
-
-    const options = {
-      method: 'GET',
-      url: '/cdo/view/dog-details/ED123',
-      auth: standardAuth
-    }
-
-    const response = await server.inject(options)
-
-    const { document } = new JSDOM(response.payload).window
-
-    expect(response.statusCode).toBe(200)
-    expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED300242')
-    expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Fido')
-    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Failed to exempt dog')
   })
 
   afterEach(async () => {

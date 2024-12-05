@@ -1,6 +1,6 @@
 const {
   getElapsed, formatToDateTime, getMonthsSince, dateComponentsToString, getStatsTimestamp, getTimeInAmPm,
-  getDateAsReadableString, removeIndividualDateComponents, formatToDDMMYYYY
+  getDateAsReadableString, removeIndividualDateComponents, formatToDDMMYYYY, formatToGdsShort
 } = require('../../../app/lib/date-helpers')
 
 describe('date-helpers', () => {
@@ -200,6 +200,20 @@ describe('date-helpers', () => {
     test('should handle undefined', () => {
       const res = formatToDDMMYYYY(undefined)
       expect(res).toBe(undefined)
+    })
+  })
+
+  describe('formatToGdsShort', () => {
+    test('should handle null dates', () => {
+      expect(formatToGdsShort(null)).toBe(null)
+    })
+
+    test('should handle undefined dates', () => {
+      expect(formatToGdsShort(undefined)).toBe(undefined)
+    })
+
+    test('should handle a typical date', () => {
+      expect(formatToGdsShort(new Date(2001, 5, 8))).toBe('08 Jun 2001')
     })
   })
 })
