@@ -10,15 +10,6 @@ const taskList = [
   { name: tasks.microchipDeadlineRecorded, key: 'record-microchip-deadline', label: 'When will the dog be fit to be microchipped?', apiKey: 'verifyDates', stateKey: 'verificationDateRecorded' }
 ]
 
-const getValidation = payload => {
-  const task = taskList.find(x => x.key === payload?.taskName)
-  if (task === undefined) {
-    throw new Error(`Invalid task ${payload?.taskName} when getting validation`)
-  }
-
-  return task.validation(payload)
-}
-
 const getTaskDetails = taskName => {
   const task = taskList.find(x => x.name === taskName)
   if (task === undefined) {
@@ -29,6 +20,5 @@ const getTaskDetails = taskName => {
 }
 
 module.exports = {
-  getValidation,
   getTaskDetails
 }
