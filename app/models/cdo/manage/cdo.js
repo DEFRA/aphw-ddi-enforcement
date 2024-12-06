@@ -3,6 +3,7 @@ const { tasks, progressTasks } = require('../../../constants/cdo')
 const { getTaskDetails } = require('../../../routes/cdo/manage/tasks/generic-task-helper')
 const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
 const { routes } = require('../../../constants/cdo/index')
+const { routes: { searchBasic } } = require('../../../constants/search')
 
 const getTaskStatus = task => {
   if (task.key === tasks.applicationPackSent) {
@@ -28,7 +29,7 @@ const showValOrNotEnteredObj = val => val ? ({ text: val }) : ({ html: NOT_RECEI
 const breadcrumbs = [
   {
     label: 'Home',
-    link: '/'
+    link: searchBasic.get
   }
 ]
 
