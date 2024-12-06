@@ -2,6 +2,7 @@ const { mapManageCdoDetails } = require('../../mappers/manage-cdo')
 const { tasks, progressTasks } = require('../../../constants/cdo')
 const { getTaskDetails } = require('../../../routes/cdo/manage/tasks/generic-task-helper')
 const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
+const { routes } = require('../../../constants/cdo/index')
 
 const getTaskStatus = task => {
   if (task.key === tasks.applicationPackSent) {
@@ -84,7 +85,7 @@ const getSummaries = modelDetails => {
   ]
 }
 
-const getStatusTag = (tasklist, task) => {
+const getStatusTag = (tasklist, task, cdo) => {
   let status = getTaskStatus(tasklist.tasks[task])
 
   if (status === 'Received' && task === tasks.form2Sent) {
@@ -96,7 +97,9 @@ const getStatusTag = (tasklist, task) => {
 
   const statusTag = {}
 
-  if (notComplete) {
+  if (task === tasks.form2Sent && notComplete) {
+    statusTag.html = `<a href="${routes.manageCdo.get}/${cdo.dog.indexNumber}/send-form-two" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
+  } else if (notComplete) {
     statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
   } else if (status === 'Sent') {
     statusTag.text = status === 'Sent' && completedDate ? `${status} on ${completedDate}` : status
@@ -134,13 +137,16 @@ function ViewModel (tasklist, cdo, backNav) {
         }
 
         const { label } = getTaskDetails(task)
+        let title = { text: label }
 
-        const statusTag = getStatusTag(tasklist, task)
+        if (task === tasks.form2Sent) {
+          title = { html: label }
+        }
+
+        const statusTag = getStatusTag(tasklist, task, cdo)
 
         const taskProperties = {
-          title: {
-            text: label
-          },
+          title,
           status: {
             ...statusTag
           }

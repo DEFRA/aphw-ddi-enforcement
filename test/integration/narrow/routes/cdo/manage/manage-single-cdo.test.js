@@ -96,8 +96,8 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Not received')
     expect(findProgressStepName(document, progressSteps.applicationFee)).toBe('Application fee')
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Not received')
-    expect(findProgressStepName(document, progressSteps.form2)).toBe('Form 2 confirming dog microchipped and neutered')
-    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Not received')
+    expect(findProgressStepName(document, progressSteps.form2)).toBe('Form 2 confirming dogmicrochipped and neutered')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Submit Form 2')
     expect(findProgressStepName(document, progressSteps.certificateOfExemption)).toBe('Certificate of exemption')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
 
@@ -187,14 +187,14 @@ describe('Manage Cdo test', () => {
     const [dogName, ownerName, microchipNumber, cdoExpiry] = document.querySelectorAll('.govuk-summary-list__value')
     expect(dogName.textContent.trim()).toBe('Not received')
     expect(ownerName.textContent.trim()).toBe('Not received')
-    expect(microchipNumber.textContent.trim()).toBe('Not received')
+    expect(microchipNumber.textContent.trim()).toBe('Submit Form 2')
     expect(cdoExpiry.textContent.trim()).toBe('19 Apr 2024')
 
     expect(findProgressStepStatus(document, progressSteps.applicationPack)).toBe('Sent')
     expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Received')
     expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Not received')
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Received on 02 March 2024')
-    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Not received')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Submit Form 2')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
   })
 
@@ -227,7 +227,7 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Received on 27 November 2024')
     expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Received on 27 November 2024')
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Received on 27 November 2024')
-    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 28 November 2024')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
   })
 
