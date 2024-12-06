@@ -9,8 +9,8 @@ const taskList = [
   { name: tasks.insuranceDetailsRecorded, key: 'record-insurance-details', canSubmit: false, label: 'Evidence of insurance', apiKey: 'recordInsuranceDetails', stateKey: 'insuranceDetailsRecorded' },
   { name: tasks.microchipNumberRecorded, key: 'record-microchip-number', canSubmit: false, label: 'Microchip number', apiKey: 'recordMicrochipNumber', stateKey: 'microchipNumberRecorded' },
   { name: tasks.applicationFeePaid, key: 'record-application-fee-payment', canSubmit: false, label: 'Application fee', apiKey: 'recordApplicationFee', stateKey: 'applicationFeePaid' },
-  { name: tasks.form2Sent, key: 'send-form2', canSubmit: false, label: 'Form 2 confirming dog<br>microchipped and neutered', apiKey: 'sendForm2', stateKey: 'form2Sent' },
-  { name: tasks.verificationDateRecorded, Model: ViewModelRecordVerificationDates, validation: validateVerificationDates, key: 'submit-form-two', canSubmit: true, label: 'Record the verification date for microchip and neutering', apiKey: 'submitForm2', stateKey: 'verificationDateRecorded' },
+  { name: tasks.form2Sent, key: 'send-form2', canSubmit: false, label: 'Form two', apiKey: 'sendForm2', stateKey: 'form2Sent' },
+  { name: tasks.verificationDateRecorded, Model: ViewModelRecordVerificationDates, validation: validateVerificationDates, key: 'submit-form-two', canSubmit: true, label: 'Form 2 confirming dog<br>microchipped and neutered', apiKey: 'submitForm2', stateKey: 'verificationDateRecorded' },
   { name: tasks.microchipDeadlineRecorded, key: 'record-microchip-deadline', canSubmit: false, label: 'When will the dog be fit to be microchipped?', apiKey: 'verifyDates', stateKey: 'verificationDateRecorded' },
   { name: tasks.certificateIssued, key: 'certificate-issued', canSubmit: false, label: 'Certificate of exemption', apiKey: 'certificateIssued', stateKey: 'certificateIssued' }
 ]

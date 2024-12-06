@@ -3,7 +3,10 @@ jest.mock('../../../../../../app/session/session-wrapper')
 const { setInSession } = require('../../../../../../app/session/session-wrapper')
 const { JSDOM } = require('jsdom')
 jest.mock('../../../../../../app/api/ddi-index-api/search')
-const { buildTaskListFromInitial, buildCdoSummary, buildTaskListFromComplete } = require('../../../../../mocks/cdo/manage/tasks/builder')
+const {
+  buildTaskListFromInitial, buildCdoSummary, buildTaskListFromComplete, buildTaskListTasksFromComplete,
+  buildTask
+} = require('../../../../../mocks/cdo/manage/tasks/builder')
 const { someTasksCompletedButNotYetAvailable } = require('../../../../../mocks/cdo/manage/cdo')
 
 const ordering = [
@@ -187,7 +190,7 @@ describe('Manage Cdo test', () => {
     const [dogName, ownerName, microchipNumber, cdoExpiry] = document.querySelectorAll('.govuk-summary-list__value')
     expect(dogName.textContent.trim()).toBe('Not received')
     expect(ownerName.textContent.trim()).toBe('Not received')
-    expect(microchipNumber.textContent.trim()).toBe('Submit Form 2')
+    expect(microchipNumber.textContent.trim()).toBe('Not received')
     expect(cdoExpiry.textContent.trim()).toBe('19 Apr 2024')
 
     expect(findProgressStepStatus(document, progressSteps.applicationPack)).toBe('Sent')
@@ -229,6 +232,44 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Received on 27 November 2024')
     expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 28 November 2024')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
+  })
+
+  test('GET /cdo/manage/cdo/ED123 route returns 200 with submitted form2', async () => {
+    getCdo.mockResolvedValue({
+      dog: {
+        indexNumber: 'ED20001'
+      },
+      person: {
+        personReference: 'P-A133-7E4C'
+      },
+      exemption: {
+        cdoExpiry: new Date('2024-04-19')
+      }
+    })
+    getManageCdoDetails.mockResolvedValue(buildTaskListFromComplete({
+      tasks: buildTaskListTasksFromComplete({
+        verificationDateRecorded: buildTask({
+          key: 'verificationDateRecorded',
+          available: true
+        }),
+        certificateIssued: buildTask({
+          key: 'certificateIssued'
+        })
+      }),
+      form2Received: '2024-11-29T00:00:00.000Z'
+    }))
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/manage/cdo/ED123',
+      auth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+
+    const { document } = (new JSDOM(response.payload)).window
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 29 November 2024')
   })
 
   test('GET /cdo/manage/cdo/ED123 route returns 404 when invalid index number', async () => {

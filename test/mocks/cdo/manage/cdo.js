@@ -110,8 +110,7 @@ const someTasksCompletedButNotYetAvailable = buildTaskListFromInitial({
       readonly: true,
       timestamp: undefined
     }
-  },
-  form2Received: new Date(2024, 11, 27)
+  }
 })
 
 module.exports = {

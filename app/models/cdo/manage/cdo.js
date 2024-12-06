@@ -5,7 +5,7 @@ const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
 const { routes } = require('../../../constants/cdo/index')
 const { routes: { searchBasic } } = require('../../../constants/search')
 
-const getTaskStatus = task => {
+const getTaskStatus = (tasklist, task) => {
   if (task.key === tasks.applicationPackSent) {
     return task.completed ? 'Sent' : 'Not sent'
   }
@@ -14,10 +14,18 @@ const getTaskStatus = task => {
     return 'Not sent'
   }
 
+  if (task.key === tasks.verificationDateRecorded && tasklist.form2Received) {
+    return 'Received'
+  }
+
   return task.completed ? 'Received' : 'Not received'
 }
 
-const getTaskCompletedDate = task => {
+const getTaskCompletedDate = (processCdoTasklist, task) => {
+  if (task.key === tasks.verificationDateRecorded) {
+    return processCdoTasklist.form2Received ?? task.timestamp
+  }
+
   return task.completed ? task.timestamp : undefined
 }
 
@@ -87,18 +95,16 @@ const getSummaries = modelDetails => {
 }
 
 const getStatusTag = (tasklist, task, cdo) => {
-  let status = getTaskStatus(tasklist.tasks[task])
+  const status = getTaskStatus(tasklist, tasklist.tasks[task])
+  let completedDate = getTaskCompletedDate(tasklist, tasklist.tasks[task])
 
-  if (status === 'Received' && task === tasks.form2Sent) {
-    status = getTaskStatus(tasklist.tasks[tasks.verificationDateRecorded])
-  }
-  const completedDate = formatToGds(getTaskCompletedDate(tasklist.tasks[task]))
+  completedDate = completedDate && formatToGds(completedDate)
 
   const notComplete = status === 'Not sent' || status === 'Not received'
 
   const statusTag = {}
 
-  if (task === tasks.form2Sent && notComplete) {
+  if (task === tasks.verificationDateRecorded && notComplete) {
     statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
   } else if (notComplete) {
     statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
@@ -140,7 +146,7 @@ function ViewModel (tasklist, cdo, backNav) {
         const { label } = getTaskDetails(task)
         let title = { text: label }
 
-        if (task === tasks.form2Sent) {
+        if (task === tasks.verificationDateRecorded) {
           title = { html: label }
         }
 

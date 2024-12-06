@@ -161,7 +161,7 @@ const completeTasklist = {
   microchipNumber: '123456789012354',
   applicationFeePaid: '2024-01-01T00:00:00.000Z',
   form2Sent: '2024-11-27T00:00:00.000Z',
-  form2Received: '2024-11-27T00:00:00.000Z',
+  form2Received: '2024-11-28T00:00:00.000Z',
   cdoSummary: buildCdoSummary()
 }
 

@@ -22,7 +22,7 @@ const constants = {
     insuranceDetailsRecorded,
     microchipNumberRecorded,
     applicationFeePaid,
-    form2Sent,
+    verificationDateRecorded,
     certificateIssued
   ],
   tasks: {
