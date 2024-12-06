@@ -33,7 +33,10 @@ describe('Generic Task test', () => {
 
   describe('GET /cdo/manage/task/submit-form-two/ED20001', () => {
     test('GET /cdo/manage/task/submit-form-two/ED20001 route returns 200', async () => {
-      getCdoTaskDetails.mockResolvedValue(buildTaskListFromInitial())
+      const microchipNumber = '123456789012345'
+      getCdoTaskDetails.mockResolvedValue(buildTaskListFromInitial({
+        microchipNumber
+      }))
       getCdo.mockResolvedValue({ dog: { status: 'Pre-exempt' } })
 
       const options = {
@@ -47,13 +50,14 @@ describe('Generic Task test', () => {
 
       const { document } = (new JSDOM(response.payload)).window
       expect(document.querySelector('form span').textContent.trim()).toBe('Dog ED20001')
-      expect(document.querySelector('h1.govuk-fieldset__heading').textContent.trim()).toBe('Record the verification date for microchip and neutering')
+      expect(document.querySelector('#microchipNumber').getAttribute('value')).toBe(microchipNumber)
+      expect(document.querySelector('h1.govuk-fieldset__heading').textContent.trim()).toBe('Confirm microchip and neutering details')
+      expect(document.querySelectorAll('.govuk-label--s')[0].textContent.trim()).toBe('Microchip number')
       expect(document.querySelectorAll('.govuk-fieldset__legend--s')[0].textContent.trim()).toBe('When was the dog\'s microchip number verified?')
       expect(document.querySelectorAll('.govuk-fieldset__legend--s')[1].textContent.trim()).toBe('When was the dog\'s neutering verified?')
       expect(document.querySelectorAll('button')[4].textContent.trim()).toBe('Save and continue')
-      expect(document.querySelector('.govuk-fieldset').textContent.trim()).not.toContain('Dog aged under 16 months and not neutered')
-      expect(document.querySelector('.govuk-fieldset').textContent.trim()).not.toContain('Dog declared unfit for microchipping by vet')
-      expect(document.querySelector('.govuk-fieldset').textContent.trim()).not.toContain('Dog not neutered as under 16 months old')
+      expect(document.querySelector('.govuk-fieldset').textContent.trim()).toContain('Dog aged under 16 months and not neutered')
+      expect(document.querySelector('.govuk-fieldset').textContent.trim()).toContain('Dog declared unfit for microchipping by vet')
     })
 
     // test('GET /cdo/manage/task/submit-form-two/ED20001 route shows 6th Si rules if 2015 Dog is under 16 months', async () => {

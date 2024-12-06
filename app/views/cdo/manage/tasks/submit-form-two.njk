@@ -12,6 +12,7 @@
 {% block pageTitle %}Confirm microchip and neutering details - {{ serviceName }}{% endblock %}
 
 {% block beforeContent %}
+{{ super() }}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
       {{ govukBackLink({
@@ -39,14 +40,14 @@
     <form method="POST" novalidate autocomplete="off">
       <span class="govuk-caption-m">Dog {{ model.indexNumber }}</span>
       {% call govukFieldset(model.verificationFieldset) %}
+      {{ govukInput(model.microchipNumber) }}
       <div class="govuk-form-group {{model.microchipGroupClass}}">
         {% call govukFieldset(model.microchipFieldGroup) %}
+            {{ govukDateInput(model.microchipVerification) }}
 
-              {{ govukDateInput(model.microchipVerification) }}
-
-              {% if model.dogNotFitForMicrochip %}
-                {{ govukCheckboxes(model.dogNotFitForMicrochip) }}
-              {% endif %}
+            {% if model.dogNotFitForMicrochip %}
+              {{ govukCheckboxes(model.dogNotFitForMicrochip) }}
+            {% endif %}
         {% endcall %}
         </div>
         <div class="govuk-form-group {{model.neuteringGroupClass}}">
@@ -60,9 +61,6 @@
 
           {% endcall %}
         </div>
-        {% if model.detailsComponent %}
-          {{ govukDetails(model.detailsComponent) }}
-        {% endif %}
 
         <input type="hidden" name="taskName" id="taskName" value="{{ model.taskName }}" />
 
