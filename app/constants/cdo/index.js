@@ -12,6 +12,9 @@ const constants = {
     manageCdo: {
       get: '/cdo/manage/cdo',
       post: '/cdo/manage/cdo'
+    },
+    manageCdoTaskBase: {
+      get: '/cdo/manage/task'
     }
   },
   progressTasks: [
@@ -33,7 +36,8 @@ const constants = {
     certificateIssued
   },
   views: {
-    manageCdo: 'cdo/manage/cdo'
+    manageCdo: 'cdo/manage/cdo',
+    taskViews: 'cdo/manage/tasks'
   }
 }
 
