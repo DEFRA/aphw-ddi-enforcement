@@ -19,7 +19,8 @@ const constants = {
     insuranceDetailsRecorded,
     microchipNumberRecorded,
     applicationFeePaid,
-    form2Sent
+    form2Sent,
+    certificateIssued
   ],
   tasks: {
     applicationPackSent,

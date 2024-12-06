@@ -6,6 +6,8 @@ const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
 const getTaskStatus = task => {
   if (task.key === tasks.applicationPackSent) {
     return task.completed ? 'Sent' : 'Not sent'
+  } else if (task.key === tasks.certificateIssued) {
+    return 'Not sent'
   }
 
   return task.completed ? 'Received' : 'Not received'
