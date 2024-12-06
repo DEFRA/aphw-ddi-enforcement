@@ -4,16 +4,15 @@ jest.mock('../../../../../../../app/session/session-wrapper')
 const { setInSession } = require('../../../../../../../app/session/session-wrapper')
 const { JSDOM } = require('jsdom')
 jest.mock('../../../../../../../app/api/ddi-index-api/search')
-const {
-  buildTaskListFromComplete, buildTaskListTasksFromComplete, buildTask, buildVerificationOptions, buildTaskListFromInitial
-} = require('../../../../../../mocks/cdo/manage/tasks/builder')
+const { buildTaskListFromInitial } = require('../../../../../../mocks/cdo/manage/tasks/builder')
+const { ApiErrorFailure } = require('../../../../../../../app/errors/api-error-failure')
 
 describe('Generic Task test', () => {
   jest.mock('../../../../../../../app/auth')
   const mockAuth = require('../../../../../../../app/auth')
 
   jest.mock('../../../../../../../app/api/ddi-index-api/cdo')
-  const { getCdoTaskDetails, getCdo } = require('../../../../../../../app/api/ddi-index-api/cdo')
+  const { getCdoTaskDetails, getCdo, saveCdoTaskDetails } = require('../../../../../../../app/api/ddi-index-api/cdo')
 
   jest.mock('../../../../../../../app/api/ddi-index-api/insurance')
 
@@ -278,7 +277,7 @@ describe('Generic Task test', () => {
       expect(response.statusCode).toBe(302)
     })
 
-    test('POST /cdo/manage/task/submit-form-two/ED20001 route returns 302 given microchip call', async () => {
+    test('returns 302 given microchip call', async () => {
       getCdoTaskDetails.mockResolvedValue(buildTaskListFromInitial())
       getCdo.mockResolvedValue({ dog: { status: 'Pre-exempt' } })
 
@@ -287,6 +286,7 @@ describe('Generic Task test', () => {
         url: '/cdo/manage/task/submit-form-two/ED20001',
         auth,
         payload: {
+          microchipNumber: '123456789012358',
           'microchipVerification-day': '',
           'microchipVerification-month': '',
           'microchipVerification-year': '',
@@ -304,6 +304,7 @@ describe('Generic Task test', () => {
       const response = await server.inject(options)
       expect(response.statusCode).toBe(302)
       expect(setVerificationPayload).toHaveBeenCalledWith(expect.anything(), {
+        microchipNumber: '123456789012358',
         dogNotFitForMicrochip: true,
         dogNotNeutered: true,
         taskName: 'submit-form-two',
@@ -316,6 +317,101 @@ describe('Generic Task test', () => {
         'microchipVerification-month': '',
         'microchipVerification-year': ''
       })
+    })
+
+    test('fails validation if invalid payload', async () => {
+      const options = {
+        method: 'POST',
+        url: '/cdo/manage/task/submit-form-two/ED20001',
+        auth,
+        payload: {
+          taskName: 'submit-form-two'
+        }
+      }
+
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(400)
+    })
+
+    test('saves if valid payload', async () => {
+      saveCdoTaskDetails.mockResolvedValue()
+      const options = {
+        method: 'POST',
+        url: '/cdo/manage/task/submit-form-two/ED20001',
+        auth,
+        payload: {
+          microchipNumber: '123456789012358',
+          'microchipVerification-day': '01',
+          'microchipVerification-month': '10',
+          'microchipVerification-year': '2024',
+          dogNotFitForMicrochip: false,
+          'neuteringConfirmation-day': '01',
+          'neuteringConfirmation-month': '10',
+          'neuteringConfirmation-year': '2024',
+          dogNotNeutered: false,
+          taskName: 'submit-form-two',
+          microchipVerification: { year: '01', month: '10', day: '2024' },
+          neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+        }
+      }
+
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(302)
+      expect(saveCdoTaskDetails).toHaveBeenCalledWith('ED20001', 'submitFormTwo', {
+        dogNotFitForMicrochip: false,
+        dogNotNeutered: false,
+        microchipNumber: '123456789012358',
+        microchipVerification: new Date('2024-09-30T23:00:00.000Z'),
+        'microchipVerification-day': 1,
+        'microchipVerification-month': 10,
+        'microchipVerification-year': 2024,
+        neuteringConfirmation: new Date('2024-09-30T23:00:00.000Z'),
+        'neuteringConfirmation-day': 1,
+        'neuteringConfirmation-month': 10,
+        'neuteringConfirmation-year': 2024,
+        taskName: 'submit-form-two'
+      }, expect.anything())
+    })
+
+    test('handles boom from API', async () => {
+      const options = {
+        method: 'POST',
+        url: '/cdo/manage/task/submit-form-two/ED20001',
+        auth,
+        payload: {
+          microchipNumber: '123456789012358',
+          'microchipVerification-day': '01',
+          'microchipVerification-month': '10',
+          'microchipVerification-year': '2024',
+          dogNotFitForMicrochip: false,
+          'neuteringConfirmation-day': '01',
+          'neuteringConfirmation-month': '10',
+          'neuteringConfirmation-year': '2024',
+          dogNotNeutered: false,
+          taskName: 'submit-form-two',
+          microchipVerification: { year: '01', month: '10', day: '2024' },
+          neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+        }
+      }
+      saveCdoTaskDetails.mockImplementation(() => {
+        throw new ApiErrorFailure('dummy error', { payload: { microchipNumber: '12345', microchipNumbers: [] } })
+      })
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(400)
+    })
+
+    test('handles non-ApiErrorFailure boom from API', async () => {
+      const options = {
+        method: 'POST',
+        url: '/cdo/manage/task/process-application-pack/ED20001',
+        auth,
+        payload: { taskName: 'send-application-pack', taskDone: 'Y' }
+      }
+      saveCdoTaskDetails.mockImplementation(() => {
+        throw new Error('dummy error')
+      })
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(500)
     })
   })
 

@@ -1,10 +1,4 @@
-const Joi = require('joi')
-const { isFuture, isWithinInterval, sub, addMonths, startOfDay, differenceInYears } = require('date-fns')
-const { parseDate } = require('./date-helpers')
-const { getPersonAndDogs } = require('../api/ddi-index-api/person')
 const validNewMicrochip = /^\d+$/
-
-const invalidBreedForCountryMessage = 'Address for an XL Bully must be in England or Wales'
 
 const validateMicrochip = (value, helpers, compareOrig = false) => {
   let elemName = helpers.state.path[0]

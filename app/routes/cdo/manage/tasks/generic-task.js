@@ -1,6 +1,5 @@
 const { routes, views } = require('../../../../constants/cdo/index')
 const { cdoTasksGetSchema } = require('../../../../schema/portal/cdo/tasks/generic-task')
-const { anyLoggedInUser } = require('../../../../auth/permissions')
 const getUser = require('../../../../auth/get-user')
 const { addDateComponents } = require('../../../../lib/date-helpers')
 const { createModel, getTaskData, getValidation, getTaskDetailsByKey } = require('./generic-task-helper')
@@ -70,7 +69,6 @@ module.exports = [
     method: 'POST',
     path: `${routes.manageCdoTaskBase.get}/{taskName}/{dogIndex?}`,
     options: {
-      auth: { scope: anyLoggedInUser },
       validate: {
         options: {
           abortEarly: false
@@ -99,7 +97,7 @@ module.exports = [
 
         const { apiKey } = getTaskDetailsByKey(taskName)
 
-        if (taskName === 'record-verification-dates' && payload.dogNotFitForMicrochip === true) {
+        if (taskName === 'submit-form-two' && payload.dogNotFitForMicrochip === true) {
           const backNav = addBackNavigation(request)
           setVerificationPayload(request, payload)
           return h.redirect(`${routes.manageCdoRecordMicrochipDeadline.get}/${dogIndex}${backNav.srcHashParam}`)

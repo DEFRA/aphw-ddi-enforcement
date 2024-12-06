@@ -10,7 +10,7 @@ const taskList = [
   { name: tasks.microchipNumberRecorded, key: 'record-microchip-number', canSubmit: false, label: 'Microchip number', apiKey: 'recordMicrochipNumber', stateKey: 'microchipNumberRecorded' },
   { name: tasks.applicationFeePaid, key: 'record-application-fee-payment', canSubmit: false, label: 'Application fee', apiKey: 'recordApplicationFee', stateKey: 'applicationFeePaid' },
   { name: tasks.form2Sent, key: 'send-form2', canSubmit: false, label: 'Form two', apiKey: 'sendForm2', stateKey: 'form2Sent' },
-  { name: tasks.verificationDateRecorded, Model: ViewModelRecordVerificationDates, validation: validateVerificationDates, key: 'submit-form-two', canSubmit: true, label: 'Form 2 confirming dog<br>microchipped and neutered', apiKey: 'submitForm2', stateKey: 'verificationDateRecorded' },
+  { name: tasks.verificationDateRecorded, Model: ViewModelRecordVerificationDates, validation: validateVerificationDates, key: 'submit-form-two', canSubmit: true, label: 'Form 2 confirming dog<br>microchipped and neutered', apiKey: 'submitFormTwo', stateKey: 'verificationDateRecorded' },
   { name: tasks.microchipDeadlineRecorded, key: 'record-microchip-deadline', canSubmit: false, label: 'When will the dog be fit to be microchipped?', apiKey: 'verifyDates', stateKey: 'verificationDateRecorded' },
   { name: tasks.certificateIssued, key: 'certificate-issued', canSubmit: false, label: 'Certificate of exemption', apiKey: 'certificateIssued', stateKey: 'certificateIssued' }
 ]
@@ -32,6 +32,15 @@ const createModel = (taskKey, data, backNav, errors = null) => {
   data.taskName = taskKey
 
   return new task.Model(data, backNav, errors)
+}
+
+const getValidation = payload => {
+  const task = taskList.find(x => x.key === payload?.taskName)
+  if (task === undefined) {
+    throw new Error(`Invalid task ${payload?.taskName} when getting validation`)
+  }
+
+  return task.validation(payload)
 }
 
 const getTaskDetails = taskName => {
@@ -110,6 +119,8 @@ const getTaskData = async (dogIndex, taskName, user, request, payload = {}) => {
 
 module.exports = {
   createModel,
+  getValidation,
   getTaskDetails,
+  getTaskDetailsByKey,
   getTaskData
 }

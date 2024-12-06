@@ -6,6 +6,7 @@ const form2Sent = 'form2Sent'
 const verificationDateRecorded = 'verificationDateRecorded'
 const microchipDeadlineRecorded = 'microchipDeadlineRecorded'
 const certificateIssued = 'certificateIssued'
+const submitFormTwo = 'submitFormTwo'
 
 const constants = {
   routes: {
@@ -15,7 +16,14 @@ const constants = {
     },
     manageCdoTaskBase: {
       get: '/cdo/manage/task'
+    },
+    manageCdoRecordMicrochipDeadline: {
+      get: '/cdo/manage/task/record-microchip-deadline',
+      post: '/cdo/manage/task/record-microchip-deadline'
     }
+  },
+  saveTasks: {
+    submitFormTwo
   },
   progressTasks: [
     applicationPackSent,
