@@ -8,6 +8,10 @@ const getTaskStatus = task => {
     return task.completed ? 'Sent' : 'Not sent'
   }
 
+  if (task.key === tasks.certificateIssued) {
+    return 'Not sent'
+  }
+
   return task.completed ? 'Received' : 'Not received'
 }
 

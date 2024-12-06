@@ -6,6 +6,27 @@ jest.mock('../../../../../../app/api/ddi-index-api/search')
 const { buildTaskListFromInitial, buildCdoSummary, buildTaskListFromComplete } = require('../../../../../mocks/cdo/manage/tasks/builder')
 const { someTasksCompletedButNotYetAvailable } = require('../../../../../mocks/cdo/manage/cdo')
 
+const ordering = [
+  'applicationPack',
+  'evidenceOfInsurance',
+  'microchipNumber',
+  'applicationFee',
+  'form2',
+  'certificateOfExemption'
+]
+
+const progressSteps = {
+  applicationPack: ordering.indexOf('applicationPack'),
+  evidenceOfInsurance: ordering.indexOf('evidenceOfInsurance'),
+  microchipNumber: ordering.indexOf('microchipNumber'),
+  applicationFee: ordering.indexOf('applicationFee'),
+  form2: ordering.indexOf('form2'),
+  certificateOfExemption: ordering.indexOf('certificateOfExemption')
+}
+
+const findProgressStepName = (document, key) => document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[key].textContent.trim()
+const findProgressStepStatus = (document, key) => document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[key].textContent.trim()
+
 describe('Manage Cdo test', () => {
   jest.mock('../../../../../../app/auth')
   const mockAuth = require('../../../../../../app/auth')
@@ -67,16 +88,19 @@ describe('Manage Cdo test', () => {
     const { document } = (new JSDOM(response.payload)).window
     expect(document.querySelector('h1.govuk-heading-xl').textContent.trim()).toBe('Dog ED20001')
     expect(document.querySelector('span.govuk-body.defra-secondary-text')).toBeNull()
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[0].textContent.trim()).toBe('Application pack')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Not sent')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[1].textContent.trim()).toBe('Evidence of insurance')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[1].textContent.trim()).toBe('Not received')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[2].textContent.trim()).toBe('Microchip number')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[2].textContent.trim()).toBe('Not received')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[3].textContent.trim()).toBe('Application fee')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[3].textContent.trim()).toBe('Not received')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[4].textContent.trim()).toBe('Form 2 confirming dog microchipped and neutered')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[4].textContent.trim()).toBe('Not received')
+    expect(findProgressStepName(document, progressSteps.applicationPack)).toBe('Application pack')
+    expect(findProgressStepStatus(document, progressSteps.applicationPack)).toBe('Not sent')
+    expect(findProgressStepName(document, progressSteps.evidenceOfInsurance)).toBe('Evidence of insurance')
+    expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Not received')
+    expect(findProgressStepName(document, progressSteps.microchipNumber)).toBe('Microchip number')
+    expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Not received')
+    expect(findProgressStepName(document, progressSteps.applicationFee)).toBe('Application fee')
+    expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Not received')
+    expect(findProgressStepName(document, progressSteps.form2)).toBe('Form 2 confirming dog microchipped and neutered')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Not received')
+    expect(findProgressStepName(document, progressSteps.certificateOfExemption)).toBe('Certificate of exemption')
+    expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
+
     expect(document.querySelector('.govuk-tag').textContent.trim()).toBe('Applying for exemption')
 
     const [dogNameKey, ownerNameKey, microchipNumberKey, cdoExpiryKey] = document.querySelectorAll('.govuk-summary-list__key')
@@ -166,16 +190,12 @@ describe('Manage Cdo test', () => {
     expect(microchipNumber.textContent.trim()).toBe('Not received')
     expect(cdoExpiry.textContent.trim()).toBe('19 Apr 2024')
 
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[0].textContent.trim()).toBe('Application pack')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Sent')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[1].textContent.trim()).toBe('Evidence of insurance')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[1].textContent.trim()).toBe('Received')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[2].textContent.trim()).toBe('Microchip number')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[2].textContent.trim()).toBe('Not received')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[3].textContent.trim()).toBe('Application fee')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[3].textContent.trim()).toBe('Received on 02 March 2024')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[4].textContent.trim()).toBe('Form 2 confirming dog microchipped and neutered')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[4].textContent.trim()).toBe('Not received')
+    expect(findProgressStepStatus(document, progressSteps.applicationPack)).toBe('Sent')
+    expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Received')
+    expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Not received')
+    expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Received on 02 March 2024')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Not received')
+    expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
   })
 
   test('GET /cdo/manage/cdo/ED123 route returns 200 with completed tasks', async () => {
@@ -203,16 +223,12 @@ describe('Manage Cdo test', () => {
 
     const { document } = (new JSDOM(response.payload)).window
     expect(document.querySelector('h1.govuk-heading-xl').textContent.trim()).toBe('Dog ED20001')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[0].textContent.trim()).toBe('Application pack')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[0].textContent.trim()).toBe('Sent on 27 November 2024')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[1].textContent.trim()).toBe('Evidence of insurance')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[1].textContent.trim()).toBe('Received on 27 November 2024')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[2].textContent.trim()).toBe('Microchip number')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[2].textContent.trim()).toBe('Received on 27 November 2024')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[3].textContent.trim()).toBe('Application fee')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[3].textContent.trim()).toBe('Received on 27 November 2024')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[4].textContent.trim()).toBe('Form 2 confirming dog microchipped and neutered')
-    expect(document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[4].textContent.trim()).toBe('Received on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.applicationPack)).toBe('Sent on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Received on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Received on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Received on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
   })
 
   test('GET /cdo/manage/cdo/ED123 route returns 404 when invalid index number', async () => {
