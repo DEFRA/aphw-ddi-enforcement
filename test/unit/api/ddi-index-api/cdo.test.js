@@ -1,7 +1,7 @@
 const { user } = require('../../../mocks/auth')
 describe('CDO API endpoints', () => {
   jest.mock('../../../../app/api/ddi-index-api/base')
-  const { get } = require('../../../../app/api/ddi-index-api/base')
+  const { get, boomRequest } = require('../../../../app/api/ddi-index-api/base')
 
   const { cdo } = require('../../../../app/api/ddi-index-api')
 
@@ -35,6 +35,24 @@ describe('CDO API endpoints', () => {
 
       expect(get).toHaveBeenCalledWith('cdo/ED123/manage', user)
       expect(res).toEqual({ tasks: {} })
+    })
+  })
+
+  describe('getCdoTaskDetails', () => {
+    test('should do GET to API with correct endpoint', async () => {
+      get.mockResolvedValue({ tasks: {} })
+      const res = await cdo.getCdoTaskDetails('ED123', user)
+
+      expect(get).toHaveBeenCalledWith('cdo/ED123/manage', user)
+      expect(res).toEqual({ tasks: {} })
+    })
+  })
+
+  describe('submitForm2', () => {
+    test('should do POST to API with correct endpoint and payload', async () => {
+      await cdo.submitForm2('ED123', { payload: 'abc' }, user)
+
+      expect(boomRequest).toHaveBeenCalledWith('cdo/ED123/manage:submit-form-two', 'POST', { payload: 'abc' }, user)
     })
   })
 })

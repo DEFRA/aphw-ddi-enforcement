@@ -1,4 +1,4 @@
-const { get } = require('./base')
+const { get, boomRequest } = require('./base')
 
 const cdoEndpoint = 'cdo'
 
@@ -170,8 +170,23 @@ const getManageCdoDetails = async (indexNumber, user) => {
   return get(`${cdoEndpoint}/${indexNumber}/manage`, user)
 }
 
+/**
+ * @param indexNumber
+ * @param user
+ * @return {Promise<unknown>}
+ */
+const getCdoTaskDetails = async (indexNumber, user) => {
+  return get(`${cdoEndpoint}/${indexNumber}/manage`, user)
+}
+
+const submitForm2 = async (indexNumber, payload, user) => {
+  return boomRequest(`${cdoEndpoint}/${indexNumber}/manage:submit-form-two`, 'POST', payload, user)
+}
+
 module.exports = {
   getCdo,
   getCdoFromActivities,
-  getManageCdoDetails
+  getManageCdoDetails,
+  getCdoTaskDetails,
+  submitForm2
 }
