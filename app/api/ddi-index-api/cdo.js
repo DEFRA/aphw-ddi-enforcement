@@ -1,4 +1,6 @@
 const { get, boomRequest } = require('./base')
+const { removeIndividualDateComponents } = require('../../lib/date-helpers')
+const { saveTasks } = require('../../constants/cdo/index')
 
 const cdoEndpoint = 'cdo'
 
@@ -179,8 +181,14 @@ const getCdoTaskDetails = async (indexNumber, user) => {
   return get(`${cdoEndpoint}/${indexNumber}/manage`, user)
 }
 
-const submitForm2 = async (indexNumber, payload, user) => {
-  return boomRequest(`${cdoEndpoint}/${indexNumber}/manage:submit-form-two`, 'POST', payload, user)
+const saveCdoTaskDetails = async (indexNumber, apiKey, payload, user) => {
+  if (!saveTasks[apiKey]) {
+    throw new Error('Task may not be saved')
+  }
+  payload = removeIndividualDateComponents(payload)
+
+  delete payload.taskName
+  return boomRequest(`${cdoEndpoint}/${indexNumber}/manage:${apiKey}`, 'POST', payload, user)
 }
 
 module.exports = {
@@ -188,5 +196,5 @@ module.exports = {
   getCdoFromActivities,
   getManageCdoDetails,
   getCdoTaskDetails,
-  submitForm2
+  saveCdoTaskDetails
 }

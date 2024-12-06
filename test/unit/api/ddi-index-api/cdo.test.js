@@ -1,4 +1,5 @@
 const { user } = require('../../../mocks/auth')
+
 describe('CDO API endpoints', () => {
   jest.mock('../../../../app/api/ddi-index-api/base')
   const { get, boomRequest } = require('../../../../app/api/ddi-index-api/base')
@@ -48,11 +49,15 @@ describe('CDO API endpoints', () => {
     })
   })
 
-  describe('submitForm2', () => {
+  describe('saveCdoTaskDetails', () => {
     test('should do POST to API with correct endpoint and payload', async () => {
-      await cdo.submitForm2('ED123', { payload: 'abc' }, user)
+      await cdo.saveCdoTaskDetails('ED123', 'submitFormTwo', { payload: 'abc' }, user)
 
-      expect(boomRequest).toHaveBeenCalledWith('cdo/ED123/manage:submit-form-two', 'POST', { payload: 'abc' }, user)
+      expect(boomRequest).toHaveBeenCalledWith('cdo/ED123/manage:submitFormTwo', 'POST', { payload: 'abc' }, user)
+    })
+    test('should not POST to API for non-enforcement submittable task', async () => {
+      await expect(cdo.saveCdoTaskDetails('ED123', 'send-application-pack', { payload: 'abc' }, user)).rejects.toThrow(new Error('Task may not be saved'))
+      expect(boomRequest).not.toHaveBeenCalled()
     })
   })
 })
