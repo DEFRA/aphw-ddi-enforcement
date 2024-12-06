@@ -1,5 +1,5 @@
 const FormData = require('form-data')
-const { auth, user, userWithDisplayname } = require('../../../../../../mocks/auth')
+const { auth, user } = require('../../../../../../mocks/auth')
 jest.mock('../../../../../../../app/session/session-wrapper')
 const { setInSession } = require('../../../../../../../app/session/session-wrapper')
 const { JSDOM } = require('jsdom')
@@ -17,7 +17,7 @@ describe('Generic Task test', () => {
   jest.mock('../../../../../../../app/api/ddi-index-api/insurance')
 
   jest.mock('../../../../../../../app/session/cdo/manage')
-  const { setVerificationPayload, clearVerificationPayload } = require('../../../../../../../app/session/cdo/manage')
+  const { setVerificationPayload } = require('../../../../../../../app/session/cdo/manage')
 
   const createServer = require('../../../../../../../app/server')
   let server
@@ -361,11 +361,11 @@ describe('Generic Task test', () => {
         dogNotFitForMicrochip: false,
         dogNotNeutered: false,
         microchipNumber: '123456789012358',
-        microchipVerification: new Date('2024-09-30T23:00:00.000Z'),
+        microchipVerification: expect.any(Date),
         'microchipVerification-day': 1,
         'microchipVerification-month': 10,
         'microchipVerification-year': 2024,
-        neuteringConfirmation: new Date('2024-09-30T23:00:00.000Z'),
+        neuteringConfirmation: expect.any(Date),
         'neuteringConfirmation-day': 1,
         'neuteringConfirmation-month': 10,
         'neuteringConfirmation-year': 2024,

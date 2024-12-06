@@ -104,7 +104,7 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepName(document, progressSteps.certificateOfExemption)).toBe('Certificate of exemption')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
 
-    expect(document.querySelector('.govuk-tag').textContent.trim()).toBe('Applying for exemption')
+    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Applying for exemption')
 
     const [dogNameKey, ownerNameKey, microchipNumberKey, cdoExpiryKey] = document.querySelectorAll('.govuk-summary-list__key')
     const [dogName, ownerName, microchipNumber, cdoExpiry] = document.querySelectorAll('.govuk-summary-list__value')
@@ -159,7 +159,7 @@ describe('Manage Cdo test', () => {
     expect(response.statusCode).toBe(200)
 
     const { document } = (new JSDOM(response.payload)).window
-    expect(document.querySelector('.govuk-tag').textContent.trim()).toBe('Failed to exempt dog')
+    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Failed to exempt dog')
   })
 
   test('GET /cdo/manage/cdo/ED123 route returns 200 with completed tasks overriding "Cannot start yet"', async () => {
