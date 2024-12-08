@@ -3,6 +3,8 @@ const { validateDate, getDateComponents } = require('../../../../lib/date-helper
 const { validatePayloadBuilder } = require('../../../../schema/common/validatePayload')
 const { validateMicrochip } = require('../../../../lib/validation-helpers')
 
+const FIFTEEN = 15
+
 const microchipVerification = Joi.object({
   year: Joi.string().allow(null).allow(''),
   month: Joi.string().allow(null).allow(''),
@@ -39,7 +41,7 @@ const emptyDate = Joi.object({
 })
 
 const verificationDatesSchema = Joi.object({
-  microchipNumber: Joi.string().trim().max(15).messages({
+  microchipNumber: Joi.string().trim().max(FIFTEEN).messages({
     'string.max': 'Microchip number must be {#limit} digits in length',
     'string.empty': 'Enter a microchip number'
   }).custom((value, helper) => validateMicrochip(value, helper, false)),

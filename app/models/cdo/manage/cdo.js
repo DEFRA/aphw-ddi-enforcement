@@ -22,11 +22,17 @@ const getTaskStatus = (tasklist, task) => {
 }
 
 const getTaskCompletedDate = (processCdoTasklist, task) => {
-  if (task.key === tasks.verificationDateRecorded) {
-    return processCdoTasklist.form2Submitted ?? task.timestamp
+  const completedDate = task.timestamp
+
+  if (task.key === tasks.verificationDateRecorded && !completedDate) {
+    return formatToGds(processCdoTasklist.form2Submitted)
   }
 
-  return task.completed ? task.timestamp : undefined
+  if (!task.completed) {
+    return undefined
+  }
+
+  return formatToGds(completedDate)
 }
 
 const NOT_RECEIVED_TAG = '<span class="defra-secondary-text">Not received</span>'
@@ -96,9 +102,7 @@ const getSummaries = modelDetails => {
 
 const getStatusTag = (tasklist, task, cdo) => {
   const status = getTaskStatus(tasklist, tasklist.tasks[task])
-  let completedDate = getTaskCompletedDate(tasklist, tasklist.tasks[task])
-
-  completedDate = completedDate && formatToGds(completedDate)
+  const completedDate = getTaskCompletedDate(tasklist, tasklist.tasks[task])
 
   const notComplete = status === 'Not sent' || status === 'Not received'
 

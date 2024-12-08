@@ -9,19 +9,7 @@ const { ApiErrorFailure } = require('../../../../errors/api-error-failure')
 const { logValidationError } = require('../../../../lib/log-helpers')
 const { setVerificationPayload, clearVerificationPayload } = require('../../../../session/cdo/manage')
 const { useManageCdo } = require('../../../../lib/route-helpers')
-
-const mapBoomError = (e, _request) => {
-  // const { microchipNumber, microchipNumber2 } = request.payload
-  //
-  // const disallowedMicrochipIds = e.boom.payload.microchipNumbers
-  //
-  // const validationPayload = {
-  //   microchipNumber,
-  //   microchipNumber2
-  // }
-  // const { error } = microchipValidation(disallowedMicrochipIds).validate(validationPayload, { abortEarly: false })
-  return e
-}
+const { errorCodes } = require('../../../../constants/forms')
 
 module.exports = [
   {
@@ -36,11 +24,9 @@ module.exports = [
         const dogIndex = request.params.dogIndex
         const queryParams = request.query
 
-        if (taskName) {
-          if (queryParams.clear) {
-            clearVerificationPayload(request)
-            return h.redirect(`${routes.manageCdoTaskBase.get}/${taskName}/${dogIndex}?src=${queryParams.src}`)
-          }
+        if (taskName && queryParams.clear) {
+          clearVerificationPayload(request)
+          return h.redirect(`${routes.manageCdoTaskBase.get}/${taskName}/${dogIndex}?src=${queryParams.src}`)
         }
 
         const user = getUser(request)
@@ -85,7 +71,7 @@ module.exports = [
 
           const backNav = addBackNavigationForErrorCondition(request)
 
-          return h.view(`${views.taskViews}/${taskName}`, createModel(taskName, data, backNav, error)).code(400).takeover()
+          return h.view(`${views.taskViews}/${taskName}`, createModel(taskName, data, backNav, error)).code(errorCodes.validationError).takeover()
         }
       },
       handler: async (request, h) => {
@@ -112,13 +98,11 @@ module.exports = [
           return h.redirect(`${routes.manageCdo.get}/${dogIndex}`)
         } catch (e) {
           if (e instanceof ApiErrorFailure) {
-            const error = mapBoomError(e, request)
-
             const data = await getTaskData(request.params.dogIndex, taskName, user, request.payload)
 
             const backNav = addBackNavigationForErrorCondition(request)
 
-            return h.view(`${views.taskViews}/${taskName}`, createModel(taskName, data, backNav, error)).code(400).takeover()
+            return h.view(`${views.taskViews}/${taskName}`, createModel(taskName, data, backNav, e)).code(errorCodes.validationError).takeover()
           }
 
           throw e

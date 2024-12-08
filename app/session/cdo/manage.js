@@ -1,10 +1,11 @@
-const get = (request, entryKey, key) => {
+const entryKey = 'verificationPayload'
+
+const get = (request, key) => {
   return key ? request.yar?.get(entryKey)?.[key] : request.yar?.get(entryKey)
 }
 
-const entryKey = 'verificationPayload'
 const getVerificationPayload = (request) => {
-  return get(request, entryKey)
+  return get(request)
 }
 const setVerificationPayload = (request, verificationPayloadData) => {
   request.yar.set(entryKey, verificationPayloadData)

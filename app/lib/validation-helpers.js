@@ -1,5 +1,7 @@
 const validNewMicrochip = /^\d+$/
 
+const FIFTEEN = 15
+
 const validateMicrochip = (value, helpers, compareOrig = false) => {
   let elemName = helpers.state.path[0]
 
@@ -14,7 +16,7 @@ const validateMicrochip = (value, helpers, compareOrig = false) => {
     }
   }
 
-  if (value?.length < 15) {
+  if (value?.length < FIFTEEN) {
     return helpers.message('Microchip number must be 15 digits in length', { path: [elemName] })
   }
 
