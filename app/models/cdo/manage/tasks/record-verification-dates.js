@@ -1,6 +1,7 @@
 const { errorPusherWithDate } = require('../../../../lib/error-helpers')
 const { constructDateField } = require('../../../../lib/model-helpers')
 
+const FIELDSET_LEGEND_S = 'govuk-fieldset__legend--s'
 /**
  * @param labelText
  * @return {GovukFieldset}
@@ -9,7 +10,7 @@ const constructFieldset = labelText => {
   return {
     legend: {
       text: labelText,
-      classes: 'govuk-fieldset__legend--s'
+      classes: FIELDSET_LEGEND_S
     },
     classes: 'govuk-!-margin-bottom-7',
     role: 'group'
@@ -96,8 +97,8 @@ function ViewModel (data, backNav, errors) {
     dogNotNeutered,
     dogNotFitForMicrochip,
     microchipNumber,
-    microchipVerification: constructDateField(data, 'microchipVerification', 'When was the dog\'s microchip number verified?', null, 'govuk-fieldset__legend--s', { hideMargin: true, hideFieldset: true, date: { formGroup: { classes: 'govuk-!-margin-bottom-0' } } }),
-    neuteringConfirmation: constructDateField(data, 'neuteringConfirmation', 'When was the dog\'s neutering verified?', null, 'govuk-fieldset__legend--s', { hideMargin: true, hideFieldset: true, date: { formGroup: { classes: 'govuk-!-margin-bottom-0' } } }),
+    microchipVerification: constructDateField(data, 'microchipVerification', 'When was the dog\'s microchip number verified?', null, FIELDSET_LEGEND_S, { hideMargin: true, hideFieldset: true, date: { formGroup: { classes: 'govuk-!-margin-bottom-0' } } }),
+    neuteringConfirmation: constructDateField(data, 'neuteringConfirmation', 'When was the dog\'s neutering verified?', null, FIELDSET_LEGEND_S, { hideMargin: true, hideFieldset: true, date: { formGroup: { classes: 'govuk-!-margin-bottom-0' } } }),
     errors: [],
     verificationFieldset,
     neuteringGroupClass: '',

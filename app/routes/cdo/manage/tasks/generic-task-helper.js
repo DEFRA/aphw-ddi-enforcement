@@ -105,12 +105,14 @@ const getTaskData = async (dogIndex, taskName, user, request, payload = {}) => {
   const taskData = getTaskDetailsByKey(taskName)
   const savedTask = await getCdoTaskDetails(dogIndex, user)
   const taskState = savedTask.tasks[taskData.stateKey]
-  let data = { indexNumber: dogIndex, ...savedTask, task: { ...taskState }, ...payload }
+  const data = { indexNumber: dogIndex, ...savedTask, task: { ...taskState }, ...payload }
   delete data.task.tasks
 
   if (taskName === 'record-verification-dates') {
-    data = verificationData(data, request, payload)
-  } else if (taskName === 'record-microchip-deadline') {
+    return verificationData(data, request, payload)
+  }
+
+  if (taskName === 'record-microchip-deadline') {
     data.hidden = getVerificationPayload(request)
   }
 
