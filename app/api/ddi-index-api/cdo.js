@@ -1,4 +1,6 @@
-const { get } = require('./base')
+const { get, boomRequest } = require('./base')
+const { removeIndividualDateComponents } = require('../../lib/date-helpers')
+const { saveTasks } = require('../../constants/cdo/index')
 
 const cdoEndpoint = 'cdo'
 
@@ -170,8 +172,29 @@ const getManageCdoDetails = async (indexNumber, user) => {
   return get(`${cdoEndpoint}/${indexNumber}/manage`, user)
 }
 
+/**
+ * @param indexNumber
+ * @param user
+ * @return {Promise<unknown>}
+ */
+const getCdoTaskDetails = async (indexNumber, user) => {
+  return get(`${cdoEndpoint}/${indexNumber}/manage`, user)
+}
+
+const saveCdoTaskDetails = async (indexNumber, apiKey, payload, user) => {
+  if (!saveTasks[apiKey]) {
+    throw new Error('Task may not be saved')
+  }
+  payload = removeIndividualDateComponents(payload)
+
+  delete payload.taskName
+  return boomRequest(`${cdoEndpoint}/${indexNumber}/manage:${apiKey}`, 'POST', payload, user)
+}
+
 module.exports = {
   getCdo,
   getCdoFromActivities,
-  getManageCdoDetails
+  getManageCdoDetails,
+  getCdoTaskDetails,
+  saveCdoTaskDetails
 }

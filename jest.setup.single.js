@@ -2,7 +2,7 @@
 
 jest.setTimeout(30000)
 process.env.COOKIE_PASSWORD = 'cookiepasswordcookiepasswordcookiepassword'
-process.env.DDI_API_BASE_URL = 'http://localhost/api'
+process.env.DDI_API_BASE_URL = 'test'
 process.env.DDI_EVENTS_BASE_URL = 'http://localhost/events'
 process.env.OS_PLACES_API_BASE_URL = 'http://localhost/os-places'
 process.env.OS_PLACES_API_KEY = 'some-api-key'

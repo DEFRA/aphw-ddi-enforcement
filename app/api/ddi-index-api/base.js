@@ -2,6 +2,7 @@ const config = require('../../config')
 
 const wreck = require('@hapi/wreck')
 const { addHeaders } = require('../shared')
+const { ApiErrorFailure } = require('../../errors/api-error-failure')
 
 const baseUrl = config.ddiIndexApi.baseUrl
 
@@ -45,9 +46,36 @@ const post = async (endpoint, data, user) => {
   return JSON.parse(payload)
 }
 
+const boomRequest = async (endpoint, method, data, user, throwError = true) => {
+  const options = user?.username
+    ? { payload: data, headers: addHeaders(user) }
+    : { payload: data }
+
+  const uri = `${baseUrl}/${endpoint}`
+
+  const res = await wreck.request(method, uri, options)
+
+  const body = await wreck.read(res)
+
+  const payload = body.toString().length > 0 ? JSON.parse(body.toString()) : undefined
+
+  const responseData = {
+    payload,
+    statusCode: res.statusCode,
+    statusMessage: res.statusMessage
+  }
+
+  if (throwError && !res.statusCode.toString().startsWith('2')) {
+    throw new ApiErrorFailure(`${res.statusCode} ${res.statusMessage}`, responseData)
+  }
+
+  return responseData
+}
+
 module.exports = {
   get,
   put,
   post,
-  callDelete
+  callDelete,
+  boomRequest
 }
