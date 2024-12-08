@@ -14,7 +14,7 @@ const getTaskStatus = (tasklist, task) => {
     return 'Not sent'
   }
 
-  if (task.key === tasks.verificationDateRecorded && tasklist.form2Received) {
+  if (task.key === tasks.verificationDateRecorded && tasklist.form2Submitted) {
     return 'Received'
   }
 
@@ -23,7 +23,7 @@ const getTaskStatus = (tasklist, task) => {
 
 const getTaskCompletedDate = (processCdoTasklist, task) => {
   if (task.key === tasks.verificationDateRecorded) {
-    return processCdoTasklist.form2Received ?? task.timestamp
+    return processCdoTasklist.form2Submitted ?? task.timestamp
   }
 
   return task.completed ? task.timestamp : undefined

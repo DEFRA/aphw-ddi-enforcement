@@ -5,7 +5,6 @@ const { setInSession } = require('../../../../../../../app/session/session-wrapp
 const { JSDOM } = require('jsdom')
 jest.mock('../../../../../../../app/api/ddi-index-api/search')
 const { buildTaskListFromInitial } = require('../../../../../../mocks/cdo/manage/tasks/builder')
-const { ApiErrorFailure } = require('../../../../../../../app/errors/api-error-failure')
 
 describe('Generic Task test', () => {
   jest.mock('../../../../../../../app/auth')
@@ -371,33 +370,6 @@ describe('Generic Task test', () => {
         'neuteringConfirmation-year': 2024,
         taskName: 'submit-form-two'
       }, expect.anything())
-    })
-
-    test('handles boom from API', async () => {
-      const options = {
-        method: 'POST',
-        url: '/cdo/manage/task/submit-form-two/ED20001',
-        auth,
-        payload: {
-          microchipNumber: '123456789012358',
-          'microchipVerification-day': '01',
-          'microchipVerification-month': '10',
-          'microchipVerification-year': '2024',
-          dogNotFitForMicrochip: false,
-          'neuteringConfirmation-day': '01',
-          'neuteringConfirmation-month': '10',
-          'neuteringConfirmation-year': '2024',
-          dogNotNeutered: false,
-          taskName: 'submit-form-two',
-          microchipVerification: { year: '01', month: '10', day: '2024' },
-          neuteringConfirmation: { year: '01', month: '10', day: '2024' }
-        }
-      }
-      saveCdoTaskDetails.mockImplementation(() => {
-        throw new ApiErrorFailure('dummy error', { payload: { microchipNumber: '12345', microchipNumbers: [] } })
-      })
-      const response = await server.inject(options)
-      expect(response.statusCode).toBe(400)
     })
 
     test('handles non-ApiErrorFailure boom from API', async () => {

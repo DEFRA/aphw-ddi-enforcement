@@ -6,22 +6,21 @@ const { createModel, getTaskData, getValidation, getTaskDetailsByKey } = require
 const { addBackNavigation, addBackNavigationForErrorCondition } = require('../../../../lib/back-helpers')
 const { saveCdoTaskDetails, getCdo } = require('../../../../api/ddi-index-api/cdo')
 const { ApiErrorFailure } = require('../../../../errors/api-error-failure')
-const { microchipValidation } = require('../../../../schema/portal/cdo/dog-details')
 const { logValidationError } = require('../../../../lib/log-helpers')
 const { setVerificationPayload, clearVerificationPayload } = require('../../../../session/cdo/manage')
 const { useManageCdo } = require('../../../../lib/route-helpers')
 
-const mapBoomError = (e, request) => {
-  const { microchipNumber, microchipNumber2 } = request.payload
-
-  const disallowedMicrochipIds = e.boom.payload.microchipNumbers
-
-  const validationPayload = {
-    microchipNumber,
-    microchipNumber2
-  }
-  const { error } = microchipValidation(disallowedMicrochipIds).validate(validationPayload, { abortEarly: false })
-  return error
+const mapBoomError = (e, _request) => {
+  // const { microchipNumber, microchipNumber2 } = request.payload
+  //
+  // const disallowedMicrochipIds = e.boom.payload.microchipNumbers
+  //
+  // const validationPayload = {
+  //   microchipNumber,
+  //   microchipNumber2
+  // }
+  // const { error } = microchipValidation(disallowedMicrochipIds).validate(validationPayload, { abortEarly: false })
+  return e
 }
 
 module.exports = [

@@ -256,7 +256,7 @@ describe('Manage Cdo test', () => {
           key: 'certificateIssued'
         })
       }),
-      form2Received: '2024-11-29T00:00:00.000Z'
+      form2Submitted: '2024-11-29T00:00:00.000Z'
     }))
 
     const options = {
