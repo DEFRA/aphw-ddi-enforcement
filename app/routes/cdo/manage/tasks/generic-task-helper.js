@@ -108,7 +108,7 @@ const getTaskData = async (dogIndex, taskName, user, request, payload = {}) => {
   const data = { indexNumber: dogIndex, ...savedTask, task: { ...taskState }, ...payload }
   delete data.task.tasks
 
-  if (taskName === 'record-verification-dates') {
+  if (taskName === 'submit-form-two') {
     return verificationData(data, request, payload)
   }
 
@@ -124,5 +124,6 @@ module.exports = {
   getValidation,
   getTaskDetails,
   getTaskDetailsByKey,
-  getTaskData
+  getTaskData,
+  verificationData
 }

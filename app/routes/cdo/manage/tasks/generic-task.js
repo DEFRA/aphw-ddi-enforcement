@@ -5,7 +5,6 @@ const { addDateComponents } = require('../../../../lib/date-helpers')
 const { createModel, getTaskData, getValidation, getTaskDetailsByKey } = require('./generic-task-helper')
 const { addBackNavigation, addBackNavigationForErrorCondition } = require('../../../../lib/back-helpers')
 const { saveCdoTaskDetails, getCdo } = require('../../../../api/ddi-index-api/cdo')
-const { ApiErrorFailure } = require('../../../../errors/api-error-failure')
 const { logValidationError } = require('../../../../lib/log-helpers')
 const { setVerificationPayload, clearVerificationPayload } = require('../../../../session/cdo/manage')
 const { useManageCdo } = require('../../../../lib/route-helpers')
@@ -88,25 +87,13 @@ module.exports = [
           return h.redirect(`${routes.manageCdoRecordMicrochipDeadline.get}/${dogIndex}${backNav.srcHashParam}`)
         }
 
-        try {
-          await saveCdoTaskDetails(dogIndex, apiKey, payload, user)
+        await saveCdoTaskDetails(dogIndex, apiKey, payload, user)
 
-          if (taskName === 'record-microchip-deadline') {
-            clearVerificationPayload(request)
-          }
-
-          return h.redirect(`${routes.manageCdo.get}/${dogIndex}`)
-        } catch (e) {
-          if (e instanceof ApiErrorFailure) {
-            const data = await getTaskData(request.params.dogIndex, taskName, user, request.payload)
-
-            const backNav = addBackNavigationForErrorCondition(request)
-
-            return h.view(`${views.taskViews}/${taskName}`, createModel(taskName, data, backNav, e)).code(errorCodes.validationError).takeover()
-          }
-
-          throw e
+        if (taskName === 'submit-form-two') {
+          clearVerificationPayload(request)
         }
+
+        return h.redirect(`${routes.manageCdo.get}/${dogIndex}`)
       }
     }
   }

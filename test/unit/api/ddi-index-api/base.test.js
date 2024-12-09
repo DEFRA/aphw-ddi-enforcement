@@ -104,8 +104,8 @@ describe('Base API', () => {
     })
 
     test('should not fail given an empty payload', async () => {
-      wreck.read.mockResolvedValue({ toString () { return '' } })
-      const response = await post('endpoint2', { val: 123 }, user)
+      wreckReadToString.mockReturnValue('')
+      const response = await boomRequest('endpoint2', { val: 123 }, user)
       expect(response.payload).toBeUndefined()
     })
 

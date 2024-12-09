@@ -169,7 +169,7 @@ const completeTasklist = {
  * @param {Partial<CdoTaskListDto>} tasklistPartial
  * @return {CdoTaskListDto}
  */
-const buildTaskListFromComplete = tasklistPartial => ({
+const buildTaskListFromComplete = (tasklistPartial = {}) => ({
   ...completeTasklist,
   ...tasklistPartial
 })

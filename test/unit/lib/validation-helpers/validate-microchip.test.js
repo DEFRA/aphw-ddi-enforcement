@@ -29,6 +29,19 @@ describe('ValidationHelpers - validateMicrochip', () => {
     expect(res).toBe('123456789012345')
   })
 
+  test('handles empty microchip', () => {
+    const value = ''
+
+    const res = validateMicrochip(value, mockMicrochipHelpers)
+
+    expect(res).toEqual({
+      elemName: {
+        path: ['microchipNumber']
+      },
+      error: 'Microchip number must be 15 digits in length'
+    })
+  })
+
   test('gives error if microchip 1 too short', () => {
     const value = '12345678901234'
 
@@ -91,6 +104,30 @@ describe('ValidationHelpers - validateMicrochip', () => {
     const res = validateMicrochip(value, mockMicrochipHelpers, true)
 
     expect(res).toBe('123456x78')
+  })
+
+  test('allows invalid microchip if no change from original microchip and microchip empty', () => {
+    const mockMicrochipHelpers = {
+      state: {
+        path: ['u'],
+        ancestors: []
+      },
+      message: (a, b) => { return { error: a, elemName: b } }
+    }
+    const value = '123456x78'
+
+    mockMicrochipHelpers.state.ancestors = [
+      { origMicrochipNumber: '123456x78' }
+    ]
+
+    const res = validateMicrochip(value, mockMicrochipHelpers, true)
+
+    expect(res).toEqual({
+      elemName: {
+        path: ['u']
+      },
+      error: 'Microchip number must be 15 digits in length'
+    })
   })
 
   test('fails invalid microchip if some change from original microchip', () => {

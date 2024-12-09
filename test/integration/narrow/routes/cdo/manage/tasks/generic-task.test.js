@@ -16,7 +16,7 @@ describe('Generic Task test', () => {
   jest.mock('../../../../../../../app/api/ddi-index-api/insurance')
 
   jest.mock('../../../../../../../app/session/cdo/manage')
-  const { setVerificationPayload } = require('../../../../../../../app/session/cdo/manage')
+  const { setVerificationPayload, clearVerificationPayload } = require('../../../../../../../app/session/cdo/manage')
 
   const createServer = require('../../../../../../../app/server')
   let server
@@ -56,6 +56,40 @@ describe('Generic Task test', () => {
       expect(document.querySelectorAll('button')[4].textContent.trim()).toBe('Save and continue')
       expect(document.querySelector('.govuk-fieldset').textContent.trim()).toContain('Dog aged under 16 months and not neutered')
       expect(document.querySelector('.govuk-fieldset').textContent.trim()).toContain('Dog declared unfit for microchipping by vet')
+    })
+
+    test('GET /cdo/manage/task/submit-form-two/ED20001?clear route returns 302', async () => {
+      const microchipNumber = '123456789012345'
+      getCdoTaskDetails.mockResolvedValue(buildTaskListFromInitial({
+        microchipNumber
+      }))
+      getCdo.mockResolvedValue({ dog: { status: 'Pre-exempt' } })
+
+      const options = {
+        method: 'GET',
+        url: '/cdo/manage/task/submit-form-two/ED20001?clear=true',
+        auth
+      }
+
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(302)
+    })
+
+    test('GET /cdo/manage/task/submit-form-two/ED20001?clear route with wrong status returns 500', async () => {
+      const microchipNumber = '123456789012345'
+      getCdoTaskDetails.mockResolvedValue(buildTaskListFromInitial({
+        microchipNumber
+      }))
+      getCdo.mockResolvedValue({ dog: { status: 'Exempt' } })
+
+      const options = {
+        method: 'GET',
+        url: '/cdo/manage/task/submit-form-two/ED20001',
+        auth
+      }
+
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(500)
     })
 
     // test('GET /cdo/manage/task/submit-form-two/ED20001 route shows 6th Si rules if 2015 Dog is under 16 months', async () => {
@@ -246,7 +280,7 @@ describe('Generic Task test', () => {
       const response = await server.inject(options)
       expect(response.statusCode).toBe(400)
     })
-    test(' GET /cdo/manage/task/certificate-issued/ED20001 route returns 404', async () => {
+    test('GET /cdo/manage/task/certificate-issued/ED20001 route returns 404', async () => {
       getCdoTaskDetails.mockResolvedValue(buildTaskListFromInitial())
       getCdo.mockResolvedValue({ dog: { status: 'Pre-exempt' } })
 
@@ -370,9 +404,10 @@ describe('Generic Task test', () => {
         'neuteringConfirmation-year': 2024,
         taskName: 'submit-form-two'
       }, expect.anything())
+      expect(clearVerificationPayload).toHaveBeenCalled()
     })
 
-    test('handles non-ApiErrorFailure boom from API', async () => {
+    test('handle invalid task name', async () => {
       const options = {
         method: 'POST',
         url: '/cdo/manage/task/process-application-pack/ED20001',
@@ -382,6 +417,32 @@ describe('Generic Task test', () => {
       saveCdoTaskDetails.mockImplementation(() => {
         throw new Error('dummy error')
       })
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(500)
+    })
+
+    test('should fail with a 500 given non-ApiErrorFailure', async () => {
+      saveCdoTaskDetails.mockRejectedValue('error')
+      const options = {
+        method: 'POST',
+        url: '/cdo/manage/task/submit-form-two/ED20001',
+        auth,
+        payload: {
+          microchipNumber: '123456789012358',
+          'microchipVerification-day': '01',
+          'microchipVerification-month': '10',
+          'microchipVerification-year': '2024',
+          dogNotFitForMicrochip: false,
+          'neuteringConfirmation-day': '01',
+          'neuteringConfirmation-month': '10',
+          'neuteringConfirmation-year': '2024',
+          dogNotNeutered: false,
+          taskName: 'submit-form-two',
+          microchipVerification: { year: '01', month: '10', day: '2024' },
+          neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+        }
+      }
+
       const response = await server.inject(options)
       expect(response.statusCode).toBe(500)
     })
