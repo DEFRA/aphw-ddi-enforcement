@@ -1,5 +1,5 @@
 const { useManageCdo, redirectManageCdo } = require('./cdo')
-const { throwIfPreConditionError, getContextNav, isUrlEndingFromList } = require('./shared')
+const { throwIfPreConditionError, getContextNav, isUrlEndingFromList, concatUrlParams } = require('./shared')
 const { getRedirectForUserAccess, licenseNotValid, getPoliceForceName } = require('./user')
 
 module.exports = {
@@ -10,5 +10,6 @@ module.exports = {
   getContextNav,
   isUrlEndingFromList,
   licenseNotValid,
-  getPoliceForceName
+  getPoliceForceName,
+  concatUrlParams
 }
