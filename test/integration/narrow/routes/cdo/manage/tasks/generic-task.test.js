@@ -283,6 +283,47 @@ describe('Generic Task test', () => {
   })
 
   describe('POST /cdo/manage/task/submit-form-two/ED20001', () => {
+    test('saves if valid payload', async () => {
+      saveCdoTaskDetails.mockResolvedValue()
+      const options = {
+        method: 'POST',
+        url: '/cdo/manage/task/submit-form-two/ED20001',
+        auth,
+        payload: {
+          microchipNumber: '123456789012358',
+          'microchipVerification-day': '01',
+          'microchipVerification-month': '10',
+          'microchipVerification-year': '2024',
+          dogNotFitForMicrochip: false,
+          'neuteringConfirmation-day': '01',
+          'neuteringConfirmation-month': '10',
+          'neuteringConfirmation-year': '2024',
+          dogNotNeutered: false,
+          taskName: 'submit-form-two',
+          microchipVerification: { year: '01', month: '10', day: '2024' },
+          neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+        }
+      }
+
+      const response = await server.inject(options)
+      expect(response.statusCode).toBe(302)
+      expect(saveCdoTaskDetails).toHaveBeenCalledWith('ED20001', 'submitFormTwo', {
+        dogNotFitForMicrochip: false,
+        dogNotNeutered: false,
+        microchipNumber: '123456789012358',
+        microchipVerification: expect.any(Date),
+        'microchipVerification-day': 1,
+        'microchipVerification-month': 10,
+        'microchipVerification-year': 2024,
+        neuteringConfirmation: expect.any(Date),
+        'neuteringConfirmation-day': 1,
+        'neuteringConfirmation-month': 10,
+        'neuteringConfirmation-year': 2024,
+        taskName: 'submit-form-two'
+      }, expect.anything())
+      expect(clearVerificationPayload).toHaveBeenCalled()
+    })
+
     test('returns 302 if not auth', async () => {
       const fd = new FormData()
 
@@ -393,47 +434,6 @@ describe('Generic Task test', () => {
 
       const response = await server.inject(options)
       expect(response.statusCode).toBe(400)
-    })
-
-    test('saves if valid payload', async () => {
-      saveCdoTaskDetails.mockResolvedValue()
-      const options = {
-        method: 'POST',
-        url: '/cdo/manage/task/submit-form-two/ED20001',
-        auth,
-        payload: {
-          microchipNumber: '123456789012358',
-          'microchipVerification-day': '01',
-          'microchipVerification-month': '10',
-          'microchipVerification-year': '2024',
-          dogNotFitForMicrochip: false,
-          'neuteringConfirmation-day': '01',
-          'neuteringConfirmation-month': '10',
-          'neuteringConfirmation-year': '2024',
-          dogNotNeutered: false,
-          taskName: 'submit-form-two',
-          microchipVerification: { year: '01', month: '10', day: '2024' },
-          neuteringConfirmation: { year: '01', month: '10', day: '2024' }
-        }
-      }
-
-      const response = await server.inject(options)
-      expect(response.statusCode).toBe(302)
-      expect(saveCdoTaskDetails).toHaveBeenCalledWith('ED20001', 'submitFormTwo', {
-        dogNotFitForMicrochip: false,
-        dogNotNeutered: false,
-        microchipNumber: '123456789012358',
-        microchipVerification: expect.any(Date),
-        'microchipVerification-day': 1,
-        'microchipVerification-month': 10,
-        'microchipVerification-year': 2024,
-        neuteringConfirmation: expect.any(Date),
-        'neuteringConfirmation-day': 1,
-        'neuteringConfirmation-month': 10,
-        'neuteringConfirmation-year': 2024,
-        taskName: 'submit-form-two'
-      }, expect.anything())
-      expect(clearVerificationPayload).toHaveBeenCalled()
     })
 
     test('handle invalid task name', async () => {
