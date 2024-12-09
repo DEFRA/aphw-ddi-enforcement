@@ -16,11 +16,12 @@ const validateMicrochipNumber = (value, helpers) => {
     return null
   }
 
-  if (dogNotFitForMicrochip !== undefined && (value === undefined || value === '')) {
+  const noMicrochip = value === undefined || value === ''
+  if (dogNotFitForMicrochip !== undefined && noMicrochip) {
     return value
   }
 
-  if (microchipDate !== undefined && (value === undefined || value === '')) {
+  if (microchipDate !== undefined && noMicrochip) {
     return helpers.message('Enter a microchip number', { path: [elemName] })
   }
 
