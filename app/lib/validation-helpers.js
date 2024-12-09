@@ -1,16 +1,27 @@
+const { validateDate } = require('../lib/date-helpers')
+
 const validNewMicrochip = /^\d+$/
 
 const FIFTEEN = 15
 
-const validateMicrochip = (value, helpers) => {
+const isBlankDate = date => !date || (date.year === '' && date.month === '' && date.day === '')
+
+const validateMicrochipNumber = (value, helpers) => {
   const elemName = helpers.state.path[0]
 
   const dogNotFitForMicrochip = helpers.state.ancestors[0]?.dogNotFitForMicrochip
+  const microchipDate = helpers.state.ancestors[0]?.microchipVerification
+
+  console.log('JB micro1 dogNotFitForMicrochip', dogNotFitForMicrochip)
+  console.log('JB micro1 microchipDate', microchipDate)
+  if (dogNotFitForMicrochip === undefined && isBlankDate(microchipDate)) {
+    return null
+  }
+
   if (dogNotFitForMicrochip !== undefined && (value === undefined || value === '')) {
     return value
   }
 
-  const microchipDate = helpers.state.ancestors[0]?.microchipVerification
   if (microchipDate !== undefined && (value === undefined || value === '')) {
     return helpers.message('Enter a microchip number', { path: [elemName] })
   }
@@ -26,6 +37,40 @@ const validateMicrochip = (value, helpers) => {
   return value
 }
 
+const validateMicrochipVerification = (value, helpers) => {
+  const elemName = helpers.state.path[0]
+
+  const validDateOrError = validateDate(value, helpers, false, true)
+  if (validDateOrError?.messages?.rendered) {
+    return validDateOrError
+  }
+
+  const dogNotFitForMicrochip = helpers.state.ancestors[0]?.dogNotFitForMicrochip
+  if ((dogNotFitForMicrochip !== true && isBlankDate(value)) || (dogNotFitForMicrochip === true && !isBlankDate(value))) {
+    return helpers.message('Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’', { path: [elemName, ['day', 'month', 'year']] })
+  }
+
+  return !validDateOrError ? value : validDateOrError
+}
+
+const validateNeuteringConfirmation = (value, helpers) => {
+  const elemName = helpers.state.path[0]
+
+  const validDateOrError = validateDate(value, helpers, false, true)
+  if (validDateOrError?.messages?.rendered) {
+    return validDateOrError
+  }
+
+  const dogNotNeutered = helpers.state.ancestors[0]?.dogNotNeutered
+  if ((dogNotNeutered !== true && isBlankDate(value)) || (dogNotNeutered === true && !isBlankDate(value))) {
+    return helpers.message('Enter the date the dog’s neutering was verified, or select ‘Dog aged under 16 months and not neutered’', { path: [elemName, ['day', 'month', 'year']] })
+  }
+
+  return !validDateOrError ? value : validDateOrError
+}
+
 module.exports = {
-  validateMicrochip
+  validateMicrochipNumber,
+  validateMicrochipVerification,
+  validateNeuteringConfirmation
 }

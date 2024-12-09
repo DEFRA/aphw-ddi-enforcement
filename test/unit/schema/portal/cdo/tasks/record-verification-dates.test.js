@@ -10,9 +10,7 @@ describe('record-verifications-dates', () => {
       'neuteringConfirmation-day': '01',
       'neuteringConfirmation-month': '10',
       'neuteringConfirmation-year': '2024',
-      taskName: 'submit-form-two',
-      microchipVerification: { year: '01', month: '10', day: '2024' },
-      neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+      taskName: 'submit-form-two'
     }
     expect(validateVerificationDates(request)).toEqual({
       dogNotFitForMicrochip: false,
@@ -30,22 +28,32 @@ describe('record-verifications-dates', () => {
     })
   })
 
+  test('should validate if no microchip fields have been submitted', () => {
+    const request = {
+      microchipNumber: '123456789012358',
+      'microchipVerification-day': '',
+      'microchipVerification-month': '',
+      'microchipVerification-year': '',
+      'neuteringConfirmation-day': '01',
+      'neuteringConfirmation-month': '10',
+      'neuteringConfirmation-year': '2024',
+      taskName: 'submit-form-two'
+    }
+    expect(() => validateVerificationDates(request)).toThrow('Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’')
+  })
+
   test('should validate if not valid not microchipped and neutered are sent', () => {
     const request = {
       microchipNumber: '',
       'microchipVerification-day': '',
       'microchipVerification-month': '',
       'microchipVerification-year': '',
-      // dogNotFitForMicrochip: 'Y',
-      dogNotFitForMicrochip: true,
+      dogNotFitForMicrochip: 'Y',
       'neuteringConfirmation-day': '',
       'neuteringConfirmation-month': '',
       'neuteringConfirmation-year': '',
-      // dogNotNeutered: 'Y',
-      dogNotNeutered: true,
-      taskName: 'submit-form-two',
-      microchipVerification: { year: '', month: '', day: '' },
-      neuteringConfirmation: { year: '', month: '', day: '' }
+      dogNotNeutered: 'Y',
+      taskName: 'submit-form-two'
     }
 
     expect(validateVerificationDates(request)).toEqual({
@@ -73,9 +81,7 @@ describe('record-verifications-dates', () => {
       'neuteringConfirmation-day': '01',
       'neuteringConfirmation-month': '10',
       'neuteringConfirmation-year': '2024',
-      taskName: 'submit-form-two',
-      microchipVerification: { year: '01', month: '10', day: '2024' },
-      neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+      taskName: 'submit-form-two'
     }
     expect(() => validateVerificationDates(request)).toThrow('Enter a microchip number')
   })
@@ -90,9 +96,7 @@ describe('record-verifications-dates', () => {
       'neuteringConfirmation-day': '01',
       'neuteringConfirmation-month': '10',
       'neuteringConfirmation-year': '2024',
-      taskName: 'submit-form-two',
-      microchipVerification: { year: '01', month: '10', day: '2024' },
-      neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+      taskName: 'submit-form-two'
     }
     expect(() => validateVerificationDates(request)).toThrow('Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’')
   })
@@ -107,10 +111,38 @@ describe('record-verifications-dates', () => {
       'neuteringConfirmation-month': '10',
       'neuteringConfirmation-year': '2024',
       dogNotNeutered: 'Y',
-      taskName: 'submit-form-two',
-      microchipVerification: { year: '01', month: '10', day: '2024' },
-      neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+      taskName: 'submit-form-two'
     }
     expect(() => validateVerificationDates(request)).toThrow('Enter the date the dog’s neutering was verified, or select ‘Dog aged under 16 months and not neutered’')
+  })
+
+  test('should give error if invalid microchip date', () => {
+    const request = {
+      microchipNumber: '123456789012345',
+      'microchipVerification-day': '01',
+      'microchipVerification-month': 'xx',
+      'microchipVerification-year': '2024',
+      'neuteringConfirmation-day': '01',
+      'neuteringConfirmation-month': '10',
+      'neuteringConfirmation-year': '2024',
+      dogNotNeutered: 'Y',
+      taskName: 'submit-form-two'
+    }
+    expect(() => validateVerificationDates(request)).toThrow('Enter the date the dog’s neutering was verified, or select ‘Dog aged under 16 months and not neutered’')
+  })
+
+  test('should give error if invalid neutering date', () => {
+    const request = {
+      microchipNumber: '123456789012345',
+      'microchipVerification-day': '01',
+      'microchipVerification-month': '10',
+      'microchipVerification-year': '2024',
+      'neuteringConfirmation-day': '01',
+      'neuteringConfirmation-month': 'yy',
+      'neuteringConfirmation-year': '2024',
+      dogNotNeutered: 'Y',
+      taskName: 'submit-form-two'
+    }
+    expect(() => validateVerificationDates(request)).toThrow('"neuteringConfirmation-month" must be a number. Date must be a real date')
   })
 })
