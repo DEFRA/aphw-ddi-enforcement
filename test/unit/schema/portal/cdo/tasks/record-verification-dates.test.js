@@ -94,7 +94,7 @@ describe('record-verifications-dates', () => {
       microchipVerification: { year: '01', month: '10', day: '2024' },
       neuteringConfirmation: { year: '01', month: '10', day: '2024' }
     }
-    expect(() => validateVerificationDates(request)).toThrow('Enter the date the dog’s microchip number was verified, or select ‘Dog unfit for a microchip’')
+    expect(() => validateVerificationDates(request)).toThrow('Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’')
   })
 
   test('should not validate if both date entered and tick box selected for neutering', () => {

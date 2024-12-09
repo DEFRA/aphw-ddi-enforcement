@@ -43,8 +43,8 @@ const microchipNumber = Joi.any().custom((value, helper) => validateMicrochip(va
 const verificationDatesSchema = Joi.object({
   microchipNumber: microchipNumber,
   taskName: Joi.string().required(),
-  dogNotFitForMicrochip: Joi.boolean().truthy('').default(false),
-  dogNotNeutered: Joi.boolean().truthy('').default(false),
+  dogNotFitForMicrochip: Joi.boolean().truthy('Y').default(false),
+  dogNotNeutered: Joi.boolean().truthy('Y').default(false),
   microchipVerification: Joi.alternatives().conditional('dogNotFitForMicrochip', {
     is: true,
     then: emptyDate.messages({
