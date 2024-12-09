@@ -3,7 +3,10 @@ jest.mock('../../../../../../app/session/session-wrapper')
 const { setInSession } = require('../../../../../../app/session/session-wrapper')
 const { JSDOM } = require('jsdom')
 jest.mock('../../../../../../app/api/ddi-index-api/search')
-const { buildTaskListFromInitial, buildCdoSummary, buildTaskListFromComplete } = require('../../../../../mocks/cdo/manage/tasks/builder')
+const {
+  buildTaskListFromInitial, buildCdoSummary, buildTaskListFromComplete, buildTaskListTasksFromComplete,
+  buildTask
+} = require('../../../../../mocks/cdo/manage/tasks/builder')
 const { someTasksCompletedButNotYetAvailable } = require('../../../../../mocks/cdo/manage/cdo')
 
 const ordering = [
@@ -96,12 +99,12 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Not received')
     expect(findProgressStepName(document, progressSteps.applicationFee)).toBe('Application fee')
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Not received')
-    expect(findProgressStepName(document, progressSteps.form2)).toBe('Form 2 confirming dog microchipped and neutered')
-    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Not received')
+    expect(findProgressStepName(document, progressSteps.form2)).toBe('Form 2 confirming dogmicrochipped and neutered')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Submit Form 2')
     expect(findProgressStepName(document, progressSteps.certificateOfExemption)).toBe('Certificate of exemption')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
 
-    expect(document.querySelector('.govuk-tag').textContent.trim()).toBe('Applying for exemption')
+    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Applying for exemption')
 
     const [dogNameKey, ownerNameKey, microchipNumberKey, cdoExpiryKey] = document.querySelectorAll('.govuk-summary-list__key')
     const [dogName, ownerName, microchipNumber, cdoExpiry] = document.querySelectorAll('.govuk-summary-list__value')
@@ -156,7 +159,7 @@ describe('Manage Cdo test', () => {
     expect(response.statusCode).toBe(200)
 
     const { document } = (new JSDOM(response.payload)).window
-    expect(document.querySelector('.govuk-tag').textContent.trim()).toBe('Failed to exempt dog')
+    expect(document.querySelectorAll('.govuk-tag')[1].textContent.trim()).toBe('Failed to exempt dog')
   })
 
   test('GET /cdo/manage/cdo/ED123 route returns 200 with completed tasks overriding "Cannot start yet"', async () => {
@@ -194,7 +197,7 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Received')
     expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Not received')
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Received on 02 March 2024')
-    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Not received')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Submit Form 2')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
   })
 
@@ -227,8 +230,46 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Received on 27 November 2024')
     expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Received on 27 November 2024')
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Received on 27 November 2024')
-    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 27 November 2024')
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 28 November 2024')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
+  })
+
+  test('GET /cdo/manage/cdo/ED123 route returns 200 with submitted form2', async () => {
+    getCdo.mockResolvedValue({
+      dog: {
+        indexNumber: 'ED20001'
+      },
+      person: {
+        personReference: 'P-A133-7E4C'
+      },
+      exemption: {
+        cdoExpiry: new Date('2024-04-19')
+      }
+    })
+    getManageCdoDetails.mockResolvedValue(buildTaskListFromComplete({
+      tasks: buildTaskListTasksFromComplete({
+        verificationDateRecorded: buildTask({
+          key: 'verificationDateRecorded',
+          available: true
+        }),
+        certificateIssued: buildTask({
+          key: 'certificateIssued'
+        })
+      }),
+      form2Submitted: '2024-11-29T00:00:00.000Z'
+    }))
+
+    const options = {
+      method: 'GET',
+      url: '/cdo/manage/cdo/ED123',
+      auth
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+
+    const { document } = (new JSDOM(response.payload)).window
+    expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Received on 29 November 2024')
   })
 
   test('GET /cdo/manage/cdo/ED123 route returns 404 when invalid index number', async () => {
