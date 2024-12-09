@@ -2,8 +2,10 @@ const { mapManageCdoDetails } = require('../../mappers/manage-cdo')
 const { tasks, progressTasks } = require('../../../constants/cdo')
 const { getTaskDetails } = require('../../../routes/cdo/manage/tasks/generic-task-helper')
 const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
+const { routes } = require('../../../constants/cdo/index')
+const { routes: { searchBasic } } = require('../../../constants/search')
 
-const getTaskStatus = task => {
+const getTaskStatus = (tasklist, task) => {
   if (task.key === tasks.applicationPackSent) {
     return task.completed ? 'Sent' : 'Not sent'
   }
@@ -12,11 +14,25 @@ const getTaskStatus = task => {
     return 'Not sent'
   }
 
+  if (task.key === tasks.verificationDateRecorded && tasklist.form2Submitted) {
+    return 'Received'
+  }
+
   return task.completed ? 'Received' : 'Not received'
 }
 
-const getTaskCompletedDate = task => {
-  return task.completed ? task.timestamp : undefined
+const getTaskCompletedDate = (processCdoTasklist, task) => {
+  const completedDate = task.timestamp
+
+  if (task.key === tasks.verificationDateRecorded && !completedDate) {
+    return formatToGds(processCdoTasklist.form2Submitted)
+  }
+
+  if (!task.completed) {
+    return undefined
+  }
+
+  return formatToGds(completedDate)
 }
 
 const NOT_RECEIVED_TAG = '<span class="defra-secondary-text">Not received</span>'
@@ -27,7 +43,7 @@ const showValOrNotEnteredObj = val => val ? ({ text: val }) : ({ html: NOT_RECEI
 const breadcrumbs = [
   {
     label: 'Home',
-    link: '/'
+    link: searchBasic.get
   }
 ]
 
@@ -84,19 +100,17 @@ const getSummaries = modelDetails => {
   ]
 }
 
-const getStatusTag = (tasklist, task) => {
-  let status = getTaskStatus(tasklist.tasks[task])
-
-  if (status === 'Received' && task === tasks.form2Sent) {
-    status = getTaskStatus(tasklist.tasks[tasks.verificationDateRecorded])
-  }
-  const completedDate = formatToGds(getTaskCompletedDate(tasklist.tasks[task]))
+const getStatusTag = (tasklist, task, cdo) => {
+  const status = getTaskStatus(tasklist, tasklist.tasks[task])
+  const completedDate = getTaskCompletedDate(tasklist, tasklist.tasks[task])
 
   const notComplete = status === 'Not sent' || status === 'Not received'
 
   const statusTag = {}
 
-  if (notComplete) {
+  if (task === tasks.verificationDateRecorded && notComplete) {
+    statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
+  } else if (notComplete) {
     statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
   } else if (status === 'Sent') {
     statusTag.text = status === 'Sent' && completedDate ? `${status} on ${completedDate}` : status
@@ -134,13 +148,16 @@ function ViewModel (tasklist, cdo, backNav) {
         }
 
         const { label } = getTaskDetails(task)
+        let title = { text: label }
 
-        const statusTag = getStatusTag(tasklist, task)
+        if (task === tasks.verificationDateRecorded) {
+          title = { html: label }
+        }
+
+        const statusTag = getStatusTag(tasklist, task, cdo)
 
         const taskProperties = {
-          title: {
-            text: label
-          },
+          title,
           status: {
             ...statusTag
           }

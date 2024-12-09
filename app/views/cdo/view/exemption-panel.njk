@@ -7,14 +7,14 @@
         </div>
 
         <div class="govuk-summary-card__content">
-          <dl class="govuk-summary-list govuk-!-font-size-16">
+          <dl class="govuk-summary-list defra-responsive-!-font-size-16">
 
             {% if model.dog.status %}
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Status</dt>
               <dd class="govuk-summary-list__value">
                 {{ model.dog.status }}{% if model.dog.breaches | length > 0 %}:<br />
-                <ul class="govuk-list govuk-list--bullet govuk-!-font-size-16 govuk-!-margin-top-2">
+                <ul class="govuk-list govuk-list--bullet defra-responsive-!-font-size-16 govuk-!-margin-top-2">
                   {% for breachReason in model.dog.breaches %}
                   <li>{{breachReason}}</li>
                   {% endfor %}

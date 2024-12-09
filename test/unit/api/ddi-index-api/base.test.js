@@ -1,9 +1,10 @@
 const { user, userWithDisplayname } = require('../../../mocks/auth')
 const wreck = require('@hapi/wreck')
+const { ApiErrorFailure } = require('../../../../app/errors/api-error-failure')
 jest.mock('@hapi/wreck')
 
 describe('Base API', () => {
-  const { get, put, post, callDelete } = require('../../../../app/api/ddi-index-api/base')
+  const { get, put, post, callDelete, boomRequest } = require('../../../../app/api/ddi-index-api/base')
   const wreckReadToString = jest.fn()
 
   beforeEach(() => {
@@ -91,6 +92,34 @@ describe('Base API', () => {
           Authorization: expect.any(String)
         }
       })
+    })
+  })
+
+  describe('Boom Request', () => {
+    test('boomRequest should call request PUT', async () => {
+      const res = await boomRequest('endpoint2', 'PUT', { val: 123 })
+      expect(wreck.read).toBeCalledWith({ statusCode: 200, statusMessage: 'Ok', payload: Buffer.from('{"resultCode": 200}') })
+      expect(res).toEqual({ statusCode: 200, statusMessage: 'Ok', payload: { result: 'ok' } })
+      expect(wreck.request).toHaveBeenCalledWith('PUT', 'test/endpoint2', { payload: { val: 123 } })
+    })
+
+    test('should not fail given an empty payload', async () => {
+      wreckReadToString.mockReturnValue('')
+      const response = await boomRequest('endpoint2', { val: 123 }, user)
+      expect(response.payload).toBeUndefined()
+    })
+
+    test('postWithBoom should return a valid error object if request failed', async () => {
+      wreck.request.mockResolvedValue({ statusCode: 409, statusMessage: 'Conflict', payload: Buffer.from('{"error":"Username already exists","message":"Username already exists","statusCode":409}') })
+      wreckReadToString.mockReturnValue(JSON.stringify({ error: 'Username already exists', message: 'Username already exists', statusCode: 409 }))
+      wreck.read.mockResolvedValue({ toString: wreckReadToString })
+      await expect(boomRequest('endpoint2', 'PUT', { val: 123 })).rejects.toThrow(new ApiErrorFailure('409 Conflict', { error: 'Username already exists', message: 'Username already exists', statusCode: 409 }))
+    })
+
+    test('postWithBoom should call request PUT with username in header', async () => {
+      const res = await boomRequest('endpoint2', 'PUT', { val: 123 }, user)
+      expect(res).toEqual({ statusCode: 200, statusMessage: 'Ok', payload: { result: 'ok' } })
+      expect(wreck.request).toHaveBeenCalledWith('PUT', 'test/endpoint2', { payload: { val: 123 }, headers: { 'ddi-username': 'test@example.com', Authorization: expect.any(String) } })
     })
   })
 })
