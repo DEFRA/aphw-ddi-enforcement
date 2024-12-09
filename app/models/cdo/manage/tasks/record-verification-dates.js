@@ -43,7 +43,8 @@ function ViewModel (data, backNav, errors) {
     items: [
       {
         text: 'Dog declared unfit for microchipping by vet',
-        checked: data.verificationOptions.dogDeclaredUnfit
+        checked: data.verificationOptions.dogDeclaredUnfit,
+        value: 'Y'
       }
     ],
     formGroup: {
@@ -62,7 +63,8 @@ function ViewModel (data, backNav, errors) {
     items: [
       {
         text: 'Dog aged under 16 months and not neutered',
-        checked: data.verificationOptions.neuteringBypassedUnder16
+        checked: data.verificationOptions.neuteringBypassedUnder16,
+        value: 'Y'
       }
     ],
     classes: 'govuk-checkboxes--small govuk-!-margin-top-0',
