@@ -1,4 +1,4 @@
-const { throwIfPreConditionError, licenseNotValid, getRedirectForUserAccess, getContextNav, isUrlEndingFromList, getPoliceForceName } = require('../../../app/lib/route-helpers')
+const { throwIfPreConditionError, licenseNotValid, getRedirectForUserAccess, getContextNav, isUrlEndingFromList, getPoliceForceName, concatUrlParams } = require('../../../app/lib/route-helpers')
 
 jest.mock('../../../app/session/session-wrapper')
 const { getFromSession, setInSession } = require('../../../app/session/session-wrapper')
@@ -157,6 +157,15 @@ describe('route-helpers', () => {
       getPoliceForceDisplayName.mockResolvedValue('Force 1')
       expect(await getPoliceForceName({}, {})).toBe('Force 2')
       expect(getPoliceForceDisplayName).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe('concatUrlParams', () => {
+    test('should handle joining params', () => {
+      expect(concatUrlParams('?src=123', null)).toBe('?src=123')
+      expect(concatUrlParams('?src=123', 'abc=789')).toBe('?src=123&abc=789')
+      expect(concatUrlParams('src=123', null)).toBe('?src=123')
+      expect(concatUrlParams('src=123', 'abc=789')).toBe('?src=123&abc=789')
     })
   })
 })

@@ -42,8 +42,14 @@ const isUrlEndingFromList = (url, endingsToExclude) => {
   return found
 }
 
+const concatUrlParams = (param1, param2) => {
+  const params = [param1, param2].filter(Boolean)
+  return param1.startsWith('?') ? params.join('&') : `?${params.join('&')}`
+}
+
 module.exports = {
   throwIfPreConditionError,
   getContextNav,
-  isUrlEndingFromList
+  isUrlEndingFromList,
+  concatUrlParams
 }

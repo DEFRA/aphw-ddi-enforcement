@@ -2,6 +2,7 @@ const { mapManageCdoDetails } = require('../../mappers/manage-cdo')
 const { tasks, progressTasks } = require('../../../constants/cdo')
 const { getTaskDetails } = require('../../../routes/cdo/manage/tasks/generic-task-helper')
 const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
+const { concatUrlParams } = require('../../../lib/route-helpers/shared')
 const { routes } = require('../../../constants/cdo/index')
 const { routes: { searchBasic } } = require('../../../constants/search')
 
@@ -109,7 +110,7 @@ const getStatusTag = (tasklist, task, cdo, backNav) => {
   const statusTag = {}
 
   if (task === tasks.verificationDateRecorded && notComplete) {
-    statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}${backNav.srcHashParam}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
+    statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}${concatUrlParams(backNav.srcHashParam, 'clear=true')}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
   } else if (notComplete) {
     statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
   } else if (status === 'Sent') {
