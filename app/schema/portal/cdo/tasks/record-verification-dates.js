@@ -38,20 +38,45 @@ const emptyDate = Joi.object({
   return value
 })
 
-const microchipNumber = Joi.any().custom((value, helper) => validateMicrochip(value, helper))
+const microchipDateValidation = (value, helpers) => {
+  const validDateOrError = validateDate(value, helpers, false, true)
 
+  if (validDateOrError instanceof Joi.ValidationError) {
+    return validDateOrError
+  }
+
+  const dogNotFitForMicrochip = helpers.state.ancestors[0].dogNotFitForMicrochip
+
+  if (dogNotFitForMicrochip === undefined && validDateOrError === null) {
+    return helpers.message('Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’', { path: ['microchipVerification', ['day', 'month', 'year']] })
+  }
+
+  if (dogNotFitForMicrochip && validDateOrError !== null) {
+    return helpers.message('Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’', { path: ['microchipVerification', ['day', 'month', 'year']] })
+  }
+
+  return validDateOrError === null
+    ? {
+        day: '',
+        month: '',
+        year: ''
+      }
+    : validDateOrError
+}
+
+// microchipVerification: Joi.any().custom() Joi.alternatives().conditional('dogNotFitForMicrochip', {
+//   is: true,
+//   then: emptyDate.messages({
+//     '*': 'Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’'
+//   }),
+//   otherwise: microchipVerification
+// }),
 const verificationDatesSchema = Joi.object({
-  microchipNumber: microchipNumber,
+  microchipNumber: Joi.any().custom((value, helper) => validateMicrochip(value, helper)),
   taskName: Joi.string().required(),
   dogNotFitForMicrochip: Joi.boolean().truthy('Y').default(false),
   dogNotNeutered: Joi.boolean().truthy('Y').default(false),
-  microchipVerification: Joi.alternatives().conditional('dogNotFitForMicrochip', {
-    is: true,
-    then: emptyDate.messages({
-      '*': 'Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’'
-    }),
-    otherwise: microchipVerification
-  }),
+  microchipVerification: Joi.any().custom((value, helpers) => microchipDateValidation(value, helpers)),
   neuteringConfirmation: Joi.alternatives().conditional('dogNotNeutered', {
     is: true,
     then: emptyDate.messages({

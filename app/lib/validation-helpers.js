@@ -2,15 +2,22 @@ const validNewMicrochip = /^\d+$/
 
 const FIFTEEN = 15
 
+const isBlankDate = date => date.year === '' && date.month === '' && date.day === ''
+
 const validateMicrochip = (value, helpers) => {
   const elemName = helpers.state.path[0]
 
   const dogNotFitForMicrochip = helpers.state.ancestors[0].dogNotFitForMicrochip
+  const microchipDate = helpers.state.ancestors[0].microchipVerification
+
+  // if (dogNotFitForMicrochip === undefined && isBlankDate(microchipDate)) {
+  //   return value
+  // }
+
   if (dogNotFitForMicrochip !== undefined && (value === undefined || value === '')) {
     return value
   }
 
-  const microchipDate = helpers.state.ancestors[0].microchipVerification
   if (microchipDate !== undefined && (value === undefined || value === '')) {
     return helpers.message('Enter a microchip number', { path: [elemName] })
   }
