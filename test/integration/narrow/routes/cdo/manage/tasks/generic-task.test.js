@@ -294,14 +294,10 @@ describe('Generic Task test', () => {
           'microchipVerification-day': '01',
           'microchipVerification-month': '10',
           'microchipVerification-year': '2024',
-          dogNotFitForMicrochip: false,
           'neuteringConfirmation-day': '01',
           'neuteringConfirmation-month': '10',
           'neuteringConfirmation-year': '2024',
-          dogNotNeutered: false,
-          taskName: 'submit-form-two',
-          microchipVerification: { year: '01', month: '10', day: '2024' },
-          neuteringConfirmation: { year: '01', month: '10', day: '2024' }
+          taskName: 'submit-form-two'
         }
       }
 
@@ -351,14 +347,12 @@ describe('Generic Task test', () => {
           'microchipVerification-day': '',
           'microchipVerification-month': '',
           'microchipVerification-year': '',
-          dogNotFitForMicrochip: true,
+          dogNotFitForMicrochip: 'Y',
           'neuteringConfirmation-day': '',
           'neuteringConfirmation-month': '',
           'neuteringConfirmation-year': '',
-          dogNotNeutered: true,
-          taskName: 'submit-form-two',
-          microchipVerification: { year: '', month: '', day: '' },
-          neuteringConfirmation: { year: '', month: '', day: '' }
+          dogNotNeutered: 'Y',
+          taskName: 'submit-form-two'
         }
       }
 
@@ -393,11 +387,11 @@ describe('Generic Task test', () => {
           'microchipVerification-day': '',
           'microchipVerification-month': '',
           'microchipVerification-year': '',
-          dogNotFitForMicrochip: true,
+          dogNotFitForMicrochip: 'Y',
           'neuteringConfirmation-day': '',
           'neuteringConfirmation-month': '',
           'neuteringConfirmation-year': '',
-          dogNotNeutered: true,
+          dogNotNeutered: 'Y',
           taskName: 'submit-form-two',
           microchipVerification: { year: '', month: '', day: '' },
           neuteringConfirmation: { year: '', month: '', day: '' }
@@ -461,11 +455,9 @@ describe('Generic Task test', () => {
           'microchipVerification-day': '01',
           'microchipVerification-month': '10',
           'microchipVerification-year': '2024',
-          dogNotFitForMicrochip: false,
           'neuteringConfirmation-day': '01',
           'neuteringConfirmation-month': '10',
           'neuteringConfirmation-year': '2024',
-          dogNotNeutered: false,
           taskName: 'submit-form-two',
           microchipVerification: { year: '01', month: '10', day: '2024' },
           neuteringConfirmation: { year: '01', month: '10', day: '2024' }
@@ -492,8 +484,8 @@ describe('Generic Task test', () => {
           'microchipDeadline-month': '12',
           'microchipDeadline-year': '2024',
           taskName: 'record-microchip-deadline',
-          dogNotFitForMicrochip: '',
-          dogNotNeutered: '',
+          dogNotFitForMicrochip: 'Y',
+          dogNotNeutered: 'Y',
           'microchipVerification-day': '',
           'microchipVerification-month': '',
           'microchipVerification-year': '',

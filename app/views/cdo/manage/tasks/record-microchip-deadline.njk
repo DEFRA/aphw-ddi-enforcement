@@ -48,10 +48,10 @@
 
         <input type="hidden" name="taskName" id="taskName" value="{{ model.taskName }}" />
         {% if model.hidden.dogNotFitForMicrochip %}
-        <input type="hidden" name="dogNotFitForMicrochip" id="dogNotFitForMicrochip" value="" />
+        <input type="hidden" name="dogNotFitForMicrochip" id="dogNotFitForMicrochip" value="Y" />
         {% endif %}
         {% if model.hidden.dogNotNeutered %}
-        <input type="hidden" name="dogNotNeutered" id="dogNotNeutered" value="" />
+        <input type="hidden" name="dogNotNeutered" id="dogNotNeutered" value="Y" />
         {% endif %}
 
         <input type="hidden" name="microchipVerification-day" id="microchipVerification-day" value="">
