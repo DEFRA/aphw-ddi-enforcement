@@ -366,7 +366,7 @@ describe('Generic Task test', () => {
       const response = await server.inject(options)
       expect(response.statusCode).toBe(302)
       expect(setVerificationPayload).toHaveBeenCalledWith(expect.anything(), {
-        microchipNumber: '123456789012358',
+        microchipNumber: '',
         dogNotFitForMicrochip: true,
         dogNotNeutered: true,
         taskName: 'submit-form-two',
