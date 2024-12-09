@@ -23,7 +23,8 @@ const constants = {
     }
   },
   saveTasks: {
-    submitFormTwo
+    submitFormTwo,
+    microchipDeadlineRecorded
   },
   progressTasks: [
     applicationPackSent,

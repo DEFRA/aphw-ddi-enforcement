@@ -2,7 +2,9 @@ const { tasks } = require('../../../../constants/cdo/index')
 const { getCdoTaskDetails } = require('../../../../api/ddi-index-api/cdo')
 const { getVerificationPayload } = require('../../../../session/cdo/manage')
 const ViewModelRecordVerificationDates = require('../../../../models/cdo/manage/tasks/record-verification-dates')
+const ViewModelRecordMicrochipDeadline = require('../../../../models/cdo/manage/tasks/record-microchip-deadline')
 const { validateVerificationDates } = require('../../../../schema/portal/cdo/tasks/record-verification-dates')
+const { validateMicrochipDeadlineDates } = require('../../../../schema/portal/cdo/tasks/record-microchip-deadline')
 
 const taskList = [
   { name: tasks.applicationPackSent, key: 'send-application-pack', canSubmit: false, label: 'Application pack', apiKey: 'sendApplicationPack', stateKey: 'applicationPackSent' },
@@ -11,7 +13,7 @@ const taskList = [
   { name: tasks.applicationFeePaid, key: 'record-application-fee-payment', canSubmit: false, label: 'Application fee', apiKey: 'recordApplicationFee', stateKey: 'applicationFeePaid' },
   { name: tasks.form2Sent, key: 'send-form2', canSubmit: false, label: 'Form two', apiKey: 'sendForm2', stateKey: 'form2Sent' },
   { name: tasks.verificationDateRecorded, Model: ViewModelRecordVerificationDates, validation: validateVerificationDates, key: 'submit-form-two', canSubmit: true, label: 'Form 2 confirming dog<br>microchipped and neutered', apiKey: 'submitFormTwo', stateKey: 'verificationDateRecorded' },
-  { name: tasks.microchipDeadlineRecorded, key: 'record-microchip-deadline', canSubmit: false, label: 'When will the dog be fit to be microchipped?', apiKey: 'verifyDates', stateKey: 'verificationDateRecorded' },
+  { name: tasks.microchipDeadlineRecorded, Model: ViewModelRecordMicrochipDeadline, validation: validateMicrochipDeadlineDates, key: 'record-microchip-deadline', canSubmit: true, label: 'When will the dog be fit to be microchipped?', apiKey: 'submitFormTwo', stateKey: 'verificationDateRecorded' },
   { name: tasks.certificateIssued, key: 'certificate-issued', canSubmit: false, label: 'Certificate of exemption', apiKey: 'certificateIssued', stateKey: 'certificateIssued' }
 ]
 

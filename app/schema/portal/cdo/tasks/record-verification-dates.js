@@ -40,11 +40,13 @@ const emptyDate = Joi.object({
   return value
 })
 
+const microchipNumber = Joi.string().trim().max(FIFTEEN).messages({
+  'string.max': 'Microchip number must be {#limit} digits in length',
+  'string.empty': 'Enter a microchip number'
+}).custom((value, helper) => validateMicrochip(value, helper, false))
+
 const verificationDatesSchema = Joi.object({
-  microchipNumber: Joi.string().trim().max(FIFTEEN).messages({
-    'string.max': 'Microchip number must be {#limit} digits in length',
-    'string.empty': 'Enter a microchip number'
-  }).custom((value, helper) => validateMicrochip(value, helper, false)),
+  microchipNumber: Joi.alternatives().try(Joi.string().valid(''), microchipNumber),
   taskName: Joi.string().required(),
   dogNotFitForMicrochip: Joi.boolean().truthy('').default(false),
   dogNotNeutered: Joi.boolean().truthy('').default(false),

@@ -89,7 +89,7 @@ module.exports = [
 
         await saveCdoTaskDetails(dogIndex, apiKey, payload, user)
 
-        if (taskName === 'submit-form-two') {
+        if (['submit-form-two', 'record-microchip-deadline'].includes(taskName)) {
           clearVerificationPayload(request)
         }
 
