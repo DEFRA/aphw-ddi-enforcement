@@ -2,18 +2,17 @@ const validNewMicrochip = /^\d+$/
 
 const FIFTEEN = 15
 
-const validateMicrochip = (value, helpers, compareOrig = false) => {
-  let elemName = helpers.state.path[0]
+const validateMicrochip = (value, helpers) => {
+  const elemName = helpers.state.path[0]
 
-  // Compare new value against original to determine if already pre-populated in the DB
-  // (old microchip numbers from legacy data can contain letters so don't validate against new rules)
-  if (compareOrig) {
-    if (elemName?.length > 1) {
-      elemName = elemName.substring(0, 1).toUpperCase() + elemName.substring(1)
-    }
-    if (value === helpers.state.ancestors[0][`orig${elemName}`]) {
-      return value
-    }
+  const dogNotFitForMicrochip = helpers.state.ancestors[0].dogNotFitForMicrochip
+  if (dogNotFitForMicrochip !== undefined && (value === undefined || value === '')) {
+    return value
+  }
+
+  const microchipDate = helpers.state.ancestors[0].microchipVerification
+  if (microchipDate !== undefined && (value === undefined || value === '')) {
+    return helpers.message('Enter a microchip number', { path: [elemName] })
   }
 
   if (value?.length < FIFTEEN) {
