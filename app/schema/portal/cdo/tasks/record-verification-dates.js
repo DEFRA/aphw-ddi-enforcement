@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const { validateDate, getDateComponents } = require('../../../../lib/date-helpers')
 const { validatePayloadBuilder } = require('../../../../schema/common/validatePayload')
-const { validateMicrochip } = require('../../../../lib/validation-helpers')
+const { validateMicrochipNumber, validateMicrochipVerification, validateNeuteringConfirmation } = require('../../../../lib/validation-helpers')
 
 const microchipVerification = Joi.object({
   year: Joi.string().allow(null).allow(''),
@@ -38,27 +38,13 @@ const emptyDate = Joi.object({
   return value
 })
 
-const microchipNumber = Joi.any().custom((value, helper) => validateMicrochip(value, helper))
-
 const verificationDatesSchema = Joi.object({
-  microchipNumber: microchipNumber,
+  microchipNumber: Joi.any().custom((value, helper) => validateMicrochipNumber(value, helper)),
   taskName: Joi.string().required(),
   dogNotFitForMicrochip: Joi.boolean().truthy('Y').default(false),
   dogNotNeutered: Joi.boolean().truthy('Y').default(false),
-  microchipVerification: Joi.alternatives().conditional('dogNotFitForMicrochip', {
-    is: true,
-    then: emptyDate.messages({
-      '*': 'Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’'
-    }),
-    otherwise: microchipVerification
-  }),
-  neuteringConfirmation: Joi.alternatives().conditional('dogNotNeutered', {
-    is: true,
-    then: emptyDate.messages({
-      '*': 'Enter the date the dog’s neutering was verified, or select ‘Dog aged under 16 months and not neutered’'
-    }),
-    otherwise: neuteringConfirmation
-  })
+  microchipVerification: Joi.any().custom((value, helper) => validateMicrochipVerification(value, helper)),
+  neuteringConfirmation: Joi.any().custom((value, helper) => validateNeuteringConfirmation(value, helper))
 })
 
 const baseSchema = Joi.object({

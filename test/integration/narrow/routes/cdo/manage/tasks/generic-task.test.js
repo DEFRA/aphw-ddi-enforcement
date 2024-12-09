@@ -422,7 +422,8 @@ describe('Generic Task test', () => {
         url: '/cdo/manage/task/submit-form-two/ED20001',
         auth,
         payload: {
-          taskName: 'submit-form-two'
+          taskName: 'submit-form-two',
+          microchipNumber: ''
         }
       }
 
