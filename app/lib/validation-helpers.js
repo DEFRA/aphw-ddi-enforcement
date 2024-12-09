@@ -12,8 +12,6 @@ const validateMicrochipNumber = (value, helpers) => {
   const dogNotFitForMicrochip = helpers.state.ancestors[0]?.dogNotFitForMicrochip
   const microchipDate = helpers.state.ancestors[0]?.microchipVerification
 
-  console.log('JB micro1 dogNotFitForMicrochip', dogNotFitForMicrochip)
-  console.log('JB micro1 microchipDate', microchipDate)
   if (dogNotFitForMicrochip === undefined && isBlankDate(microchipDate)) {
     return null
   }
