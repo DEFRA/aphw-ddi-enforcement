@@ -13,7 +13,7 @@ const validateMicrochipNumber = (value, helpers) => {
   const microchipDate = helpers.state.ancestors[0]?.microchipVerification
 
   if (dogNotFitForMicrochip === undefined && isBlankDate(microchipDate)) {
-    return null
+    return ''
   }
 
   if (dogNotFitForMicrochip !== undefined && (value === undefined || value === '')) {
