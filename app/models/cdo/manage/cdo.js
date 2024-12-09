@@ -100,7 +100,7 @@ const getSummaries = modelDetails => {
   ]
 }
 
-const getStatusTag = (tasklist, task, cdo) => {
+const getStatusTag = (tasklist, task, cdo, backNav) => {
   const status = getTaskStatus(tasklist, tasklist.tasks[task])
   const completedDate = getTaskCompletedDate(tasklist, tasklist.tasks[task])
 
@@ -109,7 +109,7 @@ const getStatusTag = (tasklist, task, cdo) => {
   const statusTag = {}
 
   if (task === tasks.verificationDateRecorded && notComplete) {
-    statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
+    statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}${backNav.srcHashParam}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
   } else if (notComplete) {
     statusTag.html = `<strong class="govuk-tag govuk-tag--grey">${status}</strong>`
   } else if (status === 'Sent') {
@@ -154,7 +154,7 @@ function ViewModel (tasklist, cdo, backNav) {
           title = { html: label }
         }
 
-        const statusTag = getStatusTag(tasklist, task, cdo)
+        const statusTag = getStatusTag(tasklist, task, cdo, backNav)
 
         const taskProperties = {
           title,
