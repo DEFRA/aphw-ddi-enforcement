@@ -5,12 +5,12 @@ const FIFTEEN = 15
 const validateMicrochip = (value, helpers) => {
   const elemName = helpers.state.path[0]
 
-  const dogNotFitForMicrochip = helpers.state.ancestors[0].dogNotFitForMicrochip
+  const dogNotFitForMicrochip = helpers.state.ancestors[0]?.dogNotFitForMicrochip
   if (dogNotFitForMicrochip !== undefined && (value === undefined || value === '')) {
     return value
   }
 
-  const microchipDate = helpers.state.ancestors[0].microchipVerification
+  const microchipDate = helpers.state.ancestors[0]?.microchipVerification
   if (microchipDate !== undefined && (value === undefined || value === '')) {
     return helpers.message('Enter a microchip number', { path: [elemName] })
   }

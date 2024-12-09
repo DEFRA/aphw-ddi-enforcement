@@ -3,7 +3,9 @@ const { validateMicrochip } = require('../../../../app/lib/validation-helpers')
 const mockMicrochipHelpers = {
   state: {
     path: ['microchipNumber'],
-    ancestors: []
+    ancestors: [
+      { dogNotFitForMicrochip: undefined, microchipVerification: undefined }
+    ]
   },
   message: (a, b) => { return { error: a, elemName: b } }
 }
@@ -14,14 +16,6 @@ describe('ValidationHelpers - validateMicrochip', () => {
   })
 
   test('handles valid microchip', () => {
-    const value = '123456789012345'
-
-    const res = validateMicrochip(value, mockMicrochipHelpers, false)
-
-    expect(res).toBe('123456789012345')
-  })
-
-  test('handles valid microchip with default param', () => {
     const value = '123456789012345'
 
     const res = validateMicrochip(value, mockMicrochipHelpers)
@@ -45,7 +39,7 @@ describe('ValidationHelpers - validateMicrochip', () => {
   test('gives error if microchip 1 too short', () => {
     const value = '12345678901234'
 
-    const res = validateMicrochip(value, mockMicrochipHelpers, false)
+    const res = validateMicrochip(value, mockMicrochipHelpers)
 
     expect(res).toEqual({
       elemName: {
@@ -58,7 +52,7 @@ describe('ValidationHelpers - validateMicrochip', () => {
   test('gives error if invalid microchip 1', () => {
     const value = '12345678901234x'
 
-    const res = validateMicrochip(value, mockMicrochipHelpers, false)
+    const res = validateMicrochip(value, mockMicrochipHelpers)
 
     expect(res).toEqual({
       elemName: {
@@ -71,7 +65,7 @@ describe('ValidationHelpers - validateMicrochip', () => {
   test('gives error if invalid microchip 2', () => {
     const value = '123456-78012345'
 
-    const res = validateMicrochip(value, mockMicrochipHelpers, false)
+    const res = validateMicrochip(value, mockMicrochipHelpers)
 
     expect(res).toEqual({
       elemName: {
@@ -84,64 +78,11 @@ describe('ValidationHelpers - validateMicrochip', () => {
   test('gives error if invalid microchip 3', () => {
     const value = '123456 78012345'
 
-    const res = validateMicrochip(value, mockMicrochipHelpers, false)
+    const res = validateMicrochip(value, mockMicrochipHelpers)
 
     expect(res).toEqual({
       elemName: {
         path: ['microchipNumber']
-      },
-      error: 'Microchip number must be digits only'
-    })
-  })
-
-  test('allows invalid microchip if no change from original microchip', () => {
-    const value = '123456x78'
-
-    mockMicrochipHelpers.state.ancestors = [
-      { origMicrochipNumber: '123456x78' }
-    ]
-
-    const res = validateMicrochip(value, mockMicrochipHelpers, true)
-
-    expect(res).toBe('123456x78')
-  })
-
-  test('allows invalid microchip if no change from original microchip and microchip empty', () => {
-    const mockMicrochipHelpers = {
-      state: {
-        path: ['u'],
-        ancestors: []
-      },
-      message: (a, b) => { return { error: a, elemName: b } }
-    }
-    const value = '123456x78'
-
-    mockMicrochipHelpers.state.ancestors = [
-      { origMicrochipNumber: '123456x78' }
-    ]
-
-    const res = validateMicrochip(value, mockMicrochipHelpers, true)
-
-    expect(res).toEqual({
-      elemName: {
-        path: ['u']
-      },
-      error: 'Microchip number must be 15 digits in length'
-    })
-  })
-
-  test('fails invalid microchip if some change from original microchip', () => {
-    const value = '123456x78012345'
-
-    mockMicrochipHelpers.state.ancestors = [
-      { origMicrochipNumber: '123456x7899' }
-    ]
-
-    const res = validateMicrochip(value, mockMicrochipHelpers, true)
-
-    expect(res).toEqual({
-      elemName: {
-        path: ['MicrochipNumber']
       },
       error: 'Microchip number must be digits only'
     })
