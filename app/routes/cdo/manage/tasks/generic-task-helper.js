@@ -66,12 +66,14 @@ const getTaskDetailsByKey = taskKey => {
 const verificationData = ({ verificationOptions, ...data }, request, payload) => {
   let dogDeclaredUnfit = verificationOptions.dogDeclaredUnfit
   let neuteringBypassedUnder16 = verificationOptions.neuteringBypassedUnder16
+  let microchipNumber = data.microchipNumber
 
   const sessionData = getVerificationPayload(request)
 
   if (sessionData && Object.keys(sessionData).length) {
     dogDeclaredUnfit = sessionData.dogNotFitForMicrochip ?? false
     neuteringBypassedUnder16 = sessionData.dogNotNeutered ?? false
+    microchipNumber = sessionData.microchipNumber ?? ''
 
     data['neuteringConfirmation-day'] = sessionData['neuteringConfirmation-day']
     data['neuteringConfirmation-month'] = sessionData['neuteringConfirmation-month']
@@ -83,10 +85,12 @@ const verificationData = ({ verificationOptions, ...data }, request, payload) =>
   if (Object.keys(payload).length) {
     dogDeclaredUnfit = payload.dogNotFitForMicrochip !== undefined
     neuteringBypassedUnder16 = payload.dogNotNeutered !== undefined
+    microchipNumber = payload.microchipNumber ?? ''
   }
 
   return {
     ...data,
+    microchipNumber,
     verificationOptions: {
       ...verificationOptions,
       dogDeclaredUnfit,
