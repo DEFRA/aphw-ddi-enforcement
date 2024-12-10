@@ -26,7 +26,7 @@ const validateMicrochipNumber = (value, helpers) => {
     return helpers.message('Enter a microchip number', { path: [elemName] })
   }
 
-  if (value?.length < FIFTEEN || value?.length > FIFTEEN) {
+  if (value?.length !== FIFTEEN) {
     return helpers.message('Microchip number must be 15 digits in length', { path: [elemName] })
   }
 
