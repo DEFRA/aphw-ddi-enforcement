@@ -42,6 +42,20 @@ describe('record-verifications-dates', () => {
     expect(() => validateVerificationDates(request)).toThrow('Enter the date the dog’s microchip number was verified, or select ‘Dog declared unfit for microchipping by vet’')
   })
 
+  test('should not validate if microchip number over 15 characters', () => {
+    const request = {
+      microchipNumber: '1234567890123456',
+      'microchipVerification-day': '01',
+      'microchipVerification-month': '10',
+      'microchipVerification-year': '2024',
+      'neuteringConfirmation-day': '01',
+      'neuteringConfirmation-month': '10',
+      'neuteringConfirmation-year': '2024',
+      taskName: 'submit-form-two'
+    }
+    expect(() => validateVerificationDates(request)).toThrow('Microchip number must be 15 digits in length')
+  })
+
   test('should validate if not valid not microchipped and neutered are sent', () => {
     const request = {
       microchipNumber: '',
@@ -84,6 +98,35 @@ describe('record-verifications-dates', () => {
       taskName: 'submit-form-two'
     }
     expect(() => validateVerificationDates(request)).toThrow('Enter a microchip number')
+  })
+
+  test('should validate if microchip entered and dog declared unfit', () => {
+    const request = {
+      microchipNumber: '123456789012345',
+      dogNotFitForMicrochip: 'Y',
+      'microchipVerification-day': '',
+      'microchipVerification-month': '',
+      'microchipVerification-year': '',
+      'neuteringConfirmation-day': '01',
+      'neuteringConfirmation-month': '10',
+      'neuteringConfirmation-year': '2024',
+      taskName: 'submit-form-two'
+    }
+    const value = validateVerificationDates(request)
+    expect(value).toEqual({
+      microchipNumber: '123456789012345',
+      dogNotFitForMicrochip: true,
+      dogNotNeutered: false,
+      microchipVerification: { day: '', month: '', year: '' },
+      'microchipVerification-day': '',
+      'microchipVerification-month': '',
+      'microchipVerification-year': '',
+      'neuteringConfirmation-day': 1,
+      'neuteringConfirmation-month': 10,
+      'neuteringConfirmation-year': 2024,
+      neuteringConfirmation: expect.any(Date),
+      taskName: 'submit-form-two'
+    })
   })
 
   test('should not validate if both date entered and tick box selected for microchipping', () => {

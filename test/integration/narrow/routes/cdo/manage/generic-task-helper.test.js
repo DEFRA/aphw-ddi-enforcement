@@ -183,7 +183,7 @@ describe('Generic Task Helper test', () => {
       expect(res.companies).toBeUndefined()
     })
 
-    test('should set dogDeclaredUnfit and neuteringBypassedUnder16 from api', async () => {
+    test('should set dogDeclaredUnfit, neuteringBypassedUnder16 and microchip number from api', async () => {
       const verificationOptions = {
         dogDeclaredUnfit: true,
         allowNeuteringBypass: true,
@@ -192,14 +192,16 @@ describe('Generic Task Helper test', () => {
         allowDogDeclaredUnfit: true
       }
       getCdoTaskDetails.mockResolvedValue(buildTaskListFromComplete({
-        verificationOptions
+        verificationOptions,
+        microchipNumber: '000000000000000'
       }))
       const res = await getTaskData('ED123', 'submit-form-two', {}, {})
 
       expect(res.verificationOptions).toEqual(verificationOptions)
+      expect(res.microchipNumber).toBe('000000000000000')
     })
 
-    test('should set dogDeclaredUnfit and neuteringBypassedUnder16 from payload', async () => {
+    test('should set dogDeclaredUnfit, neuteringBypassedUnder16 and microchip number from payload', async () => {
       getCdoTaskDetails.mockResolvedValue(buildTaskListFromComplete({
         verificationOptions: {
           dogDeclaredUnfit: true,
@@ -207,10 +209,12 @@ describe('Generic Task Helper test', () => {
           neuteringBypassedUnder16: true,
           showNeuteringBypass: true,
           allowDogDeclaredUnfit: true
-        }
+        },
+        microchipNumber: '000000000000000'
       }))
       const res = await getTaskData('ED123', 'submit-form-two', {}, {}, { test: true })
 
+      expect(res.microchipNumber).toBe('')
       expect(res.verificationOptions).toEqual({
         dogDeclaredUnfit: false,
         neuteringBypassedUnder16: false,
@@ -220,7 +224,7 @@ describe('Generic Task Helper test', () => {
       })
     })
 
-    test('should set dogDeclaredUnfit and neuteringBypassedUnder16 from payload even if session exists', async () => {
+    test('should set dogDeclaredUnfit, neuteringBypassedUnder16 and microchip number from payload even if session exists', async () => {
       getCdoTaskDetails.mockResolvedValue(buildTaskListFromComplete({
         verificationOptions: {
           dogDeclaredUnfit: true,
@@ -234,10 +238,12 @@ describe('Generic Task Helper test', () => {
         neuteringConfirmation: { year: '', month: '', day: '' },
         microchipVerification: { year: '', month: '', day: '' },
         dogNotFitForMicrochip: true,
-        dogNotNeutered: true
+        dogNotNeutered: true,
+        microchipNumber: '000000000000000'
       })
-      const res = await getTaskData('ED123', 'submit-form-two', {}, {}, { test: true })
+      const res = await getTaskData('ED123', 'submit-form-two', {}, {}, { microchipNumber: '123456789012345' })
 
+      expect(res.microchipNumber).toBe('123456789012345')
       expect(res.verificationOptions).toEqual({
         dogDeclaredUnfit: false,
         neuteringBypassedUnder16: false,
@@ -247,7 +253,7 @@ describe('Generic Task Helper test', () => {
       })
     })
 
-    test('should set dogDeclaredUnfit and neuteringBypassedUnder16 from session if no payload exists', async () => {
+    test('should set dogDeclaredUnfit, neuteringBypassedUnder16 and microchip number from session if no payload exists', async () => {
       getCdoTaskDetails.mockResolvedValue(buildTaskListFromComplete({
         verificationOptions: {
           dogDeclaredUnfit: false,
@@ -255,16 +261,19 @@ describe('Generic Task Helper test', () => {
           allowNeuteringBypass: true,
           showNeuteringBypass: true,
           allowDogDeclaredUnfit: true
-        }
+        },
+        microchipNumber: '000000000000000'
       }))
       getVerificationPayload.mockReturnValue({
         neuteringConfirmation: { year: '', month: '', day: '' },
         microchipVerification: { year: '', month: '', day: '' },
         dogNotFitForMicrochip: true,
-        dogNotNeutered: true
+        dogNotNeutered: true,
+        microchipNumber: '123456789012345'
       })
       const res = await getTaskData('ED123', 'submit-form-two', {}, {})
 
+      expect(res.microchipNumber).toBe('123456789012345')
       expect(res.verificationOptions).toEqual({
         dogDeclaredUnfit: true,
         neuteringBypassedUnder16: true,
@@ -293,6 +302,7 @@ describe('Generic Task Helper test', () => {
       })
 
       expect(data).toEqual({
+        microchipNumber: '',
         neuteringConfirmation: new Date('2024-11-12T00:00:00.000Z'),
         'neuteringConfirmation-day': undefined,
         'neuteringConfirmation-month': undefined,

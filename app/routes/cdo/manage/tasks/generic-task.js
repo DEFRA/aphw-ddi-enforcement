@@ -36,7 +36,6 @@ module.exports = [
         }
 
         const data = await getTaskData(dogIndex, taskName, user, request)
-
         const backNav = addBackNavigation(request)
 
         addDateComponents(data, 'insuranceRenewal')
