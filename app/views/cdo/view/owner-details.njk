@@ -27,22 +27,28 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <div class="govuk-button-group defra-align-right-simple">
-        <a href="/cdo/report/report-type/{{ model.person.personReference }}/owner/clear{{ model.srcHashParam }}" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          Report something
-        </a>
-        <a href="/cdo/view/activity/{{ model.person.personReference }}/owner{{ model.srcHashParam }}" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          Check owner history
-        </a>
+    <div class="govuk-grid-column-full govuk-!-margin-bottom-2">
+      <div class="defra-actions-header govuk-!-margin-bottom-2">
+        <div class="defra-actions-header__title">
+          <h1 class="govuk-heading-xl">
+            {% if model.person.organisationName %}
+            {{ model.person.organisationName }}
+            {% else %}
+            {{ model.person.firstName }} {{ model.person.lastName }}
+            {% endif %}
+          </h1>
+        </div>
+        <div class="defra-actions-header__actions">
+          <div class="defra-actions-header__wrapper govuk-!-margin-top-2">
+            <a href="/cdo/report/report-type/{{ model.person.personReference }}/owner/clear{{ model.srcHashParam }}" role="button" draggable="false" class="govuk-button govuk-button--secondary defra-actions-header__action-item" data-module="govuk-button">
+              Report something
+            </a>
+            <a href="/cdo/view/activity/{{ model.person.personReference }}/owner{{ model.srcHashParam }}" role="button" draggable="false" class="govuk-button govuk-button--secondary defra-actions-header__action-item" data-module="govuk-button">
+              Check owner history
+            </a>
+          </div>
+        </div>
       </div>
-      <h1 class="govuk-heading-xl  govuk-!-margin-bottom-6">
-        {% if model.person.organisationName %}
-        {{ model.person.organisationName }}
-        {% else %}
-        {{ model.person.firstName }} {{ model.person.lastName }}
-        {% endif %}
-      </h1>
     </div>
   </div>
   <div class="govuk-grid-row">
