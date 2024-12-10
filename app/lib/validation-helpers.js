@@ -17,6 +17,7 @@ const validateMicrochipNumber = (value, helpers) => {
   }
 
   const noMicrochip = value === undefined || value === ''
+
   if (dogNotFitForMicrochip !== undefined && noMicrochip) {
     return value
   }

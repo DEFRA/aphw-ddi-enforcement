@@ -15,6 +15,7 @@ const emptyDate = Joi.object({
 })
 
 const microchipDeadlineSchema = Joi.object({
+  microchipNumber: Joi.string().allow(''),
   taskName: Joi.string().required(),
   dogNotFitForMicrochip: Joi.boolean().truthy('Y').default(false),
   dogNotNeutered: Joi.boolean().truthy('Y').default(false),
