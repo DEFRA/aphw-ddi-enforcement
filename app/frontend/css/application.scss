@@ -101,6 +101,14 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
     }
   }
 
+  &-one-third-desktop {
+
+    @media (min-width: $tablet-min) {
+      width: 33% !important;
+    }
+  }
+
+
   &-margin-bottom-9 {
 
     @media (max-width: $tablet-min) {
