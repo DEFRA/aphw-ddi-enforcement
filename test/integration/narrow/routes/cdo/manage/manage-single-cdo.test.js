@@ -99,7 +99,7 @@ describe('Manage Cdo test', () => {
     expect(findProgressStepStatus(document, progressSteps.microchipNumber)).toBe('Not received')
     expect(findProgressStepName(document, progressSteps.applicationFee)).toBe('Application fee')
     expect(findProgressStepStatus(document, progressSteps.applicationFee)).toBe('Not received')
-    expect(findProgressStepName(document, progressSteps.form2)).toBe('Form 2 confirming dogmicrochipped and neutered')
+    expect(findProgressStepName(document, progressSteps.form2)).toBe('Form 2 confirming dog microchipped and neutered')
     expect(findProgressStepStatus(document, progressSteps.form2)).toBe('Submit Form 2')
     expect(findProgressStepName(document, progressSteps.certificateOfExemption)).toBe('Certificate of exemption')
     expect(findProgressStepStatus(document, progressSteps.certificateOfExemption)).toBe('Not sent')
