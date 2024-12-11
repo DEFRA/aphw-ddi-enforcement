@@ -101,6 +101,14 @@ $govuk-global-styles: true; // https://frontend.design-system.service.gov.uk/sas
     }
   }
 
+  &-margin-bottom-9 {
+
+    @media (max-width: $tablet-min) {
+
+      @include govuk-responsive-margin(9, "bottom");
+    }
+  }
+
   //defra header
   &-internal-header {
     padding: 20px 0;

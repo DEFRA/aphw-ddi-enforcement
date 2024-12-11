@@ -162,12 +162,14 @@
  * /
  /**
  * @typedef GovukSummaryListRowTextKey
- * @property {string} text
  * @property {string} [classes]
  * /
 
  /**
- * @typedef {GovukSummaryListRowTextKey|GovukSummaryListRowHtmlKey} GovukSummaryListRowKey
+ * @typedef GovukSummaryListRowKey
+ * @property {string} text
+ * @property {string} html
+ * @property {string} [classes]
  * /
 
 /**

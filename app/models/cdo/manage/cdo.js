@@ -107,7 +107,7 @@ const getStatusTag = (tasklist, task, cdo, backNav) => {
 
   const notComplete = status === 'Not sent' || status === 'Not received'
 
-  const statusTag = {}
+  const statusTag = { classes: 'govuk-!-padding-bottom-0' }
 
   if (task === tasks.verificationDateRecorded && notComplete) {
     statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}${concatUrlParams(backNav.srcHashParam, 'clear=true')}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
@@ -142,38 +142,35 @@ function ViewModel (tasklist, cdo, backNav) {
     details: modelDetails,
     dog: cdo.dog,
     summaries,
-    taskList:
-      Object.keys(tasklist.tasks).reduce((taskListAcc, task) => {
-        if (!progressTasks.includes(task)) {
-          return taskListAcc
+    summaryList: Object.keys(tasklist.tasks).reduce((taskListAcc, task) => {
+      if (!progressTasks.includes(task)) {
+        return taskListAcc
+      }
+
+      const { label } = getTaskDetails(task)
+      let key = { text: label, classes: 'govuk-!-width-one-half' }
+
+      if (task === tasks.verificationDateRecorded) {
+        key = { html: label }
+      }
+
+      const statusTag = getStatusTag(tasklist, task, cdo, backNav)
+
+      const taskProperties = {
+        key,
+        value: {
+          ...statusTag
         }
+      }
 
-        const { label } = getTaskDetails(task)
-        let title = { text: label }
-
-        if (task === tasks.verificationDateRecorded) {
-          title = { html: label }
-        }
-
-        const statusTag = getStatusTag(tasklist, task, cdo, backNav)
-
-        const taskProperties = {
-          title,
-          status: {
-            ...statusTag
-          }
-        }
-
-        return {
-          ...taskListAcc,
-          items: [
-            ...taskListAcc.items,
-            taskProperties
-          ]
-        }
-      }, {
-        items: []
-      })
+      return {
+        ...taskListAcc,
+        rows: [
+          ...taskListAcc.rows,
+          taskProperties
+        ]
+      }
+    }, { rows: [], classes: 'cdo-progress-summary-list' })
   }
 }
 
