@@ -107,7 +107,7 @@ const getStatusTag = (tasklist, task, cdo, backNav) => {
 
   const notComplete = status === 'Not sent' || status === 'Not received'
 
-  const statusTag = {}
+  const statusTag = { classes: 'govuk-!-padding-bottom-0' }
 
   if (task === tasks.verificationDateRecorded && notComplete) {
     statusTag.html = `<a href="${routes.manageCdoTaskBase.get}/submit-form-two/${cdo.dog.indexNumber}${concatUrlParams(backNav.srcHashParam, 'clear=true')}" role="button" draggable="false" class="govuk-button govuk-!-margin-top-1 govuk-!-margin-bottom-1" data-module="govuk-button">Submit Form 2</a>`
@@ -135,6 +135,23 @@ function ViewModel (tasklist, cdo, backNav) {
    */
   const summaries = getSummaries(modelDetails)
 
+  /**
+   *
+   * @type {GovukSummaryList}
+   */
+  const summaryList = {
+    rows: [
+      {
+        classes: '',
+        key: {
+
+        },
+        value: undefined,
+
+        actions: undefined
+      }
+    ]
+  }
   this.model = {
     breadcrumbs,
     backLink: backNav.backLink,
@@ -142,6 +159,35 @@ function ViewModel (tasklist, cdo, backNav) {
     details: modelDetails,
     dog: cdo.dog,
     summaries,
+    summaryList: Object.keys(tasklist.tasks).reduce((taskListAcc, task) => {
+      if (!progressTasks.includes(task)) {
+        return taskListAcc
+      }
+
+      const { label } = getTaskDetails(task)
+      let key = { text: label, classes: 'govuk-!-width-one-half' }
+
+      if (task === tasks.verificationDateRecorded) {
+        key = { html: label }
+      }
+
+      const statusTag = getStatusTag(tasklist, task, cdo, backNav)
+
+      const taskProperties = {
+        key,
+        value: {
+          ...statusTag
+        }
+      }
+
+      return {
+        ...taskListAcc,
+        rows: [
+          ...taskListAcc.rows,
+          taskProperties
+        ]
+      }
+    }, { rows: [] }),
     taskList:
       Object.keys(tasklist.tasks).reduce((taskListAcc, task) => {
         if (!progressTasks.includes(task)) {
