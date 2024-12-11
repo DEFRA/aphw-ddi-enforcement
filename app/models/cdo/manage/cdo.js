@@ -135,23 +135,6 @@ function ViewModel (tasklist, cdo, backNav) {
    */
   const summaries = getSummaries(modelDetails)
 
-  /**
-   *
-   * @type {GovukSummaryList}
-   */
-  const summaryList = {
-    rows: [
-      {
-        classes: '',
-        key: {
-
-        },
-        value: undefined,
-
-        actions: undefined
-      }
-    ]
-  }
   this.model = {
     breadcrumbs,
     backLink: backNav.backLink,
@@ -187,39 +170,7 @@ function ViewModel (tasklist, cdo, backNav) {
           taskProperties
         ]
       }
-    }, { rows: [] }),
-    taskList:
-      Object.keys(tasklist.tasks).reduce((taskListAcc, task) => {
-        if (!progressTasks.includes(task)) {
-          return taskListAcc
-        }
-
-        const { label } = getTaskDetails(task)
-        let title = { text: label }
-
-        if (task === tasks.verificationDateRecorded) {
-          title = { html: label }
-        }
-
-        const statusTag = getStatusTag(tasklist, task, cdo, backNav)
-
-        const taskProperties = {
-          title,
-          status: {
-            ...statusTag
-          }
-        }
-
-        return {
-          ...taskListAcc,
-          items: [
-            ...taskListAcc.items,
-            taskProperties
-          ]
-        }
-      }, {
-        items: []
-      })
+    }, { rows: [], classes: 'cdo-progress-summary-list' })
   }
 }
 

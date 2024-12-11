@@ -27,8 +27,8 @@ const progressSteps = {
   certificateOfExemption: ordering.indexOf('certificateOfExemption')
 }
 
-const findProgressStepName = (document, key) => document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__name-and-hint')[key].textContent.trim()
-const findProgressStepStatus = (document, key) => document.querySelectorAll('ul.govuk-task-list li .govuk-task-list__status')[key].textContent.trim()
+const findProgressStepName = (document, key) => document.querySelectorAll('.cdo-progress-summary-list .govuk-summary-list__key')[key].textContent.trim()
+const findProgressStepStatus = (document, key) => document.querySelectorAll('.cdo-progress-summary-list .govuk-summary-list__value')[key].textContent.trim()
 
 describe('Manage Cdo test', () => {
   jest.mock('../../../../../../app/auth')

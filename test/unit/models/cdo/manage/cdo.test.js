@@ -12,11 +12,11 @@ describe('Manage cdo model', () => {
           readonly: false,
           key: 'verificationDateRecorded'
         }
-      }
+      },
+      form2Submitted: undefined
     })
     const cdo = buildCdo()
     const model = new Model(tasklist, cdo, { backLink: '', srcHashParam: '' })
-
-    expect(model.model.taskList.items.some(({ href }) => '/cdo/manage/task/record-verification-dates/?clear=tre"')).toBe(true)
+    expect(model.model.summaryList.rows.some(({ value }) => value.html && value.html.includes('/cdo/manage/task/submit-form-two/?clear=true'))).toBe(true)
   })
 })
