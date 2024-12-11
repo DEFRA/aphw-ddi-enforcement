@@ -151,7 +151,7 @@ function ViewModel (tasklist, cdo, backNav) {
       let key = { text: label, classes: 'govuk-!-width-one-half' }
 
       if (task === tasks.verificationDateRecorded) {
-        key = { html: label }
+        key = { text: label, classes: 'govuk-!-padding-right-9' }
       }
 
       const statusTag = getStatusTag(tasklist, task, cdo, backNav)
