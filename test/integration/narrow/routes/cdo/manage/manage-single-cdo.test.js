@@ -115,7 +115,7 @@ describe('Manage Cdo test', () => {
     expect(dogName.textContent.trim()).toBe('Kilo')
     expect(ownerName.textContent.trim()).toBe('Garry McFadyen')
     expect(microchipNumber.textContent.trim()).toBe('673827549000083673827549000084')
-    expect(cdoExpiry.textContent.trim()).toBe('19 Apr 2024')
+    expect(cdoExpiry.textContent.trim()).toBe('19 April 2024')
   })
 
   test('GET /cdo/manage/cdo/ED123 route returns 200 given Failed status', async () => {
@@ -191,7 +191,7 @@ describe('Manage Cdo test', () => {
     expect(dogName.textContent.trim()).toBe('Not received')
     expect(ownerName.textContent.trim()).toBe('Not received')
     expect(microchipNumber.textContent.trim()).toBe('Not received')
-    expect(cdoExpiry.textContent.trim()).toBe('19 Apr 2024')
+    expect(cdoExpiry.textContent.trim()).toBe('19 April 2024')
 
     expect(findProgressStepStatus(document, progressSteps.applicationPack)).toBe('Sent')
     expect(findProgressStepStatus(document, progressSteps.evidenceOfInsurance)).toBe('Received')
