@@ -1,7 +1,7 @@
 const { mapManageCdoDetails } = require('../../mappers/manage-cdo')
 const { tasks, progressTasks } = require('../../../constants/cdo')
 const { getTaskDetails } = require('../../../routes/cdo/manage/tasks/generic-task-helper')
-const { formatToGdsShort, formatToGds } = require('../../../lib/date-helpers')
+const { formatToGds } = require('../../../lib/date-helpers')
 const { concatUrlParams } = require('../../../lib/route-helpers/shared')
 const { routes } = require('../../../constants/cdo/index')
 const { routes: { searchBasic } } = require('../../../constants/search')
@@ -92,7 +92,7 @@ const getSummaries = modelDetails => {
             classes: GOVUK_ONE_HALF
           },
           value: {
-            text: formatToGdsShort(modelDetails.summary.cdoExpiry),
+            text: formatToGds(modelDetails.summary.cdoExpiry),
             classes: GOVUK_ONE_HALF
           }
         }
