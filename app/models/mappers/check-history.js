@@ -191,18 +191,19 @@ const getActivityLabelFromEvent = (event) => {
     return 'NOT YET DEFINED'
   }
 
-  // Special case - for Form 2 sent
-  if (event.activity?.activityType === 'sent' && event.activity?.activityLabel && event.activity.activityLabel.startsWith('Form 2 from ')) {
-    return `${event.activity?.activityLabel} requested`
-  }
-
-  if (event.activity?.activityType === 'received' && event.activity?.activityLabel.toLowerCase().includes('received')) {
-    return `${event.activity?.activityLabel}`
-  }
-
   if (event.activity?.activityType) {
-    return `${event.activity?.activityLabel} ${event.activity?.activityType}`
+    // Special case - for Form 2 sent
+    if (event.activity.activityType === 'sent' && event.activity?.activityLabel.startsWith('Form 2 from ')) {
+      return `${event.activity.activityLabel} requested`
+    }
+
+    if (event.activity.activityType === 'received' && event.activity?.activityLabel.toLowerCase().includes('received')) {
+      return `${event.activity.activityLabel}`
+    }
+
+    return `${event.activity?.activityLabel} ${event.activity.activityType}`
   }
+
   return 'NOT YET DEFINED'
 }
 /**
