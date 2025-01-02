@@ -12,7 +12,7 @@ const STATE_COOKIE_NAME = 'state'
 const NONCE_COOKIE_NAME = 'nonce'
 
 // Vector of trust for authentication
-const VECTOR_OF_TRUST = '[\'Cl.Cm\']'
+const VECTOR_OF_TRUST = JSON.stringify(['Cl.Cm'])
 
 let ivPublicKey
 let client
@@ -100,7 +100,7 @@ const getAuthorizationUrl = (req, h, clientLocal, vtr, claims = undefined, addit
     scope: SCOPES.join(' '),
     state: hash(state),
     nonce: hash(nonce),
-    vtr: vtr,
+    vtr,
     ui_locales: 'en-GB en'
   }
 
@@ -147,6 +147,7 @@ const getAuth = async () => {
     ivPublicKey = res.ivPublicKey
     client = res.client
   }
+
   return {
     ivPublicKey,
     client,
