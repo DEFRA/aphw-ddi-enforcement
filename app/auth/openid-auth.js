@@ -12,7 +12,7 @@ const STATE_COOKIE_NAME = 'state'
 const NONCE_COOKIE_NAME = 'nonce'
 
 // Vector of trust for authentication
-const VECTOR_OF_TRUST = JSON.stringify(['Cl.Cm'])
+const VECTOR_OF_TRUST = '["Cl.Cm"]'
 
 let ivPublicKey
 let client
