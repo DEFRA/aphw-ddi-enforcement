@@ -7,6 +7,7 @@ const { addBackNavigation } = require('../../../lib/back-helpers')
 const { downloadDocument } = require('../../../storage/repos/document')
 const { sendMessage } = require('../../../messaging/outbound/download')
 const getUser = require('../../../auth/get-user')
+const { errorCodes } = require('../../../constants/forms')
 
 module.exports = [
   {
@@ -19,7 +20,7 @@ module.exports = [
         const cdo = await getCdo(request.params.indexNumber, user)
 
         if (cdo === undefined) {
-          return h.response().code(404).takeover()
+          return h.response().code(errorCodes.notFoundError).takeover()
         }
 
         const backNav = addBackNavigation(request)
@@ -37,8 +38,8 @@ module.exports = [
           indexNumber: Joi.string().required(),
           submitButton: Joi.string().allow(null).allow('').optional()
         }),
-        failAction: async (request, h, error) => {
-          return h.response().code(400).takeover()
+        failAction: async (_request, h, _error) => {
+          return h.response().code(errorCodes.validationError).takeover()
         }
       },
       auth: { scope: enforcement },
@@ -48,7 +49,7 @@ module.exports = [
         const cdo = await getCdo(indexNumber, user)
 
         if (cdo === undefined) {
-          return h.response().code(404).takeover()
+          return h.response().code(errorCodes.notFoundError).takeover()
         }
 
         const certificateId = await sendMessage(cdo, user)
@@ -62,7 +63,7 @@ module.exports = [
         } catch (err) {
           console.log(`Error generating download: ${err} ${err.stack}`)
           if (err.type === 'CertificateNotFound') {
-            return h.response().code(404).takeover()
+            return h.response().code(errorCodes.notFoundError).takeover()
           }
 
           throw err

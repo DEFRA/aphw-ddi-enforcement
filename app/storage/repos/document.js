@@ -1,6 +1,8 @@
 const { blobServiceClient } = require('../get-blob-client')
 const { blobConfig } = require('../../config')
 
+const maxAttempts = 20
+
 const downloadDocument = async (indexNumber, certificateId) => {
   const filename = `${indexNumber}/${certificateId}.pdf`
 
@@ -18,7 +20,7 @@ const downloadDocument = async (indexNumber, certificateId) => {
     }
 
     attempts++
-  } while (!exists && attempts < 20)
+  } while (!exists && attempts < maxAttempts)
 
   if (!exists) {
     console.log('downloadBlob not exists after 20 tries')
