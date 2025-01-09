@@ -10,7 +10,8 @@ function ViewModel (entity, activities, backNav) {
     source: entity.source,
     entityTitle: entity.title,
     pageTitle: entity.pageTitle,
-    events: mappedActivities
+    events: mappedActivities,
+    indexNumber: entity.indexNumber
   }
 }
 

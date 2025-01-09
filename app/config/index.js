@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const authConfig = require('./auth')
 const cacheConfig = require('./cache')
+const blobConfig = require('./storage/blob')
 const { DEVELOPMENT, TEST, PRODUCTION } = require('../constants/environments')
 const { server } = require('../constants/server')
 
@@ -88,6 +89,7 @@ const value = result.value
 
 value.authConfig = authConfig
 value.cacheConfig = cacheConfig
+value.blobConfig = blobConfig
 
 value.isDev = value.env === DEVELOPMENT
 value.isTest = value.env === TEST

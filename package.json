@@ -22,6 +22,8 @@
   "contributors": [],
   "license": "OGL-UK-3.0",
   "dependencies": {
+    "@azure/storage-blob": "12.13.0",
+    "@azure/identity": "4.3.0",
     "@hapi/catbox": "^12.1.1",
     "@hapi/catbox-redis": "7.0.2",
     "@date-fns/utc": "^1.1.0",
@@ -37,6 +39,7 @@
     "applicationinsights": "2.3.5",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.1",
+    "ffc-messaging": "2.10.1",
     "form-data": "^4.0.0",
     "friendly-challenge": "^0.9.13",
     "govuk-frontend": "^5.5.0",
