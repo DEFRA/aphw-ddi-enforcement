@@ -184,4 +184,94 @@ describe('download request message sender', () => {
     })
     expect(MessageSender.prototype.closeConnection).toHaveBeenCalled()
   })
+
+  test('should send message even when insurance is missing', async () => {
+    uuidv4.mockReturnValue('1234')
+
+    const cdo = {
+      exemption: {
+        exemptionOrder: 2015,
+        cdoIssued: new Date(2024, 11, 12),
+        cdoExpiry: new Date(2025, 1, 12),
+        certificateIssued: new Date(2024, 11, 20),
+        insurance: []
+      },
+      person: {
+        firstName: 'Joe',
+        lastName: 'Bloggs',
+        addresses: [
+          {
+            address: {
+              address_line_1: '12 Test Street',
+              address_line_2: '',
+              town: 'Test City',
+              postcode: 'TST 1AA',
+              country: { country: 'England' }
+            }
+          }
+        ],
+        organisationName: 'Test org'
+      },
+      dog: {
+        indexNumber: 'ED1234',
+        microchipNumber: '1234',
+        microchipNumber2: '4567',
+        name: 'Fido',
+        breed: 'XL Bully',
+        sex: 'Male',
+        dateOfBirth: new Date('2020-01-01'),
+        colour: 'White',
+        status: 'In breach',
+        breaches: ['Reason 1', 'Reason 2']
+      }
+    }
+
+    await sendMessage(cdo, user)
+
+    expect(MessageSender).toHaveBeenCalledTimes(1)
+    expect(MessageSender.prototype.sendMessage).toHaveBeenCalledWith({
+      body: {
+        certificateId: '1234',
+        exemptionOrder: 2015,
+        owner: {
+          name: 'Joe Bloggs',
+          address: {
+            line1: '12 Test Street',
+            line2: '',
+            line3: 'Test City',
+            postcode: 'TST 1AA',
+            country: 'England'
+          },
+          birthDate: undefined,
+          organisationName: 'Test org'
+        },
+        dog: {
+          indexNumber: 'ED1234',
+          microchipNumber: '1234',
+          microchipNumber2: '4567',
+          name: 'Fido',
+          breed: 'XL Bully',
+          sex: 'Male',
+          birthDate: new Date('2020-01-01'),
+          colour: 'White'
+        },
+        exemption: {
+          status: 'In breach',
+          breachReasons: ['Reason 1', 'Reason 2'],
+          cdoIssued: new Date(2024, 11, 12),
+          cdoExpiry: new Date(2025, 1, 12),
+          certificateIssued: new Date(2024, 11, 20),
+          insuranceRenewal: undefined,
+          exemptionOrder: 2015
+        },
+        user: {
+          username: 'test@example.com',
+          displayname: undefined
+        }
+      },
+      type: 'uk.gov.defra.aphw.ddi.download.requested',
+      source: 'aphw-ddi-enforcement'
+    })
+    expect(MessageSender.prototype.closeConnection).toHaveBeenCalled()
+  })
 })

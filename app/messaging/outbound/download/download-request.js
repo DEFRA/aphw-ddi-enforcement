@@ -37,7 +37,7 @@ const createMessage = (data, userObj) => ({
       certificateIssued: data.exemption.certificateIssued,
       cdoIssued: data.exemption.cdoIssued,
       cdoExpiry: data.exemption.cdoExpiry,
-      insuranceRenewal: data.exemption.insurance ? data.exemption.insurance[0].insuranceRenewal : undefined,
+      insuranceRenewal: data.exemption.insurance?.length ? data.exemption.insurance[0].insuranceRenewal : undefined,
       breachReasons: data.dog.breaches
     },
     history: data.history
