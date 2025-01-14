@@ -4,7 +4,7 @@ const Joi = require('joi')
 const schema = Joi.object({
   connectionString: Joi.string().when('useConnectionString', { is: true, then: Joi.required(), otherwise: Joi.allow('').optional() }),
   storageAccount: Joi.string().required(),
-  certificateContainer: Joi.string().required(),
+  documentContainer: Joi.string().required(),
   useConnectionString: Joi.boolean().default(false)
 })
 
@@ -12,7 +12,7 @@ const schema = Joi.object({
 const config = {
   connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
   storageAccount: process.env.AZURE_STORAGE_ACCOUNT_NAME,
-  certificateContainer: 'certificates',
+  documentContainer: 'certificates',
   useConnectionString: process.env.AZURE_STORAGE_USE_CONNECTION_STRING
 }
 

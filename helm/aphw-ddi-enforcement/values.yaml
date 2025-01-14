@@ -40,6 +40,11 @@ container:
   openidPrivateKey: private-key
   openidPublicKey: public-key
   openidDiscoveryEndpoint: discovery-endpoint
+  azureStorageConnectionString: dummy
+  azureStorageUseConnectionString: false
+  azureStorageAccountName: dummy
+  messageQueueHost: namespace.servicebus.windows.net
+  documentRequestQueue: aphw-ddi-certificate-request
   jwtPrivateKey: jwt-private-key
   postLogoutUrl: post-logout
   redirectUrl: authenticate

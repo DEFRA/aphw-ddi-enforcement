@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const { routes, views } = require('../../../constants/cdo/dog')
 const { enforcement } = require('../../../auth/permissions')
-const ViewModel = require('../../../models/cdo/view/certificate')
+const ViewModel = require('../../../models/cdo/view/document')
 const { getCdo } = require('../../../api/ddi-index-api/cdo')
 const { addBackNavigation } = require('../../../lib/back-helpers')
 const { downloadDocument } = require('../../../storage/repos/document')
@@ -51,17 +51,17 @@ module.exports = [
 
         cdo.history = history
 
-        const certificateId = await sendMessage(cdo, user)
+        const documentId = await sendMessage(cdo, user)
 
         try {
-          const cert = await downloadDocument(indexNumber, certificateId)
+          const cert = await downloadDocument(indexNumber, documentId)
 
           const downloadFilename = `${indexNumber} - ${cdo.dog.name} - download.pdf`
 
           return h.response(cert).type('application/pdf').header('Content-Disposition', `filename="${downloadFilename}"`)
         } catch (err) {
           console.log(`Error generating download: ${err} ${err?.stack}`)
-          if (err.type === 'CertificateNotFound') {
+          if (err.type === 'DocumentNotFound') {
             return h.response().code(errorCodes.notFoundError).takeover()
           }
 

@@ -7,18 +7,18 @@ const schema = Joi.object({
 })
 
 const config = {
-  address: process.env.CERTIFICATE_REQUEST_QUEUE,
+  address: process.env.DOCUMENT_REQUEST_QUEUE,
   type: 'queue'
 }
 
 const result = schema.validate(config)
 
 if (result.error) {
-  throw new Error(`The import queue config is invalid. ${result.error.message}`)
+  throw new Error(`The request queue config is invalid. ${result.error.message}`)
 }
 
 module.exports = {
-  certificateRequestQueue: {
+  documentRequestQueue: {
     ...result.value,
     ...sharedConfig
   }

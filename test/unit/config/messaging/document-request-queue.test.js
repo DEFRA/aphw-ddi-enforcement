@@ -1,4 +1,4 @@
-describe('certificate-request-queue config', () => {
+describe('document-request-queue config', () => {
   const OLD_ENV = process.env
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('certificate-request-queue config', () => {
   })
 
   test('should fail validation if invalid', () => {
-    process.env.CERTIFICATE_REQUEST_QUEUE = ''
-    expect(() => require('../../../../app/config/messaging/certificate-request-queue.js')).toThrow('The import queue config is invalid. "address" is not allowed to be empty')
+    process.env.DOCUMENT_REQUEST_QUEUE = ''
+    expect(() => require('../../../../app/config/messaging/document-request-queue.js')).toThrow('The request queue config is invalid. "address" is not allowed to be empty')
   })
 })

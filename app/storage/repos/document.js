@@ -3,10 +3,10 @@ const { blobConfig } = require('../../config')
 
 const maxAttempts = 20
 
-const downloadDocument = async (indexNumber, certificateId) => {
-  const filename = `${indexNumber}/${certificateId}.pdf`
+const downloadDocument = async (indexNumber, documentId) => {
+  const filename = `${indexNumber}/${documentId}.pdf`
 
-  const containerClient = blobServiceClient.getContainerClient(blobConfig.certificateContainer)
+  const containerClient = blobServiceClient.getContainerClient(blobConfig.documentContainer)
   const blobClient = containerClient.getBlobClient(filename)
 
   let exists
@@ -25,9 +25,9 @@ const downloadDocument = async (indexNumber, certificateId) => {
   if (!exists) {
     console.log('downloadBlob not exists after 20 tries')
 
-    const error = new Error(`Certificate '${filename}' does not exist`)
+    const error = new Error(`Document '${filename}' does not exist`)
 
-    error.type = 'CertificateNotFound'
+    error.type = 'DocumentNotFound'
 
     throw error
   }

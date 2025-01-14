@@ -48,7 +48,7 @@ describe('View download', () => {
   describe('POST /cdo/view/download', () => {
     test('POST /cdo/view/download route returns 200', async () => {
       getCdo.mockResolvedValue({ dog: { indexNumber: 'ED123' } })
-      downloadDocument.mockResolvedValue('certificate')
+      downloadDocument.mockResolvedValue('document')
       sendMessage.mockResolvedValue(12345)
 
       const options = {
@@ -98,7 +98,7 @@ describe('View download', () => {
 
     test('POST /cdo/view/download route returns 404 when download not found', async () => {
       getCdo.mockResolvedValue({ dog: { indexNumber: 'ED123' } })
-      downloadDocument.mockRejectedValue({ type: 'CertificateNotFound' })
+      downloadDocument.mockRejectedValue({ type: 'DocumentNotFound' })
       sendMessage.mockResolvedValue(12345)
 
       const options = {

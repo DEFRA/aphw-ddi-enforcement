@@ -1,14 +1,14 @@
 const { MessageSender } = require('ffc-messaging')
-const { certificateRequestQueue } = require('../../../config/messaging/certificate-request-queue')
+const { documentRequestQueue } = require('../../../config/messaging/document-request-queue')
 const { createMessage } = require('./download-request')
 
 const sendMessage = async (data, user) => {
-  const certificateRequestSender = new MessageSender(certificateRequestQueue)
+  const documentRequestSender = new MessageSender(documentRequestQueue)
 
   const message = createMessage(data, user)
 
-  await certificateRequestSender.sendMessage(message)
-  await certificateRequestSender.closeConnection()
+  await documentRequestSender.sendMessage(message)
+  await documentRequestSender.closeConnection()
 
   return message.body.certificateId
 }
