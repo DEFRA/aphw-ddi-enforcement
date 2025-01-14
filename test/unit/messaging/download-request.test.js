@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid')
 
 const { sendMessage } = require('../../../app/messaging/outbound/download')
 const { user } = require('../../mocks/auth')
+const { getSubStatusIfInactive } = require('../../../app/messaging/outbound/download/download-request')
 
 describe('download request message sender', () => {
   beforeEach(() => {
@@ -273,5 +274,14 @@ describe('download request message sender', () => {
       source: 'aphw-ddi-enforcement'
     })
     expect(MessageSender.prototype.closeConnection).toHaveBeenCalled()
+  })
+
+  describe('getSubStatusIfInactive', () => {
+    test('should return normal exempt status', () => {
+      expect(getSubStatusIfInactive({ status: 'Exempt' })).toBe('Exempt')
+    })
+    test('should return sub status status', () => {
+      expect(getSubStatusIfInactive({ status: 'Inactive', subStatus: 'dead' })).toBe('Dog dead')
+    })
   })
 })

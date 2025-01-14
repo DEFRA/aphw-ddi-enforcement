@@ -1,6 +1,13 @@
 const { v4: uuidv4 } = require('uuid')
 const { DOWNLOAD_REQUESTED } = require('../../../constants/events')
 
+const getSubStatusIfInactive = (dog) => {
+  if (dog.status !== 'Inactive') {
+    return dog.status
+  }
+  return `Dog ${dog.subStatus}`
+}
+
 const createMessage = (data, userObj) => ({
   body: {
     certificateId: uuidv4(),
@@ -32,7 +39,7 @@ const createMessage = (data, userObj) => ({
       colour: data.dog.colour
     },
     exemption: {
-      status: data.dog.status,
+      status: getSubStatusIfInactive(data.dog),
       exemptionOrder: data.exemption.exemptionOrder,
       certificateIssued: data.exemption.certificateIssued,
       cdoIssued: data.exemption.cdoIssued,
@@ -47,5 +54,6 @@ const createMessage = (data, userObj) => ({
 })
 
 module.exports = {
-  createMessage
+  createMessage,
+  getSubStatusIfInactive
 }
