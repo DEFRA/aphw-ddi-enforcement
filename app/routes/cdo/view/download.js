@@ -8,6 +8,7 @@ const { downloadDocument } = require('../../../storage/repos/document')
 const { sendMessage } = require('../../../messaging/outbound/download')
 const getUser = require('../../../auth/get-user')
 const { errorCodes } = require('../../../constants/forms')
+const { getHistoryForDownload } = require('../../../lib/download-helper')
 
 module.exports = [
   {
@@ -16,22 +17,15 @@ module.exports = [
     options: {
       auth: { scope: enforcement },
       handler: async (request, h) => {
-        const user = getUser(request)
-        const cdo = await getCdo(request.params.indexNumber, user)
-
-        if (cdo === undefined) {
-          return h.response().code(errorCodes.notFoundError).takeover()
-        }
-
         const backNav = addBackNavigation(request)
 
-        return h.view(views.download, new ViewModel(cdo.dog.indexNumber, backNav))
+        return h.view(views.download, new ViewModel(request.params.indexNumber, backNav))
       }
     }
   },
   {
     method: 'POST',
-    path: `${routes.download.post}/{dummy?}`,
+    path: `${routes.download.post}/{indexNumber}`,
     options: {
       validate: {
         payload: Joi.object({
@@ -46,11 +40,16 @@ module.exports = [
       handler: async (request, h) => {
         const indexNumber = request.payload.indexNumber
         const user = getUser(request)
-        const cdo = await getCdo(indexNumber, user)
+
+        const history = await getHistoryForDownload(indexNumber, user)
+
+        const cdo = await getCdo(request.params.indexNumber, user)
 
         if (cdo === undefined) {
           return h.response().code(errorCodes.notFoundError).takeover()
         }
+
+        cdo.history = history
 
         const certificateId = await sendMessage(cdo, user)
 
@@ -61,7 +60,7 @@ module.exports = [
 
           return h.response(cert).type('application/pdf').header('Content-Disposition', `filename="${downloadFilename}"`)
         } catch (err) {
-          console.log(`Error generating download: ${err} ${err.stack}`)
+          console.log(`Error generating download: ${err} ${err?.stack}`)
           if (err.type === 'CertificateNotFound') {
             return h.response().code(errorCodes.notFoundError).takeover()
           }

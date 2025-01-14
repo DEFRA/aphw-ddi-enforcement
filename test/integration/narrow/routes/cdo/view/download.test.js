@@ -10,6 +10,9 @@ describe('View download', () => {
   jest.mock('../../../../../../app/api/ddi-index-api/cdo')
   const { getCdo } = require('../../../../../../app/api/ddi-index-api/cdo')
 
+  jest.mock('../../../../../../app/lib/download-helper')
+  const { getHistoryForDownload } = require('../../../../../../app/lib/download-helper')
+
   jest.mock('../../../../../../app/storage/repos/document')
   const { downloadDocument } = require('../../../../../../app/storage/repos/document')
 
@@ -22,6 +25,7 @@ describe('View download', () => {
   beforeEach(async () => {
     mockAuth.getUser.mockReturnValue(user)
     getUser.mockReturnValue(user)
+    getHistoryForDownload.mockResolvedValue([])
 
     server = await createServer()
     await server.initialize()
@@ -29,8 +33,6 @@ describe('View download', () => {
 
   describe('GET /cdo/view/download', () => {
     test('GET /cdo/view/download route returns 200', async () => {
-      getCdo.mockResolvedValue({ dog: { indexNumber: 'ED123' } })
-
       const options = {
         method: 'GET',
         url: '/cdo/view/download/ED123',
@@ -40,20 +42,6 @@ describe('View download', () => {
       const response = await server.inject(options)
 
       expect(response.statusCode).toBe(200)
-    })
-
-    test('GET /cdo/view/download route returns 404 when cdo not found', async () => {
-      getCdo.mockResolvedValue(undefined)
-
-      const options = {
-        method: 'GET',
-        url: '/cdo/view/download/ED123',
-        auth
-      }
-
-      const response = await server.inject(options)
-
-      expect(response.statusCode).toBe(404)
     })
   })
 
@@ -65,7 +53,7 @@ describe('View download', () => {
 
       const options = {
         method: 'POST',
-        url: '/cdo/view/download',
+        url: '/cdo/view/download/ED123',
         auth,
         payload: {
           indexNumber: 'ED123'
@@ -83,7 +71,7 @@ describe('View download', () => {
 
       const options = {
         method: 'POST',
-        url: '/cdo/view/download',
+        url: '/cdo/view/download/ED123',
         auth,
         payload: {
           indexNumber: 'ED123'
@@ -98,7 +86,7 @@ describe('View download', () => {
     test('POST /cdo/view/download route returns 400 given invalid payload', async () => {
       const options = {
         method: 'POST',
-        url: '/cdo/view/download',
+        url: '/cdo/view/download/ED123',
         auth,
         payload: {}
       }
@@ -108,14 +96,14 @@ describe('View download', () => {
       expect(response.statusCode).toBe(400)
     })
 
-    test('POST /cdo/view/download route returns 404 when certificate not found', async () => {
+    test('POST /cdo/view/download route returns 404 when download not found', async () => {
       getCdo.mockResolvedValue({ dog: { indexNumber: 'ED123' } })
       downloadDocument.mockRejectedValue({ type: 'CertificateNotFound' })
       sendMessage.mockResolvedValue(12345)
 
       const options = {
         method: 'POST',
-        url: '/cdo/view/download',
+        url: '/cdo/view/download/ED123',
         auth,
         payload: {
           indexNumber: 'ED123'
@@ -134,7 +122,7 @@ describe('View download', () => {
 
       const options = {
         method: 'POST',
-        url: '/cdo/view/download',
+        url: '/cdo/view/download/ED123',
         auth,
         payload: {
           indexNumber: 'ED123'

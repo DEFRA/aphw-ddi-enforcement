@@ -39,7 +39,8 @@ const createMessage = (data, userObj) => ({
       cdoExpiry: data.exemption.cdoExpiry,
       insuranceRenewal: data.exemption.insurance ? data.exemption.insurance[0].insuranceRenewal : undefined,
       breachReasons: data.dog.breaches
-    }
+    },
+    history: data.history
   },
   type: DOWNLOAD_REQUESTED,
   source: 'aphw-ddi-enforcement'
