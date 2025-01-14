@@ -13,7 +13,10 @@ services:
       - ./test-output:/home/node/test-output
       - ./jest.config.js:/home/node/jest.config.js
       - ./package.json:/home/node/package.json
+    depends_on: 
+      - aphw-ddi-enforcement-azurite
     environment:
+      AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://aphw-ddi-enforcement-azurite:10000/devstoreaccount1;TableEndpoint=http://aphw-d-azurite:10002/devstoreaccount1;"
       DDI_API_BASE_URL: test
       DDI_EVENTS_BASE_URL: test-events
       NODE_OPTIONS: "--max-old-space-size=3072"
@@ -23,3 +26,6 @@ services:
       OPENID_PUBLIC_KEY: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GqR8wFhQHh84EhzcBeVMIU2d9NKQ1o9Mu7YRZ1gWcGndj1yGpcTWJLN2ZImRdGX3V/IIZTtKTNQZ/FSG1Hj9hRvk/NKhO0AVxjaNSTAR3/jlrlFQbOa4kcI/K9r9kwTm0GMUKCzw4C2CPadPYQr/pFMEV2ufiJ8xqIXgQ7uB5dEvbiclR+rWwiCw65b0O+IMemS2srsXOF8LD88qMkd4p1bF2B9cr83vO3h3dn8LsxUKM9WPbbqfhtgFqFtqf3ZFki9XQk9+HWxe75W4v0jm+NyNyEOjQq6aduWCUvtgo2BUGkgWfyHg5cfH/SvWzsPrUfF5oImb3PhzP9RVzaOsQIDAQAB"
       OPENID_CLIENT_ID: "abcdefghijk"
       AUTHENTICATION_ENABLED: false
+
+  aphw-ddi-enforcement-azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.23.0

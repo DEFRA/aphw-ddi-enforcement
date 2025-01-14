@@ -6,11 +6,11 @@ const { getCdoFromActivities } = require('../../../api/ddi-index-api/cdo')
 const { getDogOwner } = require('../../../api/ddi-index-api/dog')
 const { getPersonByReference } = require('../../../api/ddi-index-api/person')
 const { getEvents } = require('../../../api/ddi-events-api/event')
-const { getMainReturnPoint } = require('../../../lib/back-helpers')
 const { sortEventsDesc, filterEvents } = require('../../../models/sorting/event')
 const { getUser } = require('../../../auth')
 const { getRedirectForUserAccess } = require('../../../lib/route-helpers')
 const { responseStatus } = require('../../../constants/server')
+const { addBackNavigation } = require('../../../lib/back-helpers')
 
 const getSourceEntity = async (pk, source, user) => {
   if (source === activitySources.dog) {
@@ -60,16 +60,15 @@ module.exports = [
           pk,
           source: request.params.source,
           title: source === activitySources.dog ? `Dog ${pk}` : `${entity.firstName} ${entity.lastName}`,
-          pageTitle: source === activitySources.dog ? 'Check history' : 'Check owner history'
+          pageTitle: source === activitySources.dog ? 'Check history' : 'Check owner history',
+          indexNumber: pk
         }
 
         const filteredEvents = filterEvents(allEvents, sourceEntity)
 
         const sortedActivities = sortEventsDesc(filteredEvents)
 
-        const backNav = {
-          backLink: getMainReturnPoint(request)
-        }
+        const backNav = addBackNavigation(request, true)
 
         return h.view(views.viewDogActivities, new ViewModel(sourceEntity, sortedActivities, backNav))
       }

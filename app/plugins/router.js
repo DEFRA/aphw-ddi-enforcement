@@ -4,6 +4,7 @@ const routes = [].concat(
   require('../routes/cdo/search/basic'),
   require('../routes/cdo/view/dog-details'),
   require('../routes/cdo/view/check-history'),
+  require('../routes/cdo/view/download'),
   require('../routes/cdo/view/owner-details'),
   require('../routes/cdo/report/report-type'),
   require('../routes/cdo/report/breach-reasons'),
