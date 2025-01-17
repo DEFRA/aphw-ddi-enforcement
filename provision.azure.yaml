@@ -1,0 +1,11 @@
+resources:
+  identity: aphw-ddi-enforcement
+  queues:
+    - name: aphw-ddi-certificate-request
+      role: sender
+      maxSize: 5120
+      duplicateDetection: false
+      messageTimeToLive: P14D
+      session: false
+      partitioning: false
+      lockDuration: PT30S
