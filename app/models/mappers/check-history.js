@@ -182,6 +182,8 @@ const { getNewStatusLabel } = require('../../lib/status-helper')
  * @typedef {DDIEvent & LegacyDDIEvent} LegacyDDIEvent
  */
 
+const activityEventsIgnoreTypeIfLabelStartsWith = ['Application pack sent to']
+
 /**
  * @param {DDIEvent} event
  * @returns {string}
@@ -198,6 +200,12 @@ const getActivityLabelFromEvent = (event) => {
   // Special case - for Form 2 sent
   if (event.activity.activityType === 'sent' && event.activity?.activityLabel?.startsWith('Form 2 from ')) {
     return `${event.activity.activityLabel} requested`
+  }
+
+  for (const startStr of activityEventsIgnoreTypeIfLabelStartsWith) {
+    if (event.activity?.activityLabel?.startsWith(startStr)) {
+      return event.activity?.activityLabel
+    }
   }
 
   if (event.activity.activityType === 'received' && event.activity?.activityLabel?.toLowerCase().includes('received')) {
