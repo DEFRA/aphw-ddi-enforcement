@@ -5,7 +5,9 @@ const schema = Joi.object({
   connectionString: Joi.string().when('useConnectionString', { is: true, then: Joi.required(), otherwise: Joi.allow('').optional() }),
   storageAccount: Joi.string().required(),
   documentContainer: Joi.string().required(),
-  useConnectionString: Joi.boolean().default(false)
+  useConnectionString: Joi.boolean().default(false),
+  managedIdentityClientId: Joi.string().optional()
+
 })
 
 // Build config
@@ -13,7 +15,8 @@ const config = {
   connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
   storageAccount: process.env.AZURE_STORAGE_ACCOUNT_NAME,
   documentContainer: 'certificates',
-  useConnectionString: process.env.AZURE_STORAGE_USE_CONNECTION_STRING
+  useConnectionString: process.env.AZURE_STORAGE_USE_CONNECTION_STRING,
+  managedIdentityClientId: process.env.AZURE_CLIENT_ID
 }
 
 // Validate config
