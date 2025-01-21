@@ -1,0 +1,5 @@
+resources:
+  identity: aphw-ddi-enforcement
+  queues:
+    - name: aphw-ddi-certificate-request
+      role: sender
