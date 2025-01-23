@@ -331,14 +331,14 @@ describe('View dog details', () => {
       const [,
         firstCertificateIssuedKey,
         orderKey,
-        neuteringDeadlineKey,
-        policeForceKey
+        withdrawnKey,
+        neuteringDeadlineKey
       ] = exemptionDetails.querySelectorAll('.govuk-summary-list__key')
 
       expect(firstCertificateIssuedKey.textContent.trim()).toBe('First certificate issued')
       expect(orderKey.textContent.trim()).toBe('Order')
+      expect(withdrawnKey.textContent.trim()).toBe('Withdrawn from index')
       expect(neuteringDeadlineKey.textContent.trim()).toBe('Neutering deadline')
-      expect(policeForceKey.textContent.trim()).toBe('Police force')
     })
 
     test('GET /cdo/view/dog-details route returns 200 and In breach reasons given In breach', async () => {

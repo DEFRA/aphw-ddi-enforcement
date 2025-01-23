@@ -40,6 +40,18 @@
               <dd class="govuk-summary-list__value">{{ model.exemption.exemptionOrder }}</dd>
             </div>
 
+            {% if model.exemption.exemptionOrder == '2023' %}
+              <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+                <dt class="govuk-summary-list__key">Withdrawn from index</dt>
+                {% if model.exemption.withdrawn %}
+                <dd class="govuk-summary-list__value">{{ model.exemption.withdrawn }}</dd>
+                {% else %}
+                <dd class="govuk-summary-list__value defra-secondary-text">Not withdrawn</dd>
+                {% endif %}
+              </div>
+            {% endif %}
+
+
             {% if model.exemption.cdoIssued %}
             <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
               <dt class="govuk-summary-list__key">CDO issued</dt>
@@ -159,13 +171,6 @@
             <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
               <dt class="govuk-summary-list__key">Examined by dog legislation officer</dt>
               <dd class="govuk-summary-list__value">{{ model.exemption.typedByDlo }}</dd>
-            </div>
-            {% endif %}
-
-            {% if model.exemption.withdrawn %}
-            <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
-              <dt class="govuk-summary-list__key">Withdrawn from index</dt>
-              <dd class="govuk-summary-list__value">{{ model.exemption.withdrawn }}</dd>
             </div>
             {% endif %}
 
