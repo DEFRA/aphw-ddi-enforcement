@@ -182,7 +182,7 @@ const { getNewStatusLabel } = require('../../lib/status-helper')
  * @typedef {DDIEvent & LegacyDDIEvent} LegacyDDIEvent
  */
 
-const activityEventsIgnoreTypeIfLabelStartsWith = ['Application pack sent to']
+const activityEventsIgnoreTypeIfLabelStartsWith = ['Application pack sent to', 'Confirmation of withdrawal sent to', 'Certificate sent to']
 
 /**
  * @param {DDIEvent} event
