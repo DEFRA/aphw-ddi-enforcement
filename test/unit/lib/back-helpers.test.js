@@ -1,4 +1,4 @@
-const { addBackNavigation, extractBackNavParam, addBackNavigationForErrorCondition, extractSrcParamFromUrl, getBackLinkToSamePage, forceToHttps } = require('../../../app/lib/back-helpers')
+const { addBackNavigation, extractBackNavParam, addBackNavigationForErrorCondition, extractSrcParamFromUrl, getBackLinkToSamePage, forceToHttps, getMainReturnPoint } = require('../../../app/lib/back-helpers')
 const { getFromSession, setInSession } = require('../../../app/session/session-wrapper')
 jest.mock('../../../app/session/session-wrapper')
 
@@ -150,6 +150,20 @@ describe('BackHelpers', () => {
     test('changes to secure', () => {
       const res = forceToHttps('http://some-cloud-host.com/my-page/ED123?src=abc123')
       expect(res).toBe('https://some-cloud-host.com/my-page/ED123?src=abc123')
+    })
+  })
+
+  describe('getMainReturnPoint', () => {
+    test('handles a stored url', () => {
+      getFromSession.mockReturnValue('https://testhost.com/somepage1?src=45678')
+      const res = getMainReturnPoint({})
+      expect(res).toBe('https://testhost.com/somepage1?src=45678')
+    })
+
+    test('handles no stored url', () => {
+      getFromSession.mockReturnValue()
+      const res = getMainReturnPoint({})
+      expect(res).toBe('/')
     })
   })
 })
