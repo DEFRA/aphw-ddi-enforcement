@@ -1,6 +1,8 @@
+const { addMonths } = require('date-fns')
 const {
   getElapsed, formatToDateTime, getMonthsSince, dateComponentsToString, getStatsTimestamp, getTimeInAmPm,
-  getDateAsReadableString, removeIndividualDateComponents, formatToDDMMYYYY, formatToGdsShort
+  getDateAsReadableString, removeIndividualDateComponents, formatToDDMMYYYY, formatToGdsShort,
+  removeDateComponents, validateDate
 } = require('../../../app/lib/date-helpers')
 
 describe('date-helpers', () => {
@@ -214,6 +216,94 @@ describe('date-helpers', () => {
 
     test('should handle a typical date', () => {
       expect(formatToGdsShort(new Date(2001, 5, 8))).toBe('08 Jun 2001')
+    })
+  })
+
+  describe('removeDateComponents', () => {
+    test('should remove components', () => {
+      const payload = {
+        'abc-year': '2024',
+        'abc-month': '10',
+        'abc-day': '28',
+        other: 123
+      }
+      removeDateComponents(payload, 'abc')
+      expect(payload).toEqual({ other: 123 })
+    })
+
+    test('should leave unchanged if no components', () => {
+      const payload = {
+        'abc-year': '2024',
+        'abc-month': '10',
+        'abc-day': '28',
+        other: 123
+      }
+      removeDateComponents(payload, 'def')
+      expect(payload).toEqual({
+        'abc-year': '2024',
+        'abc-month': '10',
+        'abc-day': '28',
+        other: 123
+      })
+    })
+  })
+
+  const mockHelpers = {
+    state: {
+      path: ['dateOfBirth']
+    },
+    message: (a, b) => { return { error: a, elemName: b } },
+    error: (a, b) => { return { error: a, elemName: b } }
+  }
+
+  const generateShiftedDate = (months) => {
+    const now = new Date()
+    const newDate = addMonths(now, months)
+    return {
+      day: `${newDate.getDate()}`,
+      month: `${newDate.getMonth() + 1}`,
+      year: `${newDate.getFullYear()}`
+    }
+  }
+
+  describe('validateDate', () => {
+    test('should handle null date', () => {
+      expect(validateDate({ day: null, month: null, year: null }, mockHelpers)).toBe(null)
+    })
+
+    test('should handle valid date', () => {
+      expect(validateDate({ day: '01', month: '05', year: '2024' }, mockHelpers)).toEqual(new Date(2024, 4, 1))
+    })
+
+    test('should handle incorrect year', () => {
+      expect(validateDate({ day: '01', month: '05', year: '24' }, mockHelpers).error).toBe('Year must include four numbers')
+    })
+
+    test('should handle non-real date', () => {
+      expect(validateDate({ day: 'xx', month: '05', year: '24' }, mockHelpers).error).toBe('Date must be a real date')
+    })
+
+    test('should handle missing elements in date', () => {
+      expect(validateDate({ month: '05', year: '24' }, mockHelpers).error).toBe('Date must include a day')
+    })
+
+    test('should handle all missing elements in required date', () => {
+      expect(validateDate({ }, mockHelpers, true).error).toBe('any.required')
+    })
+
+    test('should prevent future dates', () => {
+      const futureDate = generateShiftedDate(1)
+      expect(validateDate(futureDate, mockHelpers, false, true).error).toBe('Date must be today or in the past')
+    })
+
+    test('should prevent past dates', () => {
+      const pastDate = generateShiftedDate(-1)
+      expect(validateDate(pastDate, mockHelpers, false, false, true).error).toBe('Date must be today or in the future')
+    })
+
+    test('should prevent older than 15 years ago', () => {
+      const veryOldDate = generateShiftedDate((-15 * 12) - 1)
+      expect(validateDate(veryOldDate, mockHelpers, false, false, false, true).error).toBe('Date must be within the last 15 years')
     })
   })
 })

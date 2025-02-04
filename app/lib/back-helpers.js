@@ -55,7 +55,7 @@ const getPreviousUrl = (request) => {
   return url
 }
 
-const getMainReturnPoint = (request, pathOnly = true) => {
+const getMainReturnPoint = (request) => {
   const url = getFromSession(request, mainReturnPoint)
   return url ?? '/'
 }
