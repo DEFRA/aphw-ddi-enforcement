@@ -65,7 +65,7 @@ describe('View dog details', () => {
       expect(document.querySelector('h1').textContent.trim()).toBe('Dog ED123')
       expect(document.querySelectorAll('.govuk-summary-list__value')[0].textContent.trim()).toBe('Bruno')
       expect(document.querySelectorAll('.govuk-summary-card:nth-child(2) .govuk-summary-list__value')[0].textContent.trim()).toBe('John Smith')
-      expect(document.querySelectorAll('.govuk-summary-card')[2].querySelectorAll('.govuk-summary-list__value')[7].textContent.trim()).toBe('Dogs Trust')
+      expect(document.querySelectorAll('.govuk-summary-card')[2].querySelectorAll('.govuk-summary-list__value')[8].textContent.trim()).toBe('Dogs Trust')
       expect(document.querySelectorAll('.defra-actions-header__actions .govuk-button')[0].textContent.trim()).toBe('Report something')
       expect(document.querySelectorAll('.defra-actions-header__actions .govuk-button')[1].textContent.trim()).toBe('Check and download history')
       expect(document.querySelector('.govuk-button[data-testid="delete-dog-record-btn"]')).toBeNull()
@@ -205,7 +205,7 @@ describe('View dog details', () => {
       expect(telephoneNumberValue.textContent.trim()).toBe(notEntered)
 
       const [,
-        firstCertificateIssuedKey, , ,
+        insurancespotcheckDate, , , ,
         cdoExpiryKey,
         courtKey,
         policeForceKey,
@@ -216,7 +216,7 @@ describe('View dog details', () => {
         microchipNumberVerifiedKey
       ] = exemptionDetails.querySelectorAll('.govuk-summary-list__key')
       const [,
-        firstCertificateIssuedValue, , ,
+        insurancespotDateValue, , , ,
         cdoExpiryValue,
         courtValue,
         policeForceValue,
@@ -228,7 +228,7 @@ describe('View dog details', () => {
       ] = exemptionDetails.querySelectorAll('.govuk-summary-list__value')
       const [, firstCertificateIssued] = exemptionDetails.querySelectorAll('.govuk-summary-list__actions')
 
-      expect(firstCertificateIssuedKey.textContent.trim()).toBe('First certificate issued')
+      expect(insurancespotcheckDate.textContent.trim()).toBe('Insurance Spot Check Date')
       expect(cdoExpiryKey.textContent.trim()).toBe('CDO expiry')
       expect(courtKey.textContent.trim()).toBe('Court')
       expect(policeForceKey.textContent.trim()).toBe('Police force')
@@ -237,7 +237,7 @@ describe('View dog details', () => {
       expect(insuranceRenewalKey.textContent.trim()).toBe('Insurance renewal date')
       expect(neuteringConfirmationKey.textContent.trim()).toBe('Neutering confirmed')
       expect(microchipNumberVerifiedKey.textContent.trim()).toBe('Microchip number verified')
-      expect(firstCertificateIssuedValue.textContent.trim()).toBe(notEntered)
+      expect(insurancespotDateValue.textContent.trim()).toBe('Not Applicable')
       expect(cdoExpiryValue.textContent.trim()).toBe(notEntered)
       expect(courtValue.textContent.trim()).toBe(notEntered)
       expect(policeForceValue.textContent.trim()).toBe(notEntered)
@@ -329,13 +329,13 @@ describe('View dog details', () => {
       const [,, exemptionDetails] = document.querySelectorAll('.govuk-summary-card__content')
 
       const [,
-        firstCertificateIssuedKey,
+        insuranceSpotcheckDate,
         orderKey,
         withdrawnKey,
         neuteringDeadlineKey
       ] = exemptionDetails.querySelectorAll('.govuk-summary-list__key')
 
-      expect(firstCertificateIssuedKey.textContent.trim()).toBe('First certificate issued')
+      expect(insuranceSpotcheckDate.textContent.trim()).toBe('Insurance Spot Check Date')
       expect(orderKey.textContent.trim()).toBe('Order')
       expect(withdrawnKey.textContent.trim()).toBe('Withdrawn from index')
       expect(neuteringDeadlineKey.textContent.trim()).toBe('Neutering deadline')
