@@ -330,6 +330,7 @@ describe('View dog details', () => {
 
       const [,
         insuranceSpotcheckDate,
+        ,
         orderKey,
         withdrawnKey,
         neuteringDeadlineKey
