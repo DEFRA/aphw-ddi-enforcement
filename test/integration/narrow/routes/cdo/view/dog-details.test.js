@@ -335,7 +335,6 @@ describe('View dog details', () => {
         withdrawnKey,
         neuteringDeadlineKey
       ] = exemptionDetails.querySelectorAll('.govuk-summary-list__key')
-
       expect(insuranceSpotcheckDate.textContent.trim()).toBe('Insurance Spot Check Date')
       expect(orderKey.textContent.trim()).toBe('Order')
       expect(withdrawnKey.textContent.trim()).toBe('Withdrawn from index')
