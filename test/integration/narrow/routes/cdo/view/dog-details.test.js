@@ -327,7 +327,6 @@ describe('View dog details', () => {
 
       expect(response.statusCode).toBe(200)
       const [,, exemptionDetails] = document.querySelectorAll('.govuk-summary-card__content')
-
       const [,
         insuranceSpotcheckDate,
         ,
