@@ -10,6 +10,7 @@
     "pretest": "npm run test:lint",
     "test": "jest --workerIdleMemoryLimit=512MB",
     "test:parallel": "jest",
+    "test:unit": "jest --testPathPatterns=test/unit --coverage=false",
     "test:watch": "jest --coverage=false --watchAll",
     "test:watch:all": "npm-run-all --parallel test:watch build:watch",
     "test:lint": "standard",
