@@ -1,5 +1,13 @@
 resources:
   identity: aphw-ddi-enforcement
-  queues:
-    - name: aphw-ddi-certificate-request
-      role: sender
+  service_bus:
+    queues:
+      - name: aphw-ddi-certificate-request
+        roles:
+          - name: sender
+  storage_accounts:
+    - name: aphw
+      containers:
+        - name: certificates
+          roles:
+            - name: blobContributor

@@ -19,6 +19,8 @@ data:
   {{- end }}
   OPENID_DISCOVERY_ENDPOINT: {{ quote .Values.container.openidDiscoveryEndpoint }}
   AUTHENTICATION_ENABLED: "true"
+  AZURE_STORAGE_ACCOUNT_NAME: {{ quote .Values.container.azureStorageAccountName }}
+  COOKIE_PASSWORD: {{ quote .Values.container.cookiePassword }}
   AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
   DDI_API_BASE_URL: {{ quote .Values.container.ddiApiBaseUrl }}
   DDI_EVENTS_BASE_URL: {{ quote .Values.container.ddiEventsBaseUrl }}
