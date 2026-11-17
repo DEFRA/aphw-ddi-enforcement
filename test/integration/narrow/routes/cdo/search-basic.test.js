@@ -101,7 +101,7 @@ describe('SearchBasic test', () => {
     expect(ownerNameResult.textContent.trim()).toBe('Wreck it Ralph')
     expect(ownerAddressResult.textContent.trim()).toBe('47 PARK STREET, LONDON, W1K 7EB')
     expect(microchipNumberResult.textContent.trim()).toBe('Not entered')
-    expect(document.querySelector('#main-content')).not.toContain('Find exempt dangerous dogs or dog owners by searching with one or more of these terms')
+    expect(document.querySelector('#main-content').textContent).not.toContain('Find exempt dangerous dogs or dog owners by searching with one or more of these terms')
   })
 
   test('GET /cdo/search/basic with invalid data returns error', async () => {

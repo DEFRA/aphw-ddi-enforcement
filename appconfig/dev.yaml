@@ -1,1 +1,53 @@
 ---
+environment: production
+environmentCode: dev
+container:
+  messageQueueHost: DEVFFCINFSB1001.servicebus.windows.net
+  openidDiscoveryEndpoint: https://oidc.integration.account.gov.uk/.well-known/openid-configuration
+  osPlacesBaseUrl: https://api.os.uk/search/places/v1
+  redisHostname: DEVFFCINFRD1001.redis.cache.windows.net
+  redisPort: 6380
+  documentRequestQueue: aphw-ddi-certificate-request
+  ddiApiBaseUrl: http://aphw-ddi-api.aphw-ddi-dev
+  ddiEventsBaseUrl: http://aphw-ddi-events.aphw-ddi-dev
+  postLogoutUrl: https://aphw-ddi-enforcement-dev.azure.defra.cloud/post-logout
+  redirectUrl: https://aphw-ddi-enforcement-dev.azure.defra.cloud/authenticate
+ingress:
+  server: azure.defra.cloud
+  endpoint: aphw-ddi-enforcement-dev
+secretProviderClass:
+  azure:
+    keyvaultName: DEVFFCINFKV1001
+    objects:
+      - objectName: devtest-ffcahwr-appInsights-connectionString
+        objectType: secret
+      - objectName: DEV-aphw-ddi-enforcement-openid-client-id
+        objectType: secret
+      - objectName: DEV-aphw-ddi-enforcement-openid-private-key
+        objectType: secret
+      - objectName: DEV-aphw-ddi-enforcement-openid-public-key
+        objectType: secret
+      - objectName: DEV-aphw-ddi-enforcement-jwt-private-key
+        objectType: secret
+      - objectName: DEV-aphw-ddi-os-places-key
+        objectType: secret
+      - objectName: dev-redisPassword
+        objectType: secret
+  secretObjects:
+    - secretName: aphw-ddi-enforcement
+      type: Opaque
+      data:
+        - objectName: devtest-ffcahwr-appInsights-connectionString
+          key: APPLICATIONINSIGHTS_CONNECTION_STRING
+        - objectName: DEV-aphw-ddi-enforcement-openid-client-id
+          key: OPENID_CLIENT_ID
+        - objectName: DEV-aphw-ddi-enforcement-openid-private-key
+          key: OPENID_PRIVATE_KEY
+        - objectName: DEV-aphw-ddi-enforcement-openid-public-key
+          key: OPENID_PUBLIC_KEY
+        - objectName: DEV-aphw-ddi-enforcement-jwt-private-key
+          key: JWT_PRIVATE_KEY
+        - objectName: DEV-aphw-ddi-os-places-key
+          key: OS_PLACES_API_KEY
+        - objectName: dev-redisPassword
+          key: REDIS_PASSWORD

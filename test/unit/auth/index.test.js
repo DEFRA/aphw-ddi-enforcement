@@ -1,4 +1,3 @@
-
 describe('azure authentication', () => {
   const OLD_ENV = process.env
 

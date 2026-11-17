@@ -1,0 +1,17 @@
+---
+environment: production
+environmentCode: snd
+container:
+  messageQueueHost: SNDFFCINFSB2001.servicebus.windows.net
+  osPlacesBaseUrl: https://api.os.uk/search/places/v1
+  redisHostname: SNDFFCINFRD2001.redis.cache.windows.net
+  redisPort: 6380
+  documentRequestQueue: queue:aphw-ddi-certificate-request
+  ddiApiBaseUrl: http://aphw-ddi-api.aphw-ddi-snd2
+  ddiEventsBaseUrl: http://aphw-ddi-events.aphw-ddi-snd2
+  openidDiscoveryEndpoint: https://aphw-ddi-simulator-snd2.azure.defra.cloud/.well-known/openid-configuration
+  postLogoutUrl: https://aphw-ddi-enforcement-snd2.azure.defra.cloud/post-logout
+  redirectUrl: https://aphw-ddi-enforcement-snd2.azure.defra.cloud/authenticate
+ingress:
+  server: azure.defra.cloud
+  endpoint: aphw-ddi-enforcement-snd
